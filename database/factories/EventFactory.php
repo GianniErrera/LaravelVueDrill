@@ -22,7 +22,10 @@ class EventFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'date' => $this->faker->date($format = 'Y-m-d', $max = 'now'),
+            'name' => $this->faker->text($maxNbChars = 40),
+            'eventDescription' => $this->faker->text($maxNbChars = 180),
+            'isItRecurringYearly' => (bool)random_int(0, 1)
         ];
     }
 }

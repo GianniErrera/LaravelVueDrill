@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Route;
+
+/* header('Access-Control-Allow-Origin:  *');
+header('Access-Control-Allow-Methods:  POST, GET, OPTIONS, PUT, DELETE');
+header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Origin, Authorization'); */
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +25,17 @@ Route::get('/', function () {
 Route::get('/test', function () {
     return view('vue-test');
 });
+
+Route::get('/filters', function () {
+    return view('filters');
+});
+
+Route::get('/events', function () {
+    return App\Models\Event::all();
+});
+
+Route::post('/events', [EventController::class, 'store']);
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

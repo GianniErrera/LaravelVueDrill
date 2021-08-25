@@ -33,9 +33,13 @@ class EventController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request)    {
+        $event = new Event();
+        $event->name = $request->input('name');
+        $event->eventDescription = $request->input('description');
+        $event->date = $request->input('date');
+        $event->isItRecurringYearly = $request->input('isItYearly');
+        $event->save();
     }
 
     /**
