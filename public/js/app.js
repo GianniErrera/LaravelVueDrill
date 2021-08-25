@@ -4095,22 +4095,49 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      columnOrderCriteria: "date",
+      selected: "date",
+      options: [{
+        text: "Order by date",
+        value: "date",
+        id: 1
+      }, {
+        text: "Order by creation date",
+        value: "created_at",
+        id: 2
+      }],
       singleDateQuery: false,
       search: "",
+      singleDate: "",
+      singleFormattedDate: "",
       ignoreYearFromQuery: false
     };
+  },
+  methods: {
+    removeFilters: function removeFilters() {
+      console.log('Checking');
+    }
   },
   mounted: function mounted() {
     var _this = this;
 
-    axios.get('/events').then(function (response) {
-      return _this.events = response.data;
+    var datepicker = new Litepicker({
+      element: document.getElementById('searchDate'),
+      format: 'DD-MM-YYYY',
+      resetButton: true,
+      singleMode: true,
+      allowRepick: true,
+      autoRefresh: true,
+      splitView: true,
+      setup: function setup(picker) {
+        picker.on('selected', function (date) {
+          console.log("Checking");
+          _this.singleFormattedDate = date.format('DD-MMM-YYYY');
+          _this.singleDate = date.format('YYYY-MM-DD');
+        });
+      }
     });
   }
 });
@@ -22303,193 +22330,63 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", { staticClass: "lg:flex lg:justify-around" }, [
-      _c("div", [
-        _c(
-          "select",
-          {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.columnOrderCriteria,
-                expression: "columnOrderCriteria"
-              }
-            ],
-            staticClass: "select select-bordered",
-            on: {
-              change: function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.columnOrderCriteria = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              }
-            }
-          },
-          [
-            _c("option", { attrs: { value: "created_at" } }, [
-              _vm._v("Ordered by creation date")
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "date" } }, [
-              _vm._v("Ordered by date")
-            ])
-          ]
-        )
-      ]),
-      _vm._v(" "),
       _c(
-        "div",
+        "select",
         {
-          staticClass:
-            "md:mb-3 block text-center @if($singleDateQuery) hidden @endif"
-        },
-        [
-          _c(
-            "label",
+          directives: [
             {
-              staticClass:
-                "block text-center mb-3 font-size-14px font-semibold",
-              attrs: { for: "search" }
-            },
-            [_vm._v("Search over dates range:")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.searchRange,
-                expression: "searchRange"
-              }
-            ],
-            staticClass:
-              "ml-4 mb-4 p-2 input input-bordered border border-gray-800",
-            attrs: {
-              id: "searchRange",
-              name: "searchRange",
-              type: "text",
-              readonly: ""
-            },
-            domProps: { value: _vm.searchRange },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.searchRange = $event.target.value
-              }
+              name: "model",
+              rawName: "v-model",
+              value: _vm.selected,
+              expression: "selected"
             }
-          })
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass:
-            "block md:mb-3 text-center @unless ($singleDateQuery)hidden @endunless"
+          ],
+          staticClass: "select select-bordered",
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.selected = $event.target.multiple
+                ? $$selectedVal
+                : $$selectedVal[0]
+            }
+          }
         },
-        [
-          _c(
-            "label",
-            {
-              staticClass: "block text-center mb-3 font-semibold",
-              attrs: { for: "date" }
-            },
-            [_vm._v("Pick a date:")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.searchDate,
-                expression: "searchDate"
-              }
-            ],
-            staticClass:
-              "ml-4 mb-4 p-2 input input-bordered border border-gray-800",
-            attrs: {
-              id: "searchDate",
-              name: "searchDate",
-              type: "text",
-              readonly: ""
-            },
-            domProps: { value: _vm.searchDate },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.searchDate = $event.target.value
-              }
-            }
-          })
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "mb-3 text-center" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("div", [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.singleDateQuery,
-                expression: "singleDateQuery"
-              }
-            ],
-            staticClass: "flex-none checkbox",
-            attrs: { type: "checkbox" },
-            domProps: {
-              checked: Array.isArray(_vm.singleDateQuery)
-                ? _vm._i(_vm.singleDateQuery, null) > -1
-                : _vm.singleDateQuery
-            },
-            on: {
-              change: function($event) {
-                var $$a = _vm.singleDateQuery,
-                  $$el = $event.target,
-                  $$c = $$el.checked ? true : false
-                if (Array.isArray($$a)) {
-                  var $$v = null,
-                    $$i = _vm._i($$a, $$v)
-                  if ($$el.checked) {
-                    $$i < 0 && (_vm.singleDateQuery = $$a.concat([$$v]))
-                  } else {
-                    $$i > -1 &&
-                      (_vm.singleDateQuery = $$a
-                        .slice(0, $$i)
-                        .concat($$a.slice($$i + 1)))
-                  }
-                } else {
-                  _vm.singleDateQuery = $$c
-                }
-              }
-            }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "mb-3 text-center " }, [
+        _vm._l(_vm.options, function(option) {
+          return _c(
+            "option",
+            { key: option.value, domProps: { value: option.value } },
+            [
+              _vm._v(
+                "\n                " + _vm._s(option.text) + "\n            "
+              )
+            ]
+          )
+        }),
+        0
+      )
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass:
+          "md:mb-3 block text-center @if($singleDateQuery) hidden @endif"
+      },
+      [
         _c(
           "label",
           {
-            staticClass: "block text-center mb-3 font-semibold",
+            staticClass: "block text-center mb-3 font-size-14px font-semibold",
             attrs: { for: "search" }
           },
-          [_vm._v("Search events:")]
+          [_vm._v("Search over dates range:")]
         ),
         _vm._v(" "),
         _c("input", {
@@ -22497,95 +22394,229 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.search,
-              expression: "search"
+              value: _vm.searchRange,
+              expression: "searchRange"
             }
           ],
-          staticClass: "input input-bordered border border-gray-800 mb-4 p-2",
+          staticClass:
+            "ml-4 mb-4 p-2 input input-bordered border border-gray-800",
           attrs: {
+            id: "searchRange",
+            name: "searchRange",
             type: "text",
-            id: "search",
-            name: "search",
-            placeholder: ""
+            readonly: ""
           },
-          domProps: { value: _vm.search },
+          domProps: { value: _vm.searchRange },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.search = $event.target.value
+              _vm.searchRange = $event.target.value
+            }
+          }
+        })
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.singleDateQuery,
+            expression: "singleDateQuery"
+          }
+        ],
+        staticClass: "block md:mb-3 text-center"
+      },
+      [
+        _c(
+          "label",
+          {
+            staticClass: "block text-center mb-3 font-semibold",
+            attrs: { for: "date" }
+          },
+          [_vm._v("Pick a date:")]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.singleFormattedDate,
+              expression: "singleFormattedDate"
+            }
+          ],
+          staticClass:
+            "ml-4 mb-4 p-2 input input-bordered border border-gray-800",
+          attrs: {
+            id: "searchDate",
+            name: "searchDate",
+            type: "text",
+            readonly: ""
+          },
+          domProps: { value: _vm.singleFormattedDate },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.singleFormattedDate = $event.target.value
+            }
+          }
+        })
+      ]
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "mb-3 text-center" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.singleDateQuery,
+              expression: "singleDateQuery"
+            }
+          ],
+          staticClass: "flex-none checkbox",
+          attrs: { type: "checkbox" },
+          domProps: {
+            checked: Array.isArray(_vm.singleDateQuery)
+              ? _vm._i(_vm.singleDateQuery, null) > -1
+              : _vm.singleDateQuery
+          },
+          on: {
+            change: function($event) {
+              var $$a = _vm.singleDateQuery,
+                $$el = $event.target,
+                $$c = $$el.checked ? true : false
+              if (Array.isArray($$a)) {
+                var $$v = null,
+                  $$i = _vm._i($$a, $$v)
+                if ($$el.checked) {
+                  $$i < 0 && (_vm.singleDateQuery = $$a.concat([$$v]))
+                } else {
+                  $$i > -1 &&
+                    (_vm.singleDateQuery = $$a
+                      .slice(0, $$i)
+                      .concat($$a.slice($$i + 1)))
+                }
+              } else {
+                _vm.singleDateQuery = $$c
+              }
             }
           }
         })
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "mb-3 text-center" }, [
-        _vm._m(1),
-        _vm._v(" "),
-        _c("div", { staticClass: "block text-center" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.ignoreYearFromQuery,
-                expression: "ignoreYearFromQuery"
-              }
-            ],
-            staticClass: "flex-none checkbox",
-            attrs: { type: "checkbox" },
-            domProps: {
-              checked: Array.isArray(_vm.ignoreYearFromQuery)
-                ? _vm._i(_vm.ignoreYearFromQuery, null) > -1
-                : _vm.ignoreYearFromQuery
-            },
-            on: {
-              change: function($event) {
-                var $$a = _vm.ignoreYearFromQuery,
-                  $$el = $event.target,
-                  $$c = $$el.checked ? true : false
-                if (Array.isArray($$a)) {
-                  var $$v = null,
-                    $$i = _vm._i($$a, $$v)
-                  if ($$el.checked) {
-                    $$i < 0 && (_vm.ignoreYearFromQuery = $$a.concat([$$v]))
-                  } else {
-                    $$i > -1 &&
-                      (_vm.ignoreYearFromQuery = $$a
-                        .slice(0, $$i)
-                        .concat($$a.slice($$i + 1)))
-                  }
+      _c("span", [_vm._v(" " + _vm._s(_vm.selected) + " ")])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "mb-3 text-center " }, [
+      _c(
+        "label",
+        {
+          staticClass: "block text-center mb-3 font-semibold",
+          attrs: { for: "search" }
+        },
+        [_vm._v("Search events:")]
+      ),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.search,
+            expression: "search"
+          }
+        ],
+        staticClass: "input input-bordered border border-gray-800 mb-4 p-2",
+        attrs: { type: "text", id: "search", name: "search", placeholder: "" },
+        domProps: { value: _vm.search },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.search = $event.target.value
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "mb-3 text-center" }, [
+      _vm._m(1),
+      _vm._v(" "),
+      _c("div", { staticClass: "block text-center" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.ignoreYearFromQuery,
+              expression: "ignoreYearFromQuery"
+            }
+          ],
+          staticClass: "flex-none checkbox",
+          attrs: { type: "checkbox" },
+          domProps: {
+            checked: Array.isArray(_vm.ignoreYearFromQuery)
+              ? _vm._i(_vm.ignoreYearFromQuery, null) > -1
+              : _vm.ignoreYearFromQuery
+          },
+          on: {
+            change: function($event) {
+              var $$a = _vm.ignoreYearFromQuery,
+                $$el = $event.target,
+                $$c = $$el.checked ? true : false
+              if (Array.isArray($$a)) {
+                var $$v = null,
+                  $$i = _vm._i($$a, $$v)
+                if ($$el.checked) {
+                  $$i < 0 && (_vm.ignoreYearFromQuery = $$a.concat([$$v]))
                 } else {
-                  _vm.ignoreYearFromQuery = $$c
+                  $$i > -1 &&
+                    (_vm.ignoreYearFromQuery = $$a
+                      .slice(0, $$i)
+                      .concat($$a.slice($$i + 1)))
                 }
+              } else {
+                _vm.ignoreYearFromQuery = $$c
               }
             }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c("div", { staticClass: "block text-center mb-" }, [
-          _c("span", { staticClass: "ml-2 text-center font-semibold" }, [
-            _vm._v("Reset filters")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "text-center m-4" }, [
-            _c(
-              "button",
-              {
-                staticClass: "cursor-pointer align-center",
-                on: { click: _vm.removeFilters }
-              },
-              [
-                _c("img", {
-                  staticClass: "transform hover:scale-110",
-                  attrs: { src: "images/filter-remove.png", width: "30" }
-                })
-              ]
-            )
-          ])
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", [
+      _c("div", { staticClass: "block text-center mb-" }, [
+        _c("span", { staticClass: "ml-2 text-center font-semibold" }, [
+          _vm._v("Reset filters")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "text-center m-4" }, [
+          _c(
+            "button",
+            {
+              staticClass: "cursor-pointer align-center",
+              on: { click: _vm.removeFilters }
+            },
+            [
+              _c("img", {
+                staticClass: "transform hover:scale-110",
+                attrs: { src: "images/filter-remove.png", width: "30" }
+              })
+            ]
+          )
         ])
       ])
     ])
