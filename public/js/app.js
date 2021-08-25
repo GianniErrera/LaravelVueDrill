@@ -3849,6 +3849,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -22061,7 +22063,7 @@ var render = function() {
             "div",
             { staticClass: "lg:flex lg:justify-between mr-4 ml-5 mt-2 mb-6" },
             [
-              _c("div", { staticClass: "w-full" }, [
+              _c("div", { staticClass: "w-4/5" }, [
                 _c(
                   "label",
                   {
@@ -22096,55 +22098,58 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "label",
-                { staticClass: "text-center cursor-pointer md:mt-2 lg:mr-4" },
+                { staticClass: "text-center cursor-pointer lg:mr-4" },
                 [
                   _c(
                     "span",
                     {
-                      staticClass: "ml-2 font-semibold block mr-4 text-center"
+                      staticClass:
+                        "ml-2 font-semibold block mr-4 mt-4 text-center"
                     },
                     [_vm._v("Does this event recur every year?")]
                   ),
                   _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.isItYearly,
-                        expression: "isItYearly"
-                      }
-                    ],
-                    staticClass:
-                      "items-center border border-rounded-xl toggle cursor-pointer mt-2 justify-center",
-                    attrs: { type: "checkbox" },
-                    domProps: {
-                      checked: Array.isArray(_vm.isItYearly)
-                        ? _vm._i(_vm.isItYearly, null) > -1
-                        : _vm.isItYearly
-                    },
-                    on: {
-                      change: function($event) {
-                        var $$a = _vm.isItYearly,
-                          $$el = $event.target,
-                          $$c = $$el.checked ? true : false
-                        if (Array.isArray($$a)) {
-                          var $$v = null,
-                            $$i = _vm._i($$a, $$v)
-                          if ($$el.checked) {
-                            $$i < 0 && (_vm.isItYearly = $$a.concat([$$v]))
+                  _c("div", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.isItYearly,
+                          expression: "isItYearly"
+                        }
+                      ],
+                      staticClass:
+                        "items-center border border-rounded-xl toggle cursor-pointer mt-2 justify-center",
+                      attrs: { type: "checkbox" },
+                      domProps: {
+                        checked: Array.isArray(_vm.isItYearly)
+                          ? _vm._i(_vm.isItYearly, null) > -1
+                          : _vm.isItYearly
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.isItYearly,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = null,
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.isItYearly = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.isItYearly = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
                           } else {
-                            $$i > -1 &&
-                              (_vm.isItYearly = $$a
-                                .slice(0, $$i)
-                                .concat($$a.slice($$i + 1)))
+                            _vm.isItYearly = $$c
                           }
-                        } else {
-                          _vm.isItYearly = $$c
                         }
                       }
-                    }
-                  })
+                    })
+                  ])
                 ]
               )
             ]
@@ -22163,7 +22168,10 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "footer",
-      { staticClass: "flex justify-between items-center p-4 mr-4" },
+      {
+        staticClass:
+          "lg:flex lg:justify-between items-center lg:items-start p-4 mr-4"
+      },
       [
         _c(
           "button",

@@ -23,20 +23,22 @@
             </div>
 
             <div class="lg:flex lg:justify-between mr-4 ml-5 mt-2 mb-6">
-                <div class="w-full">
+                <div class="w-4/5">
                     <label for="description" class="block mb-2 text-center font-semibold">Event description:</label>
                     <input name="description" class="ml-4 mr-4 mt-4 input input-bordered w-full" type="text" v-model="description">
                 </div>
 
-                <label class="text-center cursor-pointer md:mt-2 lg:mr-4">
-                    <span class="ml-2 font-semibold block mr-4 text-center">Does this event recur every year?</span>
-                    <input type="checkbox"
-                        v-model="isItYearly"
-                        class="items-center border border-rounded-xl toggle cursor-pointer mt-2 justify-center">
+                <label class="text-center cursor-pointer lg:mr-4">
+                    <span class="ml-2 font-semibold block mr-4 mt-4 text-center">Does this event recur every year?</span>
+                    <div>
+                        <input type="checkbox"
+                            v-model="isItYearly"
+                            class="items-center border border-rounded-xl toggle cursor-pointer mt-2 justify-center">
+                    </div>
                 </label>
             </div>
 
-            <footer class="flex justify-between items-center p-4 mr-4">
+            <footer class="lg:flex lg:justify-between items-center lg:items-start p-4 mr-4">
                 <button class="btn btn-primary rounded-xl hover:text-yellow-100 ml-4" type="submit">Submit event </button>
             </footer>
 
