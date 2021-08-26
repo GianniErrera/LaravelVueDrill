@@ -10,28 +10,29 @@
         </div>
 
 
-        <div v-if="singleDateQuery == false" class="md:mb-3 block text-center">
+        <div v-show="!singleDateQuery" class="md:mb-3 block text-center">
             <label for="search" class="block text-center mb-3 font-size-14px font-semibold">Search over dates range:</label>
             <input
                 v-model="searchRange"
                 id="searchRange"
                 name="searchRange"
                 type="text"
-                class="ml-4 mb-4 p-2 input input-bordered border border-gray-800"
+                size="28"
+                class="text-center ml-4 mb-4 input input-bordered border border-gray-800"
                 readonly
             >
         </div>
 
 
         <div v-show="singleDateQuery" class="block md:mb-3 text-center">
-            <label for="date" class="block text-center mb-3 font-semibold">Pick a date:</label>
+            <label for="searchDate" class="block text-center mb-3 font-semibold">Pick a date:</label>
 
             <input
                 v-model="singleFormattedDate"
                 id="searchDate"
                 name="searchDate"
                 type="text"
-                class="ml-4 mb-4 p-2 input input-bordered border border-gray-800"
+                class="text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800"
                 readonly
             >
 
@@ -46,6 +47,7 @@
                     type="checkbox"
                     v-model="singleDateQuery"
                     class="flex-none checkbox"
+                    @change="clearDatepickers"
                 >
             </div>
 
@@ -118,15 +120,33 @@
                 startDate: "",
                 endDate: "",
                 ignoreYearFromQuery: false
+
             }
         },
         methods: {
                 removeFilters() {
-                    console.log('Checking');
+                    this.selected = "date";
+                    this.singleDateQuery = false;
+                    this.search = "";
+                    this.singleDate = "";
+                    this.singleFormattedDate = "";
+                    this.searchRange = "";
+                    this.startDate = "";
+                    this.endDate = "";
+                    this.ignoreYearFromQuery = false;
+                },
+                clearDatepickers() {
+                    this.singleDate = "";
+                    this.singleFormattedDate = "";
+                    this.searchRange = "";
+                    this.startDate = "";
+                    this.endDate = "";
+                    this.datepicker.clearSelection();
+                    this.rangepicker.clearSelection();
                 }
         },
         mounted() {
-             const datepicker= new Litepicker({
+            this.datepicker= new Litepicker({
                 element: document.getElementById('searchDate'),
                 format: 'DD-MM-YYYY',
                 resetButton: true,
@@ -136,24 +156,25 @@
                 splitView: true,
                 setup: (picker) => {
                     picker.on('selected', (date) => {
-                        console.log("Checking");
+                        console.log(this);
+                        this.search = "";
                         this.singleFormattedDate = date.format('DD-MMM-YYYY');
                         this.singleDate = date.format('YYYY-MM-DD');
                         this.startDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
                         this.endDate = "";
                         this.searchRange = "";
-                    })
-                }
+                        })
+                    }
 
             })
 
 
 
-            const rangepicker= new Litepicker({
+            this.rangepicker= new Litepicker({
                 element: document.getElementById('searchRange'),
                 format: 'DD-MM-YYYY',
-                singleMode: false,
                 resetButton: true,
+                singleMode: false,
                 allowRepick: true,
                 autoRefresh: true,
                 splitView: true,
@@ -165,18 +186,8 @@
                         this.endDate = endDate.format('YYYY-MM-DD');
                         this.singleDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
                         this.singleFormattedDate = "";
-                    })
-                },
-                resetButton: () => {
-                let btn = document.createElement('button');
-                btn.innerText = 'Clear';
-                btn.addEventListener('click', (evt) => {
-                    evt.preventDefault();
-/*
-                    Livewire.emit('resetDateRange'); */
-                });
 
-                return btn;
+                    })
                 }
 
             })

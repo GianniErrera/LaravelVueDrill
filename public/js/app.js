@@ -3898,7 +3898,7 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
-    formValidation: function formValidation() {
+    formValidation: function formValidation(e) {
       // alert('working');
       if (!this.name) {
         this.errors.push("Event name required.");
@@ -3914,11 +3914,12 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (!this.errors.length) {
-        return true;
+        this.onSubmit();
       }
+
+      e.preventDefault();
     },
     onSubmit: function onSubmit() {
-      this.formValidation();
       axios.post('/events', {
         date: this.date,
         name: this.name,
@@ -3976,8 +3977,6 @@ __webpack_require__.r(__webpack_exports__);
     axios.get('/events').then(function (response) {
       return _this.events = response.data;
     });
-    src = "https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js";
-    new ClipboardJS('#copyToClipboard');
   }
 });
 
@@ -4029,8 +4028,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+//
+//
 //
 //
 //
@@ -4159,13 +4158,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     removeFilters: function removeFilters() {
-      console.log('Checking');
+      this.selected = "date";
+      this.singleDateQuery = false;
+      this.search = "";
+      this.singleDate = "";
+      this.singleFormattedDate = "";
+      this.searchRange = "";
+      this.startDate = "";
+      this.endDate = "";
+      this.ignoreYearFromQuery = false;
+    },
+    clearDatepickers: function clearDatepickers() {
+      this.singleDate = "";
+      this.singleFormattedDate = "";
+      this.searchRange = "";
+      this.startDate = "";
+      this.endDate = "";
+      this.datepicker.clearSelection();
+      this.rangepicker.clearSelection();
     }
   },
   mounted: function mounted() {
     var _this = this;
 
-    var datepicker = new Litepicker({
+    this.datepicker = new Litepicker({
       element: document.getElementById('searchDate'),
       format: 'DD-MM-YYYY',
       resetButton: true,
@@ -4175,7 +4191,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       splitView: true,
       setup: function setup(picker) {
         picker.on('selected', function (date) {
-          console.log("Checking");
+          console.log(_this);
+          _this.search = "";
           _this.singleFormattedDate = date.format('DD-MMM-YYYY');
           _this.singleDate = date.format('YYYY-MM-DD');
           _this.startDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
@@ -4185,11 +4202,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
       }
     });
-    var rangepicker = new Litepicker(_defineProperty({
+    this.rangepicker = new Litepicker({
       element: document.getElementById('searchRange'),
       format: 'DD-MM-YYYY',
-      singleMode: false,
       resetButton: true,
+      singleMode: false,
       allowRepick: true,
       autoRefresh: true,
       splitView: true,
@@ -4203,16 +4220,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           _this.singleFormattedDate = "";
         });
       }
-    }, "resetButton", function resetButton() {
-      var btn = document.createElement('button');
-      btn.innerText = 'Clear';
-      btn.addEventListener('click', function (evt) {
-        evt.preventDefault();
-        /*
-                            Livewire.emit('resetDateRange'); */
-      });
-      return btn;
-    }));
+    });
   }
 });
 
@@ -22088,7 +22096,7 @@ var render = function() {
           on: {
             submit: function($event) {
               $event.preventDefault()
-              return _vm.onSubmit.apply(null, arguments)
+              return _vm.formValidation.apply(null, arguments)
             }
           }
         },
@@ -22479,47 +22487,59 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _vm.singleDateQuery == false
-      ? _c("div", { staticClass: "md:mb-3 block text-center" }, [
-          _c(
-            "label",
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: !_vm.singleDateQuery,
+            expression: "!singleDateQuery"
+          }
+        ],
+        staticClass: "md:mb-3 block text-center"
+      },
+      [
+        _c(
+          "label",
+          {
+            staticClass: "block text-center mb-3 font-size-14px font-semibold",
+            attrs: { for: "search" }
+          },
+          [_vm._v("Search over dates range:")]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
             {
-              staticClass:
-                "block text-center mb-3 font-size-14px font-semibold",
-              attrs: { for: "search" }
-            },
-            [_vm._v("Search over dates range:")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.searchRange,
-                expression: "searchRange"
-              }
-            ],
-            staticClass:
-              "ml-4 mb-4 p-2 input input-bordered border border-gray-800",
-            attrs: {
-              id: "searchRange",
-              name: "searchRange",
-              type: "text",
-              readonly: ""
-            },
-            domProps: { value: _vm.searchRange },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.searchRange = $event.target.value
-              }
+              name: "model",
+              rawName: "v-model",
+              value: _vm.searchRange,
+              expression: "searchRange"
             }
-          })
-        ])
-      : _vm._e(),
+          ],
+          staticClass:
+            "text-center ml-4 mb-4 input input-bordered border border-gray-800",
+          attrs: {
+            id: "searchRange",
+            name: "searchRange",
+            type: "text",
+            size: "28",
+            readonly: ""
+          },
+          domProps: { value: _vm.searchRange },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.searchRange = $event.target.value
+            }
+          }
+        })
+      ]
+    ),
     _vm._v(" "),
     _c(
       "div",
@@ -22539,7 +22559,7 @@ var render = function() {
           "label",
           {
             staticClass: "block text-center mb-3 font-semibold",
-            attrs: { for: "date" }
+            attrs: { for: "searchDate" }
           },
           [_vm._v("Pick a date:")]
         ),
@@ -22554,7 +22574,7 @@ var render = function() {
             }
           ],
           staticClass:
-            "ml-4 mb-4 p-2 input input-bordered border border-gray-800",
+            "text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800",
           attrs: {
             id: "searchDate",
             name: "searchDate",
@@ -22595,25 +22615,28 @@ var render = function() {
               : _vm.singleDateQuery
           },
           on: {
-            change: function($event) {
-              var $$a = _vm.singleDateQuery,
-                $$el = $event.target,
-                $$c = $$el.checked ? true : false
-              if (Array.isArray($$a)) {
-                var $$v = null,
-                  $$i = _vm._i($$a, $$v)
-                if ($$el.checked) {
-                  $$i < 0 && (_vm.singleDateQuery = $$a.concat([$$v]))
+            change: [
+              function($event) {
+                var $$a = _vm.singleDateQuery,
+                  $$el = $event.target,
+                  $$c = $$el.checked ? true : false
+                if (Array.isArray($$a)) {
+                  var $$v = null,
+                    $$i = _vm._i($$a, $$v)
+                  if ($$el.checked) {
+                    $$i < 0 && (_vm.singleDateQuery = $$a.concat([$$v]))
+                  } else {
+                    $$i > -1 &&
+                      (_vm.singleDateQuery = $$a
+                        .slice(0, $$i)
+                        .concat($$a.slice($$i + 1)))
+                  }
                 } else {
-                  $$i > -1 &&
-                    (_vm.singleDateQuery = $$a
-                      .slice(0, $$i)
-                      .concat($$a.slice($$i + 1)))
+                  _vm.singleDateQuery = $$c
                 }
-              } else {
-                _vm.singleDateQuery = $$c
-              }
-            }
+              },
+              _vm.clearDatepickers
+            ]
           }
         })
       ])

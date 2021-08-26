@@ -6,7 +6,7 @@
                     <li v-for="error in errors" :key="error.id">{{ error }}</li>
                     </ul>
                 </p>
-        <form  class="border border-gray-800 m-4" @submit.prevent="onSubmit">
+        <form  class="border border-gray-800 m-4" @submit.prevent="formValidation">
             <div class="lg:flex justify-between p-4 text-center">
                 <input type="hidden" name="_token" :value="csrf">
 
@@ -93,7 +93,7 @@
             })
             },
         methods: {
-            formValidation() {
+            formValidation(e) {
                 // alert('working');
                 if (!this.name) {
                     this.errors.push("Event name required.");
@@ -109,11 +109,14 @@
                 }
 
                 if (!this.errors.length) {
-                    return true;
+                    this.onSubmit();
                 }
+
+                e.preventDefault();
+
             },
             onSubmit() {
-                this.formValidation();
+
                 axios.post('/events', {
                     date: this.date,
                     name: this.name,
