@@ -3851,6 +3851,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -3859,7 +3868,8 @@ __webpack_require__.r(__webpack_exports__);
       date: "",
       formattedDate: "",
       // this is the date format to display on screen
-      isItYearly: false
+      isItYearly: false,
+      errors: []
     };
   },
   computed: {
@@ -3888,13 +3898,35 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
+    formValidation: function formValidation() {
+      // alert('working');
+      if (!this.name) {
+        this.errors.push("Event name required.");
+      }
+
+      if (!this.date) {
+        // alert('hey');
+        this.errors.push("A valid date must be picked");
+      }
+
+      if (!this.description) {
+        this.errors.push('Event description required.');
+      }
+
+      if (!this.errors.length) {
+        return true;
+      }
+    },
     onSubmit: function onSubmit() {
+      this.formValidation();
       axios.post('/events', {
         date: this.date,
         name: this.name,
         description: this.description,
         isItYearly: this.isItYearly
-      }).then(this.date = "", this.formattedDate = "", this.name = "", this.description = "", this.isItYearly = false);
+      }).then(this.date = "", this.formattedDate = "", this.name = "", this.description = "", this.isItYearly = false)["catch"](function (error) {
+        console.log(error.response);
+      });
     },
     test: function test() {
       alert("OK");
@@ -22034,6 +22066,21 @@ var render = function() {
         "border border-blue-400 rounded-lg px-8 py-6 lg:ml-6 mb-6 mr-2 md:mx-auto"
     },
     [
+      _vm.errors.length
+        ? _c("p", { staticClass: "text-error m-4" }, [
+            _c("b", [_vm._v("Please correct the following error(s):")]),
+            _vm._v(" "),
+            _c(
+              "ul",
+              { staticClass: "list-disc" },
+              _vm._l(_vm.errors, function(error) {
+                return _c("li", { key: error.id }, [_vm._v(_vm._s(error))])
+              }),
+              0
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
       _c(
         "form",
         {
@@ -22075,7 +22122,12 @@ var render = function() {
                     }
                   ],
                   staticClass: "ml-4 mb-4 input input-bordered border-gray-800",
-                  attrs: { id: "date", name: "date", readonly: "" },
+                  attrs: {
+                    id: "date",
+                    name: "date",
+                    required: "",
+                    readonly: ""
+                  },
                   domProps: { value: _vm.formattedDate },
                   on: {
                     input: function($event) {
@@ -22112,7 +22164,7 @@ var render = function() {
                     ],
                     staticClass:
                       "ml-4 mr-4 input input-bordered flex-grow w-full",
-                    attrs: { name: "name", type: "text" },
+                    attrs: { name: "name", type: "text", required: "" },
                     domProps: { value: _vm.name },
                     on: {
                       input: function($event) {

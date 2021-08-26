@@ -1,8 +1,15 @@
 <template>
     <div class="border border-blue-400 rounded-lg px-8 py-6 lg:ml-6 mb-6 mr-2 md:mx-auto">
+        <p v-if="errors.length" class="text-error m-4">
+                    <b>Please correct the following error(s):</b>
+                    <ul class="list-disc">
+                    <li v-for="error in errors" :key="error.id">{{ error }}</li>
+                    </ul>
+                </p>
         <form  class="border border-gray-800 m-4" @submit.prevent="onSubmit">
             <div class="lg:flex justify-between p-4 text-center">
                 <input type="hidden" name="_token" :value="csrf">
+
                 <div class="lg:mr-4 lg:p-4 mb-2 text-center">
                     <label for="start" class="block mb-2 text-center font-semibold">Start date:</label>
                     <input
@@ -10,6 +17,7 @@
                                 id="date"
                                 name="date"
                                 class="ml-4 mb-4 input input-bordered border-gray-800"
+                                required
                                 readonly
                                 >
                 </div>
@@ -18,6 +26,7 @@
                         <input name="name"
                             class="ml-4 mr-4 input input-bordered flex-grow w-full"
                             type="text"
+                            required
                             v-model="name">
                 </div>
             </div>
@@ -54,7 +63,9 @@
                 description: "",
                 date: "",
                 formattedDate: "", // this is the date format to display on screen
-                isItYearly: false
+                isItYearly: false,
+                errors: []
+
             }
         },
         computed: {
@@ -82,7 +93,27 @@
             })
             },
         methods: {
+            formValidation() {
+                // alert('working');
+                if (!this.name) {
+                    this.errors.push("Event name required.");
+                }
+
+                if (!this.date) {
+                    // alert('hey');
+                    this.errors.push("A valid date must be picked");
+                }
+
+                if (!this.description) {
+                    this.errors.push('Event description required.');
+                }
+
+                if (!this.errors.length) {
+                    return true;
+                }
+            },
             onSubmit() {
+                this.formValidation();
                 axios.post('/events', {
                     date: this.date,
                     name: this.name,
@@ -96,6 +127,9 @@
                     this.description = "",
                     this.isItYearly = false
                 )
+                .catch(error => {
+                    console.log(error.response);
+                })
 
             },
             test() {
