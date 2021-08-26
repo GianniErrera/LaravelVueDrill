@@ -83,13 +83,20 @@
             },
         methods: {
             onSubmit() {
-                alert("Ok so far");
                 axios.post('/events', {
                     date: this.date,
                     name: this.name,
                     description: this.description,
                     isItYearly: this.isItYearly
-                });
+                })
+                .then(
+                    this.date = "",
+                    this.formattedDate = "",
+                    this.name = "",
+                    this.description = "",
+                    this.isItYearly = false
+                )
+
             },
             test() {
                 alert("OK");

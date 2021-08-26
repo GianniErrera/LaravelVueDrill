@@ -23,6 +23,7 @@
         "vue-template-compiler": "^2.6.14"
     },
     "dependencies": {
+        "clipboard": "^2.0.8",
         "daisyui": "^1.13.2",
         "litepicker": "^2.0.11",
         "vue": "^2.6.14"

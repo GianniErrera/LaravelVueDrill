@@ -3889,13 +3889,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     onSubmit: function onSubmit() {
-      alert("Ok so far");
       axios.post('/events', {
         date: this.date,
         name: this.name,
         description: this.description,
         isItYearly: this.isItYearly
-      });
+      }).then(this.date = "", this.formattedDate = "", this.name = "", this.description = "", this.isItYearly = false);
     },
     test: function test() {
       alert("OK");
@@ -3928,6 +3927,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -3940,6 +3944,8 @@ __webpack_require__.r(__webpack_exports__);
     axios.get('/events').then(function (response) {
       return _this.events = response.data;
     });
+    src = "https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js";
+    new ClipboardJS('#copyToClipboard');
   }
 });
 
@@ -3991,7 +3997,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -4112,6 +4119,9 @@ __webpack_require__.r(__webpack_exports__);
       search: "",
       singleDate: "",
       singleFormattedDate: "",
+      searchRange: "",
+      startDate: "",
+      endDate: "",
       ignoreYearFromQuery: false
     };
   },
@@ -4136,9 +4146,41 @@ __webpack_require__.r(__webpack_exports__);
           console.log("Checking");
           _this.singleFormattedDate = date.format('DD-MMM-YYYY');
           _this.singleDate = date.format('YYYY-MM-DD');
+          _this.startDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+
+          _this.endDate = "";
+          _this.searchRange = "";
         });
       }
     });
+    var rangepicker = new Litepicker(_defineProperty({
+      element: document.getElementById('searchRange'),
+      format: 'DD-MM-YYYY',
+      singleMode: false,
+      resetButton: true,
+      allowRepick: true,
+      autoRefresh: true,
+      splitView: true,
+      setup: function setup(picker) {
+        picker.on('selected', function (startDate, endDate) {
+          _this.searchRange = startDate.format('DD-MMM-YYYY') + " - " + endDate.format('DD-MMM-YYYY');
+          _this.startDate = startDate.format('YYYY-MM-DD');
+          _this.endDate = endDate.format('YYYY-MM-DD');
+          _this.singleDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+
+          _this.singleFormattedDate = "";
+        });
+      }
+    }, "resetButton", function resetButton() {
+      var btn = document.createElement('button');
+      btn.innerText = 'Clear';
+      btn.addEventListener('click', function (evt) {
+        evt.preventDefault();
+        /*
+                            Livewire.emit('resetDateRange'); */
+      });
+      return btn;
+    }));
   }
 });
 
@@ -22235,27 +22277,39 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("p", { staticClass: "redtext" }, [
-      _c(
-        "ul",
-        _vm._l(_vm.events, function(event) {
-          return _c("li", { key: event.id }, [
+  return _c(
+    "div",
+    _vm._l(_vm.events, function(event) {
+      return _c(
+        "div",
+        { key: event.id, staticClass: "flex flex-row justify-between p-2" },
+        [
+          _c("div", [
+            _vm._v("\n            " + _vm._s(event.date) + "\n        ")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "text-justify" }, [
             _vm._v(
               "\n            " +
                 _vm._s(event.name) +
                 " - " +
                 _vm._s(event.eventDescription) +
-                " " +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", [
+            _vm._v(
+              "\n            " +
                 _vm._s(event.isItRecurringYearly ? "✔" : "no") +
                 "\n        "
             )
           ])
-        }),
-        0
+        ]
       )
-    ])
-  ])
+    }),
+    0
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -22328,8 +22382,8 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "lg:flex lg:justify-around" }, [
+  return _c("div", { staticClass: "lg:flex lg:justify-around pt-4" }, [
+    _c("div", { staticClass: "text-center mb-4 mt-8" }, [
       _c(
         "select",
         {
@@ -22373,51 +22427,47 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass:
-          "md:mb-3 block text-center @if($singleDateQuery) hidden @endif"
-      },
-      [
-        _c(
-          "label",
-          {
-            staticClass: "block text-center mb-3 font-size-14px font-semibold",
-            attrs: { for: "search" }
-          },
-          [_vm._v("Search over dates range:")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
+    _vm.singleDateQuery == false
+      ? _c("div", { staticClass: "md:mb-3 block text-center" }, [
+          _c(
+            "label",
             {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.searchRange,
-              expression: "searchRange"
-            }
-          ],
-          staticClass:
-            "ml-4 mb-4 p-2 input input-bordered border border-gray-800",
-          attrs: {
-            id: "searchRange",
-            name: "searchRange",
-            type: "text",
-            readonly: ""
-          },
-          domProps: { value: _vm.searchRange },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+              staticClass:
+                "block text-center mb-3 font-size-14px font-semibold",
+              attrs: { for: "search" }
+            },
+            [_vm._v("Search over dates range:")]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.searchRange,
+                expression: "searchRange"
               }
-              _vm.searchRange = $event.target.value
+            ],
+            staticClass:
+              "ml-4 mb-4 p-2 input input-bordered border border-gray-800",
+            attrs: {
+              id: "searchRange",
+              name: "searchRange",
+              type: "text",
+              readonly: ""
+            },
+            domProps: { value: _vm.searchRange },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.searchRange = $event.target.value
+              }
             }
-          }
-        })
-      ]
-    ),
+          })
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c(
       "div",
@@ -22514,9 +22564,7 @@ var render = function() {
             }
           }
         })
-      ]),
-      _vm._v(" "),
-      _c("span", [_vm._v(" " + _vm._s(_vm.selected) + " ")])
+      ])
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "mb-3 text-center " }, [
@@ -22627,7 +22675,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
+    return _c("div", { staticClass: "block mb-5" }, [
       _c("span", { staticClass: "text-center font-semibold" }, [
         _vm._v("Sigle date query")
       ])

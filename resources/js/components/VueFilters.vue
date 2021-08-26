@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="lg:flex lg:justify-around pt-4">
 
-        <div class="lg:flex lg:justify-around">
+        <div class="text-center mb-4 mt-8">
             <select v-model="selected" class="select select-bordered">
                 <option v-for="option in options" v-bind:key="option.value" v-bind:value="option.value">
                     {{ option.text }}
@@ -10,7 +10,7 @@
         </div>
 
 
-        <div class="md:mb-3 block text-center @if($singleDateQuery) hidden @endif">
+        <div v-if="singleDateQuery == false" class="md:mb-3 block text-center">
             <label for="search" class="block text-center mb-3 font-size-14px font-semibold">Search over dates range:</label>
             <input
                 v-model="searchRange"
@@ -38,7 +38,7 @@
         </div>
 
         <div class="mb-3 text-center">
-            <div>
+            <div class="block mb-5">
                 <span class="text-center font-semibold">Sigle date query</span>
             </div>
             <div>
@@ -48,7 +48,6 @@
                     class="flex-none checkbox"
                 >
             </div>
-            <span> {{    selected }} </span>
 
         </div>
 
@@ -115,6 +114,9 @@
                 search: "",
                 singleDate: "",
                 singleFormattedDate: "",
+                searchRange: "",
+                startDate: "",
+                endDate: "",
                 ignoreYearFromQuery: false
             }
         },
@@ -136,14 +138,51 @@
                     picker.on('selected', (date) => {
                         console.log("Checking");
                         this.singleFormattedDate = date.format('DD-MMM-YYYY');
-                        this.singleDate = date.format('YYYY-MM-DD')
+                        this.singleDate = date.format('YYYY-MM-DD');
+                        this.startDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+                        this.endDate = "";
+                        this.searchRange = "";
                     })
                 }
 
             })
 
 
+
+            const rangepicker= new Litepicker({
+                element: document.getElementById('searchRange'),
+                format: 'DD-MM-YYYY',
+                singleMode: false,
+                resetButton: true,
+                allowRepick: true,
+                autoRefresh: true,
+                splitView: true,
+                setup: (picker) => {
+
+                    picker.on('selected', (startDate, endDate) => {
+                        this.searchRange = startDate.format('DD-MMM-YYYY') + " - " + endDate.format('DD-MMM-YYYY');
+                        this.startDate = startDate.format('YYYY-MM-DD');
+                        this.endDate = endDate.format('YYYY-MM-DD');
+                        this.singleDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+                        this.singleFormattedDate = "";
+                    })
+                },
+                resetButton: () => {
+                let btn = document.createElement('button');
+                btn.innerText = 'Clear';
+                btn.addEventListener('click', (evt) => {
+                    evt.preventDefault();
+/*
+                    Livewire.emit('resetDateRange'); */
+                });
+
+                return btn;
+                }
+
+            })
+
         }
+
 
     }
 

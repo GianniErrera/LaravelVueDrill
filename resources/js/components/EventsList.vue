@@ -1,12 +1,17 @@
 <template>
-    <div>
-         <p class="redtext">
-         <ul>
-            <li v-for="event in events" :key="event.id">
-                {{event.name}} - {{event.eventDescription}} {{event.isItRecurringYearly ? "&#10004;" : "no"}}
-            </li>
-         </ul>
-        </p>
+    <div >
+
+        <div class="flex flex-row justify-between p-2" v-for="event in events" :key="event.id">
+            <div>
+                {{ event.date }}
+            </div>
+            <div class="text-justify">
+                {{event.name}} - {{event.eventDescription}}
+            </div>
+            <div>
+                {{event.isItRecurringYearly ? "&#10004;" : "no"}}
+            </div>
+         </div>
     </div>
 </template>
 
@@ -20,6 +25,8 @@
         },
         mounted() {
              axios.get('/events').then(response=>this.events = response.data);
+             src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js";
+             new ClipboardJS('#copyToClipboard');
         }
 
     }
