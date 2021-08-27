@@ -29,15 +29,7 @@
     </head>
     <body class="antialiased">
         <div id="app">
-            <div class="border border-red-800">
-                <event-form></event-form>
-            </div>
-            <div class="border border-red-800">
-                <vue-filters></vue-filters>
-            </div>
-            <div class="p-4 border-b border-b-gray-400 rounded-xl ml-2 mr-2' }}">
-                <events-list></events-list>
-            </div>
+            <main-component></main-component>
         </div>
     </body>
 
@@ -51,7 +43,5 @@
 
     </script>
 
-    <script>
-        new ClipboardJS('#copyToClipboard');
-    </script>
+
 </html>

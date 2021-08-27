@@ -2,11 +2,13 @@
     <div >
 
         <div class="flex flex-row justify-between p-2" v-for="event in events" :key="event.id">
-            <div>
-                {{ event.date }}
-            </div>
-            <div class="text-justify">
-                {{event.name}} - {{event.eventDescription}}
+            <div class="flex">
+                <div>
+                    {{ event.date }}
+                </div>
+                <div class="ml-8 text-left">
+                    {{event.name}} - {{event.eventDescription}}
+                </div>
             </div>
             <div>
                 {{event.isItRecurringYearly ? "&#10004;" : "no"}}

@@ -22,6 +22,7 @@ window.Vue = require('vue').default;
 Vue.component('event-form', require('./components/EventForm.vue').default);
 Vue.component('events-list', require('./components/EventsList.vue').default);
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('main-component', require('./components/MainComponent.vue').default);
 Vue.component('vue-filters', require('./components/VueFilters.vue').default);
 
 
