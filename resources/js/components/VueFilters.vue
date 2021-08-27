@@ -123,6 +123,7 @@
 
             }
         },
+        props: ['events'],
         methods: {
                 removeFilters() {
                     this.selected = "date";

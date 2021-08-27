@@ -10,16 +10,16 @@
             <div class="lg:flex justify-between p-4 text-center">
                 <input type="hidden" name="_token" :value="csrf">
 
-                <div class="lg:mr-4 lg:p-4 mb-2 text-center">
+                <div class="mx-2 lg:p-4 mb-2 text-center">
                     <label for="start" class="block mb-2 text-center font-semibold">Start date:</label>
                     <input
-                                v-model="formattedDate"
-                                id="date"
-                                name="date"
-                                class="ml-4 mb-4 input input-bordered border-gray-800"
-                                required
-                                readonly
-                                >
+                            v-model="formattedDate"
+                            id="date"
+                            name="date"
+                            class="mb-4 input input-bordered border-gray-800"
+                            required
+                            readonly
+                            >
                 </div>
                 <div class="lg:ml-6 mr-4 lg:p-4 mb-6 lg:flex-grow lg:h-8">
                     <label for="name" class="block mb-2 text-center font-semibold">Event name:</label>
@@ -47,7 +47,7 @@
                 </label>
             </div>
 
-            <footer class="lg:flex lg:justify-between items-center lg:items-start p-6 mx-4">
+            <footer class="lg:flex lg:justify-between text-center items-center lg:items-start lg:ml-4 my-2">
                 <button class="btn btn-primary rounded-xl hover:text-yellow-100 mx-4" type="submit">Submit event </button>
             </footer>
 
@@ -65,10 +65,8 @@
                 formattedDate: "", // this is the date format to display on screen
                 isItYearly: false,
                 errors: []
-
             }
         },
-        props: ['events'],
         computed: {
                 csrf() {
                     return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -95,7 +93,7 @@
             },
         methods: {
             formValidation(e) {
-                this.errors.length=0;
+                this.errors = [];
                 if (!this.name) {
                     this.errors.push("Event name required.");
                 }

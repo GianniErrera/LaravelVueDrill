@@ -3872,7 +3872,6 @@ __webpack_require__.r(__webpack_exports__);
       errors: []
     };
   },
-  props: ['events'],
   computed: {
     csrf: function csrf() {
       return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -3900,7 +3899,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     formValidation: function formValidation(e) {
-      this.errors.length = 0;
+      this.errors = [];
 
       if (!this.name) {
         this.errors.push("Event name required.");
@@ -4208,6 +4207,7 @@ __webpack_require__.r(__webpack_exports__);
       ignoreYearFromQuery: false
     };
   },
+  props: ['events'],
   methods: {
     removeFilters: function removeFilters() {
       this.selected = "date";
@@ -22238,7 +22238,7 @@ var render = function() {
                 domProps: { value: _vm.csrf }
               }),
               _vm._v(" "),
-              _c("div", { staticClass: "lg:mr-4 lg:p-4 mb-2 text-center" }, [
+              _c("div", { staticClass: "mx-2 lg:p-4 mb-2 text-center" }, [
                 _c(
                   "label",
                   {
@@ -22257,7 +22257,7 @@ var render = function() {
                       expression: "formattedDate"
                     }
                   ],
-                  staticClass: "ml-4 mb-4 input input-bordered border-gray-800",
+                  staticClass: "mb-4 input input-bordered border-gray-800",
                   attrs: {
                     id: "date",
                     name: "date",
@@ -22427,7 +22427,7 @@ var staticRenderFns = [
       "footer",
       {
         staticClass:
-          "lg:flex lg:justify-between items-center lg:items-start p-6 mx-4"
+          "lg:flex lg:justify-between text-center items-center lg:items-start lg:ml-4 my-2"
       },
       [
         _c(
@@ -22586,14 +22586,14 @@ var render = function() {
       _c(
         "div",
         { staticClass: "border border-red-800" },
-        [_c("event-form", { attrs: { array: "events" } })],
+        [_c("event-form", { attrs: { events: _vm.events } })],
         1
       ),
       _vm._v(" "),
       _c(
         "div",
         { staticClass: "border border-red-800" },
-        [_c("vue-filters")],
+        [_c("vue-filters", { attrs: { events: _vm.events } })],
         1
       ),
       _vm._v(" "),
@@ -22602,7 +22602,7 @@ var render = function() {
         {
           staticClass: "p-4 border-b border-b-gray-400 rounded-xl ml-2 mr-2' }}"
         },
-        [_c("events-list")],
+        [_c("events-list", { attrs: { events: _vm.events } })],
         1
       )
     ]
