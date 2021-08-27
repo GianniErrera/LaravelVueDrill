@@ -7,11 +7,13 @@
                     {{ event.date }}
                 </div>
                 <div class="ml-8 text-left">
-                    {{event.name}} - {{event.eventDescription}}
+                    {{ event.name }}
+                    <span class="mx-4"> - </span>
+                    {{ event.eventDescription }}
                 </div>
             </div>
             <div>
-                {{event.isItRecurringYearly ? "&#10004;" : "no"}}
+                {{ event.isItRecurringYearly ? "&#10004;" : "no" }}
             </div>
          </div>
     </div>

@@ -23,7 +23,7 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function () {
-    return view('vue-test');
+    return view('main-page');
 });
 
 Route::get('/filters', function () {

@@ -47,8 +47,8 @@
                 </label>
             </div>
 
-            <footer class="lg:flex lg:justify-between items-center lg:items-start p-4 mr-4">
-                <button class="btn btn-primary rounded-xl hover:text-yellow-100 ml-4" type="submit">Submit event </button>
+            <footer class="lg:flex lg:justify-between items-center lg:items-start p-6 mx-4">
+                <button class="btn btn-primary rounded-xl hover:text-yellow-100 mx-4" type="submit">Submit event </button>
             </footer>
 
         </form>
@@ -68,13 +68,14 @@
 
             }
         },
+        props: ['events'],
         computed: {
                 csrf() {
                     return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 },
         },
         mounted() {
-              console.log("I should be working");
+              console.log(sourceOfTruth);
               const datepicker= new Litepicker({
                 element: document.getElementById('date'),
                 format: 'DD-MM-YYYY',
@@ -94,7 +95,7 @@
             },
         methods: {
             formValidation(e) {
-                // alert('working');
+                this.errors.length=0;
                 if (!this.name) {
                     this.errors.push("Event name required.");
                 }
