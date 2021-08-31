@@ -4002,6 +4002,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -4046,7 +4057,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     isPreviousButtonDisabled: function isPreviousButtonDisabled() {
-      return this.currentPage === 1;
+      return this.pageNumber === 1;
     }
   },
   mounted: function mounted() {
@@ -22577,87 +22588,95 @@ var render = function() {
         )
       }),
       _vm._v(" "),
-      _c("div", { staticClass: "flex justify-between mt-4" }, [
-        _c(
-          "button",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.pageNumber > 1,
-                expression: "pageNumber > 1"
+      _c("div", { staticClass: "flex mt-4 justify-center" }, [
+        _c("div", { staticClass: "btn-group" }, [
+          _c(
+            "button",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.pageNumber > 1,
+                  expression: "pageNumber > 1"
+                }
+              ],
+              staticClass: "btn btn-sm cursor",
+              on: { click: _vm.previousPage }
+            },
+            [_vm._v("\n            Previous\n        ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.pageNumber == 1,
+                  expression: "pageNumber == 1"
+                }
+              ],
+              staticClass: "btn btn-sm cursor rounded-lg",
+              attrs: { disabled: "" },
+              on: { click: _vm.previousPage }
+            },
+            [_vm._v("\n            Previous\n        ")]
+          ),
+          _vm._v(" "),
+          _c("button", { staticClass: "btn btn-sm", attrs: { disabled: "" } }, [
+            _vm._v("\n        " + _vm._s(_vm.pageNumber) + "\n        ")
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.pageNumber + 1 <= _vm.paginator.last_page,
+                  expression: "pageNumber + 1 <= paginator.last_page"
+                }
+              ],
+              staticClass: "btn btn-sm cursor",
+              on: {
+                click: function($event) {
+                  return _vm.jumpToPage(_vm.pageNumber + 1)
+                }
               }
-            ],
-            staticClass:
-              "p-4 border border-black bg-yellow-200 rounded-xl cursor { invisible: isPreviousButtonDisabled }",
-            on: { click: _vm.previousPage }
-          },
-          [_vm._v("\n            Previous\n        ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass:
-              "p-4 border border-black bg-yellow-200 rounded-xl disabled"
-          },
-          [_vm._v("\n        " + _vm._s(_vm.pageNumber) + "\n        ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.pageNumber + 1 < _vm.paginator.last_page,
-                expression: "pageNumber + 1 < paginator.last_page"
+            },
+            [_vm._v("\n        " + _vm._s(_vm.pageNumber + 1) + "\n        ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.pageNumber + 2 <= _vm.paginator.last_page,
+                  expression: "pageNumber + 2 <= paginator.last_page"
+                }
+              ],
+              staticClass: "btn btn-sm cursor",
+              on: {
+                click: function($event) {
+                  return _vm.jumpToPage(_vm.pageNumber + 2)
+                }
               }
-            ],
-            staticClass:
-              "p-4 border border-black bg-yellow-200 rounded-xl cursor",
-            on: {
-              click: function($event) {
-                return _vm.jumpToPage(_vm.pageNumber + 1)
-              }
-            }
-          },
-          [_vm._v("\n        " + _vm._s(_vm.pageNumber + 1) + "\n        ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.pageNumber + 2 <= _vm.paginator.last_page,
-                expression: "pageNumber + 2 <= paginator.last_page"
-              }
-            ],
-            staticClass:
-              "p-4 border border-black bg-yellow-200 rounded-xl cursor",
-            on: {
-              click: function($event) {
-                return _vm.jumpToPage(_vm.pageNumber + 2)
-              }
-            }
-          },
-          [_vm._v("\n        " + _vm._s(_vm.pageNumber + 2) + "\n        ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass:
-              "p-4 border border-black bg-yellow-200 cursor rounded-xl",
-            on: { click: _vm.nextPage }
-          },
-          [_vm._v("\n        Next\n        ")]
-        )
+            },
+            [_vm._v("\n        " + _vm._s(_vm.pageNumber + 2) + "\n        ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            { staticClass: "btn btn-sm cursor", on: { click: _vm.nextPage } },
+            [_vm._v("\n        Next\n        ")]
+          )
+        ])
       ])
     ],
     2

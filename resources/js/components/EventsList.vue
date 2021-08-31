@@ -16,36 +16,47 @@
                 {{ event.isItRecurringYearly ? "&#10004;" : "no" }}
             </div>
          </div>
-        <div class="flex justify-between mt-4">
+        <div class="flex mt-4 justify-center">
+            <div class="btn-group">
             <button
-            @click="previousPage"
-                class="p-4 border border-black bg-yellow-200 rounded-xl cursor { invisible: isPreviousButtonDisabled }"
+                @click="previousPage"
+                class="btn btn-sm cursor"
                 v-show="pageNumber > 1"
             >
                 Previous
             </button>
             <button
-            class="p-4 border border-black bg-yellow-200 rounded-xl disabled"
+                @click="previousPage"
+                class="btn btn-sm cursor rounded-lg"
+                v-show="pageNumber == 1"
+                disabled
+            >
+                Previous
+            </button>
+            <button
+            class="btn btn-sm"
+            disabled
             >
             {{ pageNumber }}
             </button>
             <button
-                class="p-4 border border-black bg-yellow-200 rounded-xl cursor"
-                v-show="pageNumber + 1 < paginator.last_page"
+                class="btn btn-sm cursor"
+                v-show="pageNumber + 1 <= paginator.last_page"
                 @click="jumpToPage(pageNumber + 1)">
             {{ pageNumber + 1 }}
             </button>
             <button
-                class="p-4 border border-black bg-yellow-200 rounded-xl cursor"
+                class="btn btn-sm cursor"
                 v-show="pageNumber + 2 <= paginator.last_page"
                 @click="jumpToPage(pageNumber + 2)">
             {{ pageNumber + 2 }}
             </button>
             <button
                 @click="nextPage"
-                class ="p-4 border border-black bg-yellow-200 cursor rounded-xl">
+                class="btn btn-sm cursor">
             Next
             </button>
+            </div>
         </div>
     </div>
 </template>
@@ -85,7 +96,7 @@
         },
         computed: {
             isPreviousButtonDisabled() {
-            return this.currentPage === 1
+            return this.pageNumber === 1
             }
         },
         mounted() {
