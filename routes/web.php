@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Event;
 
 /* header('Access-Control-Allow-Origin:  *');
 header('Access-Control-Allow-Methods:  POST, GET, OPTIONS, PUT, DELETE');
@@ -30,9 +31,7 @@ Route::get('/filters', function () {
     return view('filters');
 });
 
-Route::get('/events', function () {
-    return App\Models\Event::all();
-});
+Route::get("/events/{numberOfEventsPerPage}/{name}/{pageNumber}", [EventController::class, 'index']);
 
 Route::post('/events', [EventController::class, 'store']);
 

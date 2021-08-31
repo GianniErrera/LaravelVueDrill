@@ -57,6 +57,7 @@
 
 <script>
     export default {
+       props: ['events'],
        data() {
             return {
                 name: "",

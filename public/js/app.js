@@ -3861,6 +3861,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['events'],
   data: function data() {
     return {
       name: "",
@@ -3970,17 +3971,89 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      events: []
+      paginator: [],
+      pageNumber: 1,
+      numberOfEventsPerPage: 15,
+      name: "Events"
     };
   },
-  mounted: function mounted() {
-    var _this = this;
+  methods: {
+    nextPage: function nextPage() {
+      var _this = this;
 
-    axios.get('/events').then(function (response) {
-      return _this.events = response.data;
+      this.pageNumber = this.pageNumber + 1;
+      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
+        return _this.paginator = response.data;
+      });
+    },
+    previousPage: function previousPage() {
+      var _this2 = this;
+
+      this.pageNumber = this.pageNumber - 1;
+      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
+        return _this2.paginator = response.data;
+      });
+    },
+    jumpToPage: function jumpToPage($pageTarget) {
+      var _this3 = this;
+
+      this.pageNumber = $pageTarget;
+      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
+        return _this3.paginator = response.data;
+      });
+    },
+    isItFirstPage: function isItFirstPage() {
+      if (this.pageNumber == 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
+  computed: {
+    isPreviousButtonDisabled: function isPreviousButtonDisabled() {
+      return this.currentPage === 1;
+    }
+  },
+  mounted: function mounted() {
+    var _this4 = this;
+
+    axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
+      return _this4.paginator = response.data;
     });
   }
 });
@@ -4054,15 +4127,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      events: []
+      events: [],
+      fonteDiVerità: []
     };
   },
   mounted: function mounted() {
-    var _this = this;
-
-    axios.get('/events').then(function (response) {
-      return _this.events = response.data;
-    });
+    //  axios.get('/events').then(response=>this.events = response.data);
+    console.log("WTF");
   }
 });
 
@@ -22467,42 +22538,129 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    _vm._l(_vm.events, function(event) {
-      return _c(
-        "div",
-        { key: event.id, staticClass: "flex flex-row justify-between p-2" },
-        [
-          _c("div", { staticClass: "flex" }, [
-            _c("div", [
-              _vm._v(
-                "\n                " + _vm._s(event.date) + "\n            "
-              )
+    [
+      _vm._l(_vm.paginator.data, function(event) {
+        return _c(
+          "div",
+          { key: event.id, staticClass: "flex flex-row justify-between p-2" },
+          [
+            _c("div", { staticClass: "flex" }, [
+              _c("div", [
+                _vm._v(
+                  "\n                " + _vm._s(event.date) + "\n            "
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "ml-8 text-left" }, [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(event.name) +
+                    "\n                "
+                ),
+                _c("span", { staticClass: "mx-4" }, [_vm._v(" - ")]),
+                _vm._v(
+                  "\n                " +
+                    _vm._s(event.eventDescription) +
+                    "\n            "
+                )
+              ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "ml-8 text-left" }, [
+            _c("div", [
               _vm._v(
-                "\n                " + _vm._s(event.name) + "\n                "
-              ),
-              _c("span", { staticClass: "mx-4" }, [_vm._v(" - ")]),
-              _vm._v(
-                "\n                " +
-                  _vm._s(event.eventDescription) +
-                  "\n            "
+                "\n            " +
+                  _vm._s(event.isItRecurringYearly ? "✔" : "no") +
+                  "\n        "
               )
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", [
-            _vm._v(
-              "\n            " +
-                _vm._s(event.isItRecurringYearly ? "✔" : "no") +
-                "\n        "
-            )
-          ])
-        ]
-      )
-    }),
-    0
+          ]
+        )
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "flex justify-between mt-4" }, [
+        _c(
+          "button",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.pageNumber > 1,
+                expression: "pageNumber > 1"
+              }
+            ],
+            staticClass:
+              "p-4 border border-black bg-yellow-200 rounded-xl cursor { invisible: isPreviousButtonDisabled }",
+            on: { click: _vm.previousPage }
+          },
+          [_vm._v("\n            Previous\n        ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass:
+              "p-4 border border-black bg-yellow-200 rounded-xl disabled"
+          },
+          [_vm._v("\n        " + _vm._s(_vm.pageNumber) + "\n        ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.pageNumber + 1 < _vm.paginator.last_page,
+                expression: "pageNumber + 1 < paginator.last_page"
+              }
+            ],
+            staticClass:
+              "p-4 border border-black bg-yellow-200 rounded-xl cursor",
+            on: {
+              click: function($event) {
+                return _vm.jumpToPage(_vm.pageNumber + 1)
+              }
+            }
+          },
+          [_vm._v("\n        " + _vm._s(_vm.pageNumber + 1) + "\n        ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.pageNumber + 2 <= _vm.paginator.last_page,
+                expression: "pageNumber + 2 <= paginator.last_page"
+              }
+            ],
+            staticClass:
+              "p-4 border border-black bg-yellow-200 rounded-xl cursor",
+            on: {
+              click: function($event) {
+                return _vm.jumpToPage(_vm.pageNumber + 2)
+              }
+            }
+          },
+          [_vm._v("\n        " + _vm._s(_vm.pageNumber + 2) + "\n        ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass:
+              "p-4 border border-black bg-yellow-200 cursor rounded-xl",
+            on: { click: _vm.nextPage }
+          },
+          [_vm._v("\n        Next\n        ")]
+        )
+      ])
+    ],
+    2
   )
 }
 var staticRenderFns = []
@@ -22586,7 +22744,11 @@ var render = function() {
       _c(
         "div",
         { staticClass: "border border-red-800" },
-        [_c("event-form", { attrs: { events: _vm.events } })],
+        [
+          _c("event-form", {
+            attrs: { fonte: _vm.fontediVerità, events: _vm.events }
+          })
+        ],
         1
       ),
       _vm._v(" "),
@@ -22599,9 +22761,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "div",
-        {
-          staticClass: "p-4 border-b border-b-gray-400 rounded-xl ml-2 mr-2' }}"
-        },
+        { staticClass: "p-4 border-b border-b-gray-400 rounded-xl ml-2 mr-2'" },
         [_c("events-list", { attrs: { events: _vm.events } })],
         1
       )
