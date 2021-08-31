@@ -2,18 +2,29 @@
     <div >
 
         <div class="flex flex-row justify-between p-2" v-for="event in paginator.data" :key="event.id">
-            <div class="flex">
+            <div class="flex w-5/6 grid grid-cols-6">
+
                 <div>
                     {{ event.date }}
                 </div>
-                <div class="ml-8 text-left">
+                <div class="ml-8 text-left col-span-2">
                     {{ event.name }}
-                    <span class="mx-4"> - </span>
+                </div>
+                <div class="col-span-3">
                     {{ event.eventDescription }}
                 </div>
+
             </div>
-            <div>
-                {{ event.isItRecurringYearly ? "&#10004;" : "no" }}
+            <div class="flex items-center ml-2">
+                <div class="lg:mr-4">
+                    <button class="btn btn-primary hover:text-yellow-100 copy-to-clipboard"
+                        data-clipboard-text="test">
+                        Copy to clipboard
+                    </button>
+                </div>
+                <div class="items-center">
+                    {{ event.isItRecurringYearly ? "&#10004;" : "no" }}
+                </div>
             </div>
          </div>
         <div class="flex mt-4 justify-center">
@@ -102,6 +113,8 @@
         mounted() {
 
             axios.get(`/events/${this.numberOfEventsPerPage}/${this.name}/${this.pageNumber}`).then(response=>this.paginator = response.data);
+
+            new ClipboardJS('.copy-to-clipboard');
 
 
         }

@@ -3,6 +3,7 @@ require('./bootstrap');
 require('alpinejs');
 
 import Litepicker from 'litepicker';
+import ClipboardJS from 'clipboard';
 
 
 
