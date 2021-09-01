@@ -56,7 +56,7 @@ Vue.component('vue-filters', require('./components/VueFilters.vue').default);
 }); */
 
  Vue.component('task', {
-    template: '<li><slot></slot></li>'
+    template: `<li><slot></slot></li>`
 });
 
 new Vue({

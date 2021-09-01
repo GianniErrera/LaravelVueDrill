@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Event;
 
-class FilterConrtoller extends Controller
+class FilterController extends Controller
 {
     public function search() {
-        dd("Hey");
+        return Event::paginate(15);
     }
 }

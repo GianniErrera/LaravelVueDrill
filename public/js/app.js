@@ -4296,56 +4296,59 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      filters: {
+        "search": "",
+        "singleDateQuery": false,
+        "singleDate": "",
+        "singleFormattedDate": "",
+        "searchRange": "",
+        "startDate": "",
+        "endDate": "",
+        "ignoreYearFromQuery": false,
+        "options": [{
+          text: "Order by date",
+          value: "date",
+          id: 1
+        }, {
+          text: "Order by creation date",
+          value: "created_at",
+          id: 2
+        }]
+      },
       paginator: [],
-      selected: "date",
-      options: [{
-        text: "Order by date",
-        value: "date",
-        id: 1
-      }, {
-        text: "Order by creation date",
-        value: "created_at",
-        id: 2
-      }],
-      search: "",
-      singleDateQuery: false,
-      singleDate: "",
-      singleFormattedDate: "",
-      searchRange: "",
-      startDate: "",
-      endDate: "",
-      ignoreYearFromQuery: false,
-      events: []
+      selected: "date"
     };
   },
   props: ['events'],
   methods: {
     removeFilters: function removeFilters() {
-      this.selected = "date";
-      this.singleDateQuery = false;
-      this.search = "";
-      this.singleDate = "";
-      this.singleFormattedDate = "";
-      this.searchRange = "";
-      this.startDate = "";
-      this.endDate = "";
-      this.ignoreYearFromQuery = false;
+      this.filters.selected = "date";
+      this.filters.singleDateQuery = false;
+      this.filters.search = "";
+      this.filters.singleDate = "";
+      this.filters.singleFormattedDate = "";
+      this.filters.searchRange = "";
+      this.filters.startDate = "";
+      this.filters.endDate = "";
+      this.filters.ignoreYearFromQuery = false;
     },
     clearDatepickers: function clearDatepickers() {
-      this.singleDate = "";
-      this.singleFormattedDate = "";
-      this.searchRange = "";
-      this.startDate = "";
-      this.endDate = "";
-      this.datepicker.clearSelection();
-      this.rangepicker.clearSelection();
+      this.filters.singleDate = "";
+      this.filters.singleFormattedDate = "";
+      this.filters.searchRange = "";
+      this.filters.startDate = "";
+      this.filters.endDate = "";
+      this.filters.datepicker.clearSelection();
+      this.filters.rangepicker.clearSelection();
     },
     applyFilters: function applyFilters() {
       var _this = this;
 
+      alert('so far all good');
       axios.get("/events/".concat(this.search)).then(function (response) {
         return _this.paginator = response.data;
       });
@@ -4365,13 +4368,13 @@ __webpack_require__.r(__webpack_exports__);
       setup: function setup(picker) {
         picker.on('selected', function (date) {
           console.log(_this2);
-          _this2.search = "";
-          _this2.singleFormattedDate = date.format('DD-MMM-YYYY');
-          _this2.singleDate = date.format('YYYY-MM-DD');
-          _this2.startDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+          _this2.filters.search = "";
+          _this2.filters.singleFormattedDate = date.format('DD-MMM-YYYY');
+          _this2.filters.singleDate = date.format('YYYY-MM-DD');
+          _this2.filters.startDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
 
-          _this2.endDate = "";
-          _this2.searchRange = "";
+          _this2.filters.endDate = "";
+          _this2.filters.searchRange = "";
         });
       }
     });
@@ -4385,12 +4388,12 @@ __webpack_require__.r(__webpack_exports__);
       splitView: true,
       setup: function setup(picker) {
         picker.on('selected', function (startDate, endDate) {
-          _this2.searchRange = startDate.format('DD-MMM-YYYY') + " - " + endDate.format('DD-MMM-YYYY');
-          _this2.startDate = startDate.format('YYYY-MM-DD');
-          _this2.endDate = endDate.format('YYYY-MM-DD');
-          _this2.singleDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+          _this2.filters.searchRange = startDate.format('DD-MMM-YYYY') + " - " + endDate.format('DD-MMM-YYYY');
+          _this2.filters.startDate = startDate.format('YYYY-MM-DD');
+          _this2.filters.endDate = endDate.format('YYYY-MM-DD');
+          _this2.filters.singleDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
 
-          _this2.singleFormattedDate = "";
+          _this2.filters.singleFormattedDate = "";
         });
       }
     });
@@ -4461,7 +4464,7 @@ Vue.component('vue-filters', __webpack_require__(/*! ./components/VueFilters.vue
 }); */
 
 Vue.component('task', {
-  template: '<li><slot></slot></li>'
+  template: "<li><slot></slot></li>"
 });
 new Vue({
   el: '#app',
@@ -23865,7 +23868,7 @@ var render = function() {
             }
           }
         },
-        _vm._l(_vm.options, function(option) {
+        _vm._l(_vm.filters.options, function(option) {
           return _c(
             "option",
             {
@@ -23891,8 +23894,8 @@ var render = function() {
           {
             name: "show",
             rawName: "v-show",
-            value: !_vm.singleDateQuery,
-            expression: "!singleDateQuery"
+            value: !_vm.filters.singleDateQuery,
+            expression: "!filters.singleDateQuery"
           }
         ],
         staticClass: "md:mb-3 block text-center"
@@ -23912,12 +23915,12 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.searchRange,
-              expression: "searchRange"
+              value: _vm.filters.searchRange,
+              expression: "filters.searchRange"
             }
           ],
           staticClass:
-            "text-center ml-4 mb-4 input input-bordered border border-gray-800",
+            "text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800",
           attrs: {
             id: "searchRange",
             name: "searchRange",
@@ -23925,13 +23928,13 @@ var render = function() {
             size: "28",
             readonly: ""
           },
-          domProps: { value: _vm.searchRange },
+          domProps: { value: _vm.filters.searchRange },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.searchRange = $event.target.value
+              _vm.$set(_vm.filters, "searchRange", $event.target.value)
             }
           }
         })
@@ -23945,8 +23948,8 @@ var render = function() {
           {
             name: "show",
             rawName: "v-show",
-            value: _vm.singleDateQuery,
-            expression: "singleDateQuery"
+            value: _vm.filters.singleDateQuery,
+            expression: "filters.singleDateQuery"
           }
         ],
         staticClass: "block md:mb-3 text-center"
@@ -23955,7 +23958,7 @@ var render = function() {
         _c(
           "label",
           {
-            staticClass: "block text-center mb-3 font-semibold",
+            staticClass: "block text-center mb-3 font-size-14px font-semibold",
             attrs: { for: "searchDate" }
           },
           [_vm._v("Pick a date:")]
@@ -23966,8 +23969,8 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.singleFormattedDate,
-              expression: "singleFormattedDate"
+              value: _vm.filters.singleFormattedDate,
+              expression: "filters.singleFormattedDate"
             }
           ],
           staticClass:
@@ -23976,15 +23979,16 @@ var render = function() {
             id: "searchDate",
             name: "searchDate",
             type: "text",
+            size: "28",
             readonly: ""
           },
-          domProps: { value: _vm.singleFormattedDate },
+          domProps: { value: _vm.filters.singleFormattedDate },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.singleFormattedDate = $event.target.value
+              _vm.$set(_vm.filters, "singleFormattedDate", $event.target.value)
             }
           }
         })
@@ -24000,36 +24004,43 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.singleDateQuery,
-              expression: "singleDateQuery"
+              value: _vm.filters.singleDateQuery,
+              expression: "filters.singleDateQuery"
             }
           ],
           staticClass: "flex-none checkbox",
           attrs: { type: "checkbox" },
           domProps: {
-            checked: Array.isArray(_vm.singleDateQuery)
-              ? _vm._i(_vm.singleDateQuery, null) > -1
-              : _vm.singleDateQuery
+            checked: Array.isArray(_vm.filters.singleDateQuery)
+              ? _vm._i(_vm.filters.singleDateQuery, null) > -1
+              : _vm.filters.singleDateQuery
           },
           on: {
             change: [
               function($event) {
-                var $$a = _vm.singleDateQuery,
+                var $$a = _vm.filters.singleDateQuery,
                   $$el = $event.target,
                   $$c = $$el.checked ? true : false
                 if (Array.isArray($$a)) {
                   var $$v = null,
                     $$i = _vm._i($$a, $$v)
                   if ($$el.checked) {
-                    $$i < 0 && (_vm.singleDateQuery = $$a.concat([$$v]))
+                    $$i < 0 &&
+                      _vm.$set(
+                        _vm.filters,
+                        "singleDateQuery",
+                        $$a.concat([$$v])
+                      )
                   } else {
                     $$i > -1 &&
-                      (_vm.singleDateQuery = $$a
-                        .slice(0, $$i)
-                        .concat($$a.slice($$i + 1)))
+                      _vm.$set(
+                        _vm.filters,
+                        "singleDateQuery",
+                        $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                      )
                   }
                 } else {
-                  _vm.singleDateQuery = $$c
+                  _vm.$set(_vm.filters, "singleDateQuery", $$c)
                 }
               },
               _vm.clearDatepickers
@@ -24054,20 +24065,20 @@ var render = function() {
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.search,
-            expression: "search"
+            value: _vm.filters.search,
+            expression: "filters.search"
           }
         ],
         staticClass: "input input-bordered border border-gray-800 mb-4 p-2",
         attrs: { type: "text", id: "search", name: "search", placeholder: "" },
-        domProps: { value: _vm.search },
+        domProps: { value: _vm.filters.search },
         on: {
           keyup: _vm.applyFilters,
           input: function($event) {
             if ($event.target.composing) {
               return
             }
-            _vm.search = $event.target.value
+            _vm.$set(_vm.filters, "search", $event.target.value)
           }
         }
       })
@@ -24082,35 +24093,42 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.ignoreYearFromQuery,
-              expression: "ignoreYearFromQuery"
+              value: _vm.filters.ignoreYearFromQuery,
+              expression: "filters.ignoreYearFromQuery"
             }
           ],
           staticClass: "flex-none checkbox",
           attrs: { type: "checkbox" },
           domProps: {
-            checked: Array.isArray(_vm.ignoreYearFromQuery)
-              ? _vm._i(_vm.ignoreYearFromQuery, null) > -1
-              : _vm.ignoreYearFromQuery
+            checked: Array.isArray(_vm.filters.ignoreYearFromQuery)
+              ? _vm._i(_vm.filters.ignoreYearFromQuery, null) > -1
+              : _vm.filters.ignoreYearFromQuery
           },
           on: {
             change: function($event) {
-              var $$a = _vm.ignoreYearFromQuery,
+              var $$a = _vm.filters.ignoreYearFromQuery,
                 $$el = $event.target,
                 $$c = $$el.checked ? true : false
               if (Array.isArray($$a)) {
                 var $$v = null,
                   $$i = _vm._i($$a, $$v)
                 if ($$el.checked) {
-                  $$i < 0 && (_vm.ignoreYearFromQuery = $$a.concat([$$v]))
+                  $$i < 0 &&
+                    _vm.$set(
+                      _vm.filters,
+                      "ignoreYearFromQuery",
+                      $$a.concat([$$v])
+                    )
                 } else {
                   $$i > -1 &&
-                    (_vm.ignoreYearFromQuery = $$a
-                      .slice(0, $$i)
-                      .concat($$a.slice($$i + 1)))
+                    _vm.$set(
+                      _vm.filters,
+                      "ignoreYearFromQuery",
+                      $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                    )
                 }
               } else {
-                _vm.ignoreYearFromQuery = $$c
+                _vm.$set(_vm.filters, "ignoreYearFromQuery", $$c)
               }
             }
           }
