@@ -3,7 +3,7 @@
 
         <div class="text-center mb-4 mt-8">
             <select v-model="selected" class="select select-bordered">
-                <option v-for="option in options" v-bind:key="option.value" v-bind:value="option.value">
+                <option v-for="option in options" v-bind:key="option.value" v-bind:value="option.value" v-on:change="applyFilters">
                     {{ option.text }}
                 </option>
             </select>
@@ -60,6 +60,7 @@
             <input
                 type="text"
                 v-model="search"
+                v-on:keyup="applyFilters"
                 id="search"
                 name="search"
                 placeholder=""
@@ -107,19 +108,21 @@
     export default {
        data() {
             return {
+                paginator: [],
                 selected: "date",
                 options: [
                     { text: "Order by date", value: "date", id: 1 },
                     { text: "Order by creation date", value: "created_at", id: 2}
                 ],
-                singleDateQuery: false,
                 search: "",
+                singleDateQuery: false,
                 singleDate: "",
                 singleFormattedDate: "",
                 searchRange: "",
                 startDate: "",
                 endDate: "",
-                ignoreYearFromQuery: false
+                ignoreYearFromQuery: false,
+                events: []
 
             }
         },
@@ -144,6 +147,9 @@
                     this.endDate = "";
                     this.datepicker.clearSelection();
                     this.rangepicker.clearSelection();
+                },
+                applyFilters() {
+                    axios.get(`/events/${this.search}`).then(response=>this.paginator = response.data);
                 }
         },
         mounted() {

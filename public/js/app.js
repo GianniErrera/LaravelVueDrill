@@ -4024,6 +4024,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+var buttonLabels = {
+  first: "<<",
+  prev: "<",
+  next: ">",
+  last: ">>"
+};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -4032,6 +4042,11 @@ __webpack_require__.r(__webpack_exports__);
       numberOfEventsPerPage: 15,
       name: "Events"
     };
+  },
+  "static": {
+    firstButton: "<<",
+    // these two strings are used as "<" symbol may be interpreted as first character of tag
+    prevButton: "<"
   },
   methods: {
     nextPage: function nextPage() {
@@ -4069,6 +4084,9 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     isPreviousButtonDisabled: function isPreviousButtonDisabled() {
       return this.pageNumber === 1;
+    },
+    isNextButtonDisabled: function isNextButtonDisabled() {
+      return this.pageNumber === this.paginator.last_page;
     }
   },
   mounted: function mounted() {
@@ -4077,7 +4095,6 @@ __webpack_require__.r(__webpack_exports__);
     axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
       return _this4.paginator = response.data;
     });
-    new ClipboardJS('.copy-to-clipboard');
   }
 });
 
@@ -4278,9 +4295,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      paginator: [],
       selected: "date",
       options: [{
         text: "Order by date",
@@ -4291,14 +4310,15 @@ __webpack_require__.r(__webpack_exports__);
         value: "created_at",
         id: 2
       }],
-      singleDateQuery: false,
       search: "",
+      singleDateQuery: false,
       singleDate: "",
       singleFormattedDate: "",
       searchRange: "",
       startDate: "",
       endDate: "",
-      ignoreYearFromQuery: false
+      ignoreYearFromQuery: false,
+      events: []
     };
   },
   props: ['events'],
@@ -4322,10 +4342,17 @@ __webpack_require__.r(__webpack_exports__);
       this.endDate = "";
       this.datepicker.clearSelection();
       this.rangepicker.clearSelection();
+    },
+    applyFilters: function applyFilters() {
+      var _this = this;
+
+      axios.get("/events/".concat(this.search)).then(function (response) {
+        return _this.paginator = response.data;
+      });
     }
   },
   mounted: function mounted() {
-    var _this = this;
+    var _this2 = this;
 
     this.datepicker = new Litepicker({
       element: document.getElementById('searchDate'),
@@ -4337,14 +4364,14 @@ __webpack_require__.r(__webpack_exports__);
       splitView: true,
       setup: function setup(picker) {
         picker.on('selected', function (date) {
-          console.log(_this);
-          _this.search = "";
-          _this.singleFormattedDate = date.format('DD-MMM-YYYY');
-          _this.singleDate = date.format('YYYY-MM-DD');
-          _this.startDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+          console.log(_this2);
+          _this2.search = "";
+          _this2.singleFormattedDate = date.format('DD-MMM-YYYY');
+          _this2.singleDate = date.format('YYYY-MM-DD');
+          _this2.startDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
 
-          _this.endDate = "";
-          _this.searchRange = "";
+          _this2.endDate = "";
+          _this2.searchRange = "";
         });
       }
     });
@@ -4358,12 +4385,12 @@ __webpack_require__.r(__webpack_exports__);
       splitView: true,
       setup: function setup(picker) {
         picker.on('selected', function (startDate, endDate) {
-          _this.searchRange = startDate.format('DD-MMM-YYYY') + " - " + endDate.format('DD-MMM-YYYY');
-          _this.startDate = startDate.format('YYYY-MM-DD');
-          _this.endDate = endDate.format('YYYY-MM-DD');
-          _this.singleDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+          _this2.searchRange = startDate.format('DD-MMM-YYYY') + " - " + endDate.format('DD-MMM-YYYY');
+          _this2.startDate = startDate.format('YYYY-MM-DD');
+          _this2.endDate = endDate.format('YYYY-MM-DD');
+          _this2.singleDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
 
-          _this.singleFormattedDate = "";
+          _this2.singleFormattedDate = "";
         });
       }
     });
@@ -23528,7 +23555,7 @@ var render = function() {
           "div",
           { key: event.id, staticClass: "flex flex-row justify-between p-2" },
           [
-            _c("div", { staticClass: "flex w-5/6 grid grid-cols-6" }, [
+            _c("div", { staticClass: "lg:flex lg:w-5/6 grid grid-cols-6" }, [
               _c("div", [
                 _vm._v(
                   "\n                " + _vm._s(event.date) + "\n            "
@@ -23550,17 +23577,19 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "flex items-center ml-2" }, [
-              _vm._m(0, true),
-              _vm._v(" "),
-              _c("div", { staticClass: "items-center" }, [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(event.isItRecurringYearly ? "✔" : "no") +
-                    "\n            "
-                )
-              ])
-            ])
+            _c(
+              "div",
+              { staticClass: "flex items-center text-center lg:mr-4" },
+              [
+                _c("div", { staticClass: "mr-4 text-center" }, [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(event.isItRecurringYearly ? "✔" : "no") +
+                      "\n            "
+                  )
+                ])
+              ]
+            )
           ]
         )
       }),
@@ -23570,36 +23599,37 @@ var render = function() {
           _c(
             "button",
             {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.pageNumber > 1,
-                  expression: "pageNumber > 1"
+              staticClass: "btn btn-sm cursor rounded-lg",
+              attrs: { disabled: _vm.isPreviousButtonDisabled },
+              on: {
+                click: function($event) {
+                  return _vm.jumpToPage(1)
                 }
-              ],
-              staticClass: "btn btn-sm cursor",
-              on: { click: _vm.previousPage }
+              }
             },
-            [_vm._v("\n            Previous\n        ")]
+            [
+              _vm._v(
+                "\n            " +
+                  _vm._s(this.$options.static.firstButton) +
+                  "\n\n        "
+              )
+            ]
           ),
           _vm._v(" "),
           _c(
             "button",
             {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.pageNumber == 1,
-                  expression: "pageNumber == 1"
-                }
-              ],
               staticClass: "btn btn-sm cursor rounded-lg",
-              attrs: { disabled: "" },
+              attrs: { disabled: _vm.isPreviousButtonDisabled },
               on: { click: _vm.previousPage }
             },
-            [_vm._v("\n            Previous\n        ")]
+            [
+              _vm._v(
+                "\n            " +
+                  _vm._s(this.$options.static.prevButton) +
+                  "\n        "
+              )
+            ]
           ),
           _vm._v(" "),
           _c("button", { staticClass: "btn btn-sm", attrs: { disabled: "" } }, [
@@ -23650,8 +23680,26 @@ var render = function() {
           _vm._v(" "),
           _c(
             "button",
-            { staticClass: "btn btn-sm cursor", on: { click: _vm.nextPage } },
-            [_vm._v("\n        Next\n        ")]
+            {
+              staticClass: "btn btn-sm cursor",
+              attrs: { disabled: _vm.isNextButtonDisabled },
+              on: { click: _vm.nextPage }
+            },
+            [_vm._v("\n            >\n        ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-sm cursor",
+              attrs: { disabled: _vm.isNextButtonDisabled },
+              on: {
+                click: function($event) {
+                  return _vm.jumpToPage(_vm.paginator.last_page)
+                }
+              }
+            },
+            [_vm._v("\n            >>\n        ")]
           )
         ])
       ])
@@ -23659,24 +23707,7 @@ var render = function() {
     2
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "lg:mr-4" }, [
-      _c(
-        "button",
-        {
-          staticClass:
-            "btn btn-primary hover:text-yellow-100 copy-to-clipboard",
-          attrs: { "data-clipboard-text": "test" }
-        },
-        [_vm._v("\n                    Copy to clipboard\n                ")]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -23837,7 +23868,11 @@ var render = function() {
         _vm._l(_vm.options, function(option) {
           return _c(
             "option",
-            { key: option.value, domProps: { value: option.value } },
+            {
+              key: option.value,
+              domProps: { value: option.value },
+              on: { change: _vm.applyFilters }
+            },
             [
               _vm._v(
                 "\n                " + _vm._s(option.text) + "\n            "
@@ -24027,6 +24062,7 @@ var render = function() {
         attrs: { type: "text", id: "search", name: "search", placeholder: "" },
         domProps: { value: _vm.search },
         on: {
+          keyup: _vm.applyFilters,
           input: function($event) {
             if ($event.target.composing) {
               return

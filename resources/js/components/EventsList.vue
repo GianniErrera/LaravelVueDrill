@@ -2,7 +2,7 @@
     <div >
 
         <div class="flex flex-row justify-between p-2" v-for="event in paginator.data" :key="event.id">
-            <div class="flex w-5/6 grid grid-cols-6">
+            <div class="lg:flex lg:w-5/6 grid grid-cols-6">
 
                 <div>
                     {{ event.date }}
@@ -15,34 +15,29 @@
                 </div>
 
             </div>
-            <div class="flex items-center ml-2">
-                <div class="lg:mr-4">
-                    <button class="btn btn-primary hover:text-yellow-100 copy-to-clipboard"
-                        data-clipboard-text="test">
-                        Copy to clipboard
-                    </button>
-                </div>
-                <div class="items-center">
+            <div class="flex items-center text-center lg:mr-4">
+                <div class="mr-4 text-center">
                     {{ event.isItRecurringYearly ? "&#10004;" : "no" }}
                 </div>
+
             </div>
          </div>
         <div class="flex mt-4 justify-center">
             <div class="btn-group">
             <button
-                @click="previousPage"
-                class="btn btn-sm cursor"
-                v-show="pageNumber > 1"
+                @click="jumpToPage(1)"
+                class="btn btn-sm cursor rounded-lg"
+                :disabled="isPreviousButtonDisabled"
             >
-                Previous
+                {{this.$options.static.firstButton}}
+
             </button>
             <button
                 @click="previousPage"
                 class="btn btn-sm cursor rounded-lg"
-                v-show="pageNumber == 1"
-                disabled
+                :disabled="isPreviousButtonDisabled"
             >
-                Previous
+                {{this.$options.static.prevButton}}
             </button>
             <button
             class="btn btn-sm"
@@ -64,8 +59,17 @@
             </button>
             <button
                 @click="nextPage"
-                class="btn btn-sm cursor">
-            Next
+                class="btn btn-sm cursor"
+                :disabled="isNextButtonDisabled"
+                >
+                >
+            </button>
+            <button
+                @click="jumpToPage(paginator.last_page)"
+                class="btn btn-sm cursor"
+                :disabled="isNextButtonDisabled"
+                >
+                >>
             </button>
             </div>
         </div>
@@ -73,6 +77,13 @@
 </template>
 
 <script>
+    const buttonLabels = {
+        first: "<<",
+        prev: "<",
+        next: ">",
+        last: ">>"
+    };
+
     export default {
        data() {
             return {
@@ -81,6 +92,10 @@
                 numberOfEventsPerPage: 15,
                 name: "Events"
             }
+        },
+        static: {
+            firstButton: "<<", // these two strings are used as "<" symbol may be interpreted as first character of tag
+            prevButton: "<"
         },
         methods: {
             nextPage() {
@@ -107,14 +122,16 @@
         },
         computed: {
             isPreviousButtonDisabled() {
-            return this.pageNumber === 1
+                return this.pageNumber === 1
+            },
+            isNextButtonDisabled() {
+                return this.pageNumber === this.paginator.last_page;
             }
         },
         mounted() {
 
             axios.get(`/events/${this.numberOfEventsPerPage}/${this.name}/${this.pageNumber}`).then(response=>this.paginator = response.data);
 
-            new ClipboardJS('.copy-to-clipboard');
 
 
         }
