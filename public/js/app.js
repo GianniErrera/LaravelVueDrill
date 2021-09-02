@@ -4140,6 +4140,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 var buttonLabels = {
   first: "<<",
   prev: "<",
@@ -4181,12 +4182,8 @@ var buttonLabels = {
     prevButton: "<"
   },
   watch: {
-    filters: {
-      handler: 'applyFilters',
-      deep: true
-    },
-    'filters.singleDateQuery': {
-      handler: 'clearDatepickers',
+    "filters.search": {
+      handler: 'searchFilter',
       deep: true
     }
   },
@@ -4220,28 +4217,35 @@ var buttonLabels = {
         return _this.paginator = response.data;
       });
     },
-    nextPage: function nextPage() {
+    searchFilter: function searchFilter() {
       var _this2 = this;
 
-      this.pageNumber = this.pageNumber + 1;
-      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
+      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber, "/").concat(this.filters.search)).then(function (response) {
         return _this2.paginator = response.data;
       });
     },
-    previousPage: function previousPage() {
+    nextPage: function nextPage() {
       var _this3 = this;
 
-      this.pageNumber = this.pageNumber - 1;
+      this.pageNumber = this.pageNumber + 1;
       axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
         return _this3.paginator = response.data;
       });
     },
-    jumpToPage: function jumpToPage($pageTarget) {
+    previousPage: function previousPage() {
       var _this4 = this;
+
+      this.pageNumber = this.pageNumber - 1;
+      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
+        return _this4.paginator = response.data;
+      });
+    },
+    jumpToPage: function jumpToPage($pageTarget) {
+      var _this5 = this;
 
       this.pageNumber = $pageTarget;
       axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
-        return _this4.paginator = response.data;
+        return _this5.paginator = response.data;
       });
     },
     isItFirstPage: function isItFirstPage() {
@@ -4261,10 +4265,10 @@ var buttonLabels = {
     }
   },
   mounted: function mounted() {
-    var _this5 = this;
+    var _this6 = this;
 
     axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
-      return _this5.paginator = response.data;
+      return _this6.paginator = response.data;
     });
     this.datepicker = new Litepicker({
       element: document.getElementById('searchDate'),
@@ -4276,14 +4280,14 @@ var buttonLabels = {
       splitView: true,
       setup: function setup(picker) {
         picker.on('selected', function (date) {
-          console.log(_this5);
-          _this5.filters.search = "";
-          _this5.filters.singleFormattedDate = date.format('DD-MMM-YYYY');
-          _this5.filters.singleDate = date.format('YYYY-MM-DD');
-          _this5.filters.startDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+          console.log(_this6);
+          _this6.filters.search = "";
+          _this6.filters.singleFormattedDate = date.format('DD-MMM-YYYY');
+          _this6.filters.singleDate = date.format('YYYY-MM-DD');
+          _this6.filters.startDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
 
-          _this5.filters.endDate = "";
-          _this5.filters.searchRange = "";
+          _this6.filters.endDate = "";
+          _this6.filters.searchRange = "";
         });
       }
     });
@@ -4297,12 +4301,12 @@ var buttonLabels = {
       splitView: true,
       setup: function setup(picker) {
         picker.on('selected', function (startDate, endDate) {
-          _this5.filters.searchRange = startDate.format('DD-MMM-YYYY') + " - " + endDate.format('DD-MMM-YYYY');
-          _this5.filters.startDate = startDate.format('YYYY-MM-DD');
-          _this5.filters.endDate = endDate.format('YYYY-MM-DD');
-          _this5.filters.singleDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+          _this6.filters.searchRange = startDate.format('DD-MMM-YYYY') + " - " + endDate.format('DD-MMM-YYYY');
+          _this6.filters.startDate = startDate.format('YYYY-MM-DD');
+          _this6.filters.endDate = endDate.format('YYYY-MM-DD');
+          _this6.filters.singleDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
 
-          _this5.filters.singleFormattedDate = "";
+          _this6.filters.singleFormattedDate = "";
         });
       }
     });
@@ -24012,7 +24016,6 @@ var render = function() {
             },
             domProps: { value: _vm.filters.search },
             on: {
-              keyup: _vm.applyFilters,
               input: function($event) {
                 if ($event.target.composing) {
                   return

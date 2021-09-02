@@ -63,7 +63,6 @@
                 <input
                     type="text"
                     v-model="filters.search"
-                    v-on:keyup="applyFilters"
                     id="search"
                     name="search"
                     placeholder=""
@@ -130,6 +129,7 @@
 
                 </div>
             </div>
+            <!-- Events paginator buttons -->
             <div class="flex mt-4 justify-center">
                 <div class="btn-group">
                 <button
@@ -181,6 +181,7 @@
                 </button>
                 </div>
             </div>
+            <!-- End events paginator buttons -->
         </div>
         <!-- End events list div -->
     </div>
@@ -226,12 +227,8 @@
             prevButton: "<"
         },
         watch: {
-            filters: {
-                handler: 'applyFilters',
-                deep: true
-            },
-            'filters.singleDateQuery': {
-                handler: 'clearDatepickers',
+            "filters.search": {
+                handler: 'searchFilter',
                 deep: true
             }
         },
@@ -259,6 +256,9 @@
             applyFilters() {
                 axios.post(`/events/filters`, {filters: this.filters})
                 .then(response=>this.paginator = response.data);
+            },
+            searchFilter() {
+                axios.get(`/events/${this.numberOfEventsPerPage}/${this.name}/${this.pageNumber}/${this.filters.search}`).then(response=>this.paginator = response.data);
             },
             nextPage() {
                 this.pageNumber = this.pageNumber + 1;

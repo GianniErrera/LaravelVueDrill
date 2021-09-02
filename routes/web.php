@@ -34,6 +34,8 @@ Route::get('/filters', function () {
 
 Route::get("/events/{numberOfEventsPerPage}/{name}/{pageNumber}", [EventController::class, 'index']);
 
+Route::get("/events/{numberOfEventsPerPage}/{name}/{pageNumber}/{search}", [FilterController::class, 'searchString']);
+
 Route::post("/events/filters", [FilterController::class, 'search']);
 
 Route::post('/events', [EventController::class, 'store']);
