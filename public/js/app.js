@@ -4141,6 +4141,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var buttonLabels = {
   first: "<<",
   prev: "<",
@@ -24193,6 +24207,66 @@ var render = function() {
                 _vm._v(
                   "\n                " +
                     _vm._s(this.$options.static.prevButton) +
+                    "\n            "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value:
+                      _vm.paginator.last_page > 3 &&
+                      _vm.pageNumber === _vm.paginator.last_page,
+                    expression:
+                      "paginator.last_page > 3 && pageNumber === paginator.last_page"
+                  }
+                ],
+                staticClass: "btn btn-sm cursor",
+                on: {
+                  click: function($event) {
+                    return _vm.jumpToPage(_vm.pageNumber - 2)
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  "\n            " +
+                    _vm._s(_vm.pageNumber - 2) +
+                    "\n            "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value:
+                      _vm.paginator.last_page > 3 &&
+                      _vm.pageNumber >= _vm.paginator.last_page - 1,
+                    expression:
+                      "paginator.last_page > 3 && pageNumber >= paginator.last_page - 1"
+                  }
+                ],
+                staticClass: "btn btn-sm cursor",
+                on: {
+                  click: function($event) {
+                    return _vm.jumpToPage(_vm.pageNumber - 1)
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  "\n            " +
+                    _vm._s(_vm.pageNumber - 1) +
                     "\n            "
                 )
               ]

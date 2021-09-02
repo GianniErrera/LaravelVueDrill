@@ -147,6 +147,20 @@
                 >
                     {{this.$options.static.prevButton}}
                 </button>
+                <!--This is shown only when on last page -->
+                <button
+                    class="btn btn-sm cursor"
+                    v-show="paginator.last_page > 3 && pageNumber === paginator.last_page"
+                    @click="jumpToPage(pageNumber - 2)">
+                {{ pageNumber - 2 }}
+                </button>
+                <!--This is shown only when on last two pages -->
+                <button
+                    class="btn btn-sm cursor"
+                    v-show="paginator.last_page > 3 && pageNumber >= paginator.last_page - 1"
+                    @click="jumpToPage(pageNumber - 1)">
+                {{ pageNumber - 1 }}
+                </button>
                 <button
                 class="btn btn-sm"
                 disabled
