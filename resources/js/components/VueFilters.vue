@@ -2,8 +2,8 @@
     <div class="lg:flex lg:justify-around pt-4">
 
         <div class="text-center mb-4 mt-8">
-            <select v-model="selected" class="select select-bordered">
-                <option v-for="option in filters.options" v-bind:key="option.value" v-bind:value="option.value" v-on:change="applyFilters">
+            <select v-model="filters.selected" v-on:change="applyFilters" class="select select-bordered">
+                <option v-for="option in options" v-bind:key="option.value" v-bind:value="option.value" >
                     {{ option.text }}
                 </option>
             </select>
@@ -110,6 +110,7 @@
        data() {
             return {
                 filters: {
+                    "selected": "date",
                     "search": "",
                     "singleDateQuery": false,
                     "singleDate": "",
@@ -118,18 +119,24 @@
                     "startDate": "",
                     "endDate": "",
                     "ignoreYearFromQuery": false,
-                    "options": [
+
+                },
+                "options": [
                     { text: "Order by date", value: "date", id: 1 },
                     { text: "Order by creation date", value: "created_at", id: 2}
-                ]
-                },
+                ],
                 paginator: [],
                 selected: "date",
 
 
             }
         },
-        props: ['events'],
+        watch: {
+            filters: {
+                handler: 'applyFilters',
+                deep: true
+            }
+        },
         methods: {
                 removeFilters() {
                     this.filters.selected = "date";
@@ -152,8 +159,8 @@
                     this.filters.rangepicker.clearSelection();
                 },
                 applyFilters() {
-                    alert('so far all good');
-                    axios.get(`/events/${this.search}`).then(response=>this.paginator = response.data);
+                    axios.post(`/events/filters`, {filters: this.filters})
+                    .then(response=>this.paginator = response.data);
                 }
         },
         mounted() {

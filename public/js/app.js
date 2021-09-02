@@ -4167,7 +4167,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      events: [],
+      paginator: [],
       fonteDiVerità: []
     };
   },
@@ -4301,6 +4301,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       filters: {
+        "selected": "date",
         "search": "",
         "singleDateQuery": false,
         "singleDate": "",
@@ -4308,22 +4309,27 @@ __webpack_require__.r(__webpack_exports__);
         "searchRange": "",
         "startDate": "",
         "endDate": "",
-        "ignoreYearFromQuery": false,
-        "options": [{
-          text: "Order by date",
-          value: "date",
-          id: 1
-        }, {
-          text: "Order by creation date",
-          value: "created_at",
-          id: 2
-        }]
+        "ignoreYearFromQuery": false
       },
+      "options": [{
+        text: "Order by date",
+        value: "date",
+        id: 1
+      }, {
+        text: "Order by creation date",
+        value: "created_at",
+        id: 2
+      }],
       paginator: [],
       selected: "date"
     };
   },
-  props: ['events'],
+  watch: {
+    filters: {
+      handler: 'applyFilters',
+      deep: true
+    }
+  },
   methods: {
     removeFilters: function removeFilters() {
       this.filters.selected = "date";
@@ -4348,8 +4354,9 @@ __webpack_require__.r(__webpack_exports__);
     applyFilters: function applyFilters() {
       var _this = this;
 
-      alert('so far all good');
-      axios.get("/events/".concat(this.search)).then(function (response) {
+      axios.post("/events/filters", {
+        filters: this.filters
+      }).then(function (response) {
         return _this.paginator = response.data;
       });
     }
@@ -23558,27 +23565,31 @@ var render = function() {
           "div",
           { key: event.id, staticClass: "flex flex-row justify-between p-2" },
           [
-            _c("div", { staticClass: "lg:flex lg:w-5/6 grid grid-cols-6" }, [
-              _c("div", [
-                _vm._v(
-                  "\n                " + _vm._s(event.date) + "\n            "
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "ml-8 text-left col-span-2" }, [
-                _vm._v(
-                  "\n                " + _vm._s(event.name) + "\n            "
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-span-3" }, [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(event.eventDescription) +
-                    "\n            "
-                )
-              ])
-            ]),
+            _c(
+              "div",
+              { staticClass: "lg:flex lg:w-5/6 lg:grid lg:grid-cols-6" },
+              [
+                _c("div", [
+                  _vm._v(
+                    "\n                " + _vm._s(event.date) + "\n            "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "lg:ml-8 lg:col-span-2" }, [
+                  _vm._v(
+                    "\n                " + _vm._s(event.name) + "\n            "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-span-3" }, [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(event.eventDescription) +
+                      "\n            "
+                  )
+                ])
+              ]
+            ),
             _vm._v(" "),
             _c(
               "div",
@@ -23793,7 +23804,7 @@ var render = function() {
         { staticClass: "border border-red-800" },
         [
           _c("event-form", {
-            attrs: { fonte: _vm.fontediVerità, events: _vm.events }
+            attrs: { fonte: _vm.fontediVerità, paginator: _vm.paginator }
           })
         ],
         1
@@ -23802,14 +23813,24 @@ var render = function() {
       _c(
         "div",
         { staticClass: "border border-red-800" },
-        [_c("vue-filters", { attrs: { events: _vm.events } })],
+        [
+          _c(
+            "vue-filters",
+            _vm._b({}, "vue-filters", _vm.paginator, false, true)
+          )
+        ],
         1
       ),
       _vm._v(" "),
       _c(
         "div",
         { staticClass: "p-4 border-b border-b-gray-400 rounded-xl ml-2 mr-2'" },
-        [_c("events-list", { attrs: { events: _vm.events } })],
+        [
+          _c(
+            "events-list",
+            _vm._b({}, "events-list", _vm.paginator, false, true)
+          )
+        ],
         1
       )
     ]
@@ -23847,35 +23868,36 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.selected,
-              expression: "selected"
+              value: _vm.filters.selected,
+              expression: "filters.selected"
             }
           ],
           staticClass: "select select-bordered",
           on: {
-            change: function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.selected = $event.target.multiple
-                ? $$selectedVal
-                : $$selectedVal[0]
-            }
+            change: [
+              function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.$set(
+                  _vm.filters,
+                  "selected",
+                  $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                )
+              },
+              _vm.applyFilters
+            ]
           }
         },
-        _vm._l(_vm.filters.options, function(option) {
+        _vm._l(_vm.options, function(option) {
           return _c(
             "option",
-            {
-              key: option.value,
-              domProps: { value: option.value },
-              on: { change: _vm.applyFilters }
-            },
+            { key: option.value, domProps: { value: option.value } },
             [
               _vm._v(
                 "\n                " + _vm._s(option.text) + "\n            "

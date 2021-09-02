@@ -2,12 +2,12 @@
     <div >
 
         <div class="flex flex-row justify-between p-2" v-for="event in paginator.data" :key="event.id">
-            <div class="lg:flex lg:w-5/6 grid grid-cols-6">
+            <div class="lg:flex lg:w-5/6 lg:grid lg:grid-cols-6">
 
                 <div>
                     {{ event.date }}
                 </div>
-                <div class="ml-8 text-left col-span-2">
+                <div class="lg:ml-8 lg:col-span-2">
                     {{ event.name }}
                 </div>
                 <div class="col-span-3">
