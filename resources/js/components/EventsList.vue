@@ -14,7 +14,7 @@
 
 
             <div v-show="!filters.singleDateQuery" class="md:mb-3 block text-center">
-                <label for="search" class="block text-center mb-3 font-size-14px font-semibold">Search over dates range:</label>
+                <label for="searchRange" class="block text-center mb-3 font-size-14px font-semibold">Search over dates range:</label>
                 <input
                     v-model="filters.searchRange"
                     id="searchRange"
@@ -51,7 +51,6 @@
                         type="checkbox"
                         v-model="filters.singleDateQuery"
                         class="flex-none checkbox"
-                        @change="clearDatepickers"
                     >
                 </div>
 
@@ -233,7 +232,7 @@
             },
             'filters.singleDateQuery': {
                 handler: 'clearDatepickers',
-                depp: true
+                deep: true
             }
         },
         methods: {
@@ -249,7 +248,6 @@
                 this.filters.ignoreYearFromQuery = false;
             },
             clearDatepickers() {
-                alert('triggered');
                 this.filters.singleDate = "";
                 this.filters.singleFormattedDate = "";
                 this.filters.searchRange = "";

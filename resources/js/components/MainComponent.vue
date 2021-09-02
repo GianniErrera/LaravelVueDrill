@@ -5,10 +5,6 @@
             <event-form v-bind:fonte="fontediVerità" v-bind:paginator="paginator"></event-form>
         </div>
 
-        <div class="border border-red-800">
-            <vue-filters v-bind.sync="paginator"></vue-filters>
-        </div>
-
         <div class="p-4 border-b border-b-gray-400 rounded-xl ml-2 mr-2'">
             <events-list v-bind.sync="paginator"></events-list>
         </div>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html data-theme="halloween"
+<html
+    data-theme="emerald"
     lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">

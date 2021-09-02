@@ -4140,7 +4140,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 var buttonLabels = {
   first: "<<",
   prev: "<",
@@ -4188,7 +4187,7 @@ var buttonLabels = {
     },
     'filters.singleDateQuery': {
       handler: 'clearDatepickers',
-      depp: true
+      deep: true
     }
   },
   methods: {
@@ -4204,7 +4203,6 @@ var buttonLabels = {
       this.filters.ignoreYearFromQuery = false;
     },
     clearDatepickers: function clearDatepickers() {
-      alert('triggered');
       this.filters.singleDate = "";
       this.filters.singleFormattedDate = "";
       this.filters.searchRange = "";
@@ -4359,10 +4357,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
-//
-//
-//
 //
 //
 //
@@ -23843,7 +23837,7 @@ var render = function() {
               {
                 staticClass:
                   "block text-center mb-3 font-size-14px font-semibold",
-                attrs: { for: "search" }
+                attrs: { for: "searchRange" }
               },
               [_vm._v("Search over dates range:")]
             ),
@@ -23959,35 +23953,32 @@ var render = function() {
                   : _vm.filters.singleDateQuery
               },
               on: {
-                change: [
-                  function($event) {
-                    var $$a = _vm.filters.singleDateQuery,
-                      $$el = $event.target,
-                      $$c = $$el.checked ? true : false
-                    if (Array.isArray($$a)) {
-                      var $$v = null,
-                        $$i = _vm._i($$a, $$v)
-                      if ($$el.checked) {
-                        $$i < 0 &&
-                          _vm.$set(
-                            _vm.filters,
-                            "singleDateQuery",
-                            $$a.concat([$$v])
-                          )
-                      } else {
-                        $$i > -1 &&
-                          _vm.$set(
-                            _vm.filters,
-                            "singleDateQuery",
-                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                          )
-                      }
+                change: function($event) {
+                  var $$a = _vm.filters.singleDateQuery,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 &&
+                        _vm.$set(
+                          _vm.filters,
+                          "singleDateQuery",
+                          $$a.concat([$$v])
+                        )
                     } else {
-                      _vm.$set(_vm.filters, "singleDateQuery", $$c)
+                      $$i > -1 &&
+                        _vm.$set(
+                          _vm.filters,
+                          "singleDateQuery",
+                          $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                        )
                     }
-                  },
-                  _vm.clearDatepickers
-                ]
+                  } else {
+                    _vm.$set(_vm.filters, "singleDateQuery", $$c)
+                  }
+                }
               }
             })
           ])
@@ -24404,18 +24395,6 @@ var render = function() {
           _c("event-form", {
             attrs: { fonte: _vm.fontediVerità, paginator: _vm.paginator }
           })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "border border-red-800" },
-        [
-          _c(
-            "vue-filters",
-            _vm._b({}, "vue-filters", _vm.paginator, false, true)
-          )
         ],
         1
       ),
