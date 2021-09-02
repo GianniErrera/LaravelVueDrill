@@ -3950,6 +3950,119 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4036,41 +4149,101 @@ var buttonLabels = {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {
+    var _ref;
+
+    return _ref = {
+      filters: {
+        "selected": "date",
+        "search": "",
+        "singleDateQuery": false,
+        "singleDate": "",
+        "singleFormattedDate": "",
+        "searchRange": "",
+        "startDate": "",
+        "endDate": "",
+        "ignoreYearFromQuery": false
+      },
+      "options": [{
+        text: "Order by date",
+        value: "date",
+        id: 1
+      }, {
+        text: "Order by creation date",
+        value: "created_at",
+        id: 2
+      }],
       paginator: [],
-      pageNumber: 1,
-      numberOfEventsPerPage: 15,
-      name: "Events"
-    };
+      selected: "date"
+    }, _defineProperty(_ref, "paginator", []), _defineProperty(_ref, "pageNumber", 1), _defineProperty(_ref, "numberOfEventsPerPage", 15), _defineProperty(_ref, "name", "Events"), _ref;
   },
   "static": {
     firstButton: "<<",
     // these two strings are used as "<" symbol may be interpreted as first character of tag
     prevButton: "<"
   },
+  watch: {
+    filters: {
+      handler: 'applyFilters',
+      deep: true
+    },
+    'filters.singleDateQuery': {
+      handler: 'clearDatepickers',
+      depp: true
+    }
+  },
   methods: {
-    nextPage: function nextPage() {
+    removeFilters: function removeFilters() {
+      this.filters.selected = "date";
+      this.filters.singleDateQuery = false;
+      this.filters.search = "";
+      this.filters.singleDate = "";
+      this.filters.singleFormattedDate = "";
+      this.filters.searchRange = "";
+      this.filters.startDate = "";
+      this.filters.endDate = "";
+      this.filters.ignoreYearFromQuery = false;
+    },
+    clearDatepickers: function clearDatepickers() {
+      alert('triggered');
+      this.filters.singleDate = "";
+      this.filters.singleFormattedDate = "";
+      this.filters.searchRange = "";
+      this.filters.startDate = "";
+      this.filters.endDate = "";
+      this.datepicker.clearSelection();
+      this.rangepicker.clearSelection();
+    },
+    applyFilters: function applyFilters() {
       var _this = this;
 
-      this.pageNumber = this.pageNumber + 1;
-      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
+      axios.post("/events/filters", {
+        filters: this.filters
+      }).then(function (response) {
         return _this.paginator = response.data;
       });
     },
-    previousPage: function previousPage() {
+    nextPage: function nextPage() {
       var _this2 = this;
 
-      this.pageNumber = this.pageNumber - 1;
+      this.pageNumber = this.pageNumber + 1;
       axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
         return _this2.paginator = response.data;
       });
     },
-    jumpToPage: function jumpToPage($pageTarget) {
+    previousPage: function previousPage() {
       var _this3 = this;
+
+      this.pageNumber = this.pageNumber - 1;
+      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
+        return _this3.paginator = response.data;
+      });
+    },
+    jumpToPage: function jumpToPage($pageTarget) {
+      var _this4 = this;
 
       this.pageNumber = $pageTarget;
       axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
-        return _this3.paginator = response.data;
+        return _this4.paginator = response.data;
       });
     },
     isItFirstPage: function isItFirstPage() {
@@ -4090,10 +4263,50 @@ var buttonLabels = {
     }
   },
   mounted: function mounted() {
-    var _this4 = this;
+    var _this5 = this;
 
     axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
-      return _this4.paginator = response.data;
+      return _this5.paginator = response.data;
+    });
+    this.datepicker = new Litepicker({
+      element: document.getElementById('searchDate'),
+      format: 'DD-MM-YYYY',
+      resetButton: true,
+      singleMode: true,
+      allowRepick: true,
+      autoRefresh: true,
+      splitView: true,
+      setup: function setup(picker) {
+        picker.on('selected', function (date) {
+          console.log(_this5);
+          _this5.filters.search = "";
+          _this5.filters.singleFormattedDate = date.format('DD-MMM-YYYY');
+          _this5.filters.singleDate = date.format('YYYY-MM-DD');
+          _this5.filters.startDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+
+          _this5.filters.endDate = "";
+          _this5.filters.searchRange = "";
+        });
+      }
+    });
+    this.rangepicker = new Litepicker({
+      element: document.getElementById('searchRange'),
+      format: 'DD-MM-YYYY',
+      resetButton: true,
+      singleMode: false,
+      allowRepick: true,
+      autoRefresh: true,
+      splitView: true,
+      setup: function setup(picker) {
+        picker.on('selected', function (startDate, endDate) {
+          _this5.filters.searchRange = startDate.format('DD-MMM-YYYY') + " - " + endDate.format('DD-MMM-YYYY');
+          _this5.filters.startDate = startDate.format('YYYY-MM-DD');
+          _this5.filters.endDate = endDate.format('YYYY-MM-DD');
+          _this5.filters.singleDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+
+          _this5.filters.singleFormattedDate = "";
+        });
+      }
     });
   }
 });
@@ -23557,171 +23770,556 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _vm._l(_vm.paginator.data, function(event) {
-        return _c(
+  return _c("div", [
+    _c("div", { staticClass: "border border-red-800" }, [
+      _c("div", { staticClass: "lg:flex lg:justify-around pt-4" }, [
+        _c("div", { staticClass: "text-center mb-4 mt-8" }, [
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.filters.selected,
+                  expression: "filters.selected"
+                }
+              ],
+              staticClass: "select select-bordered",
+              on: {
+                change: [
+                  function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.filters,
+                      "selected",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  },
+                  _vm.applyFilters
+                ]
+              }
+            },
+            _vm._l(_vm.options, function(option) {
+              return _c(
+                "option",
+                { key: option.value, domProps: { value: option.value } },
+                [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(option.text) +
+                      "\n                "
+                  )
+                ]
+              )
+            }),
+            0
+          )
+        ]),
+        _vm._v(" "),
+        _c(
           "div",
-          { key: event.id, staticClass: "flex flex-row justify-between p-2" },
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: !_vm.filters.singleDateQuery,
+                expression: "!filters.singleDateQuery"
+              }
+            ],
+            staticClass: "md:mb-3 block text-center"
+          },
           [
             _c(
-              "div",
-              { staticClass: "lg:flex lg:w-5/6 lg:grid lg:grid-cols-6" },
+              "label",
+              {
+                staticClass:
+                  "block text-center mb-3 font-size-14px font-semibold",
+                attrs: { for: "search" }
+              },
+              [_vm._v("Search over dates range:")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.filters.searchRange,
+                  expression: "filters.searchRange"
+                }
+              ],
+              staticClass:
+                "text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800",
+              attrs: {
+                id: "searchRange",
+                name: "searchRange",
+                type: "text",
+                size: "28",
+                readonly: ""
+              },
+              domProps: { value: _vm.filters.searchRange },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.filters, "searchRange", $event.target.value)
+                }
+              }
+            })
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.filters.singleDateQuery,
+                expression: "filters.singleDateQuery"
+              }
+            ],
+            staticClass: "block md:mb-3 text-center"
+          },
+          [
+            _c(
+              "label",
+              {
+                staticClass:
+                  "block text-center mb-3 font-size-14px font-semibold",
+                attrs: { for: "searchDate" }
+              },
+              [_vm._v("Pick a date:")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.filters.singleFormattedDate,
+                  expression: "filters.singleFormattedDate"
+                }
+              ],
+              staticClass:
+                "text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800",
+              attrs: {
+                id: "searchDate",
+                name: "searchDate",
+                type: "text",
+                size: "28",
+                readonly: ""
+              },
+              domProps: { value: _vm.filters.singleFormattedDate },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(
+                    _vm.filters,
+                    "singleFormattedDate",
+                    $event.target.value
+                  )
+                }
+              }
+            })
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "mb-3 text-center" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.filters.singleDateQuery,
+                  expression: "filters.singleDateQuery"
+                }
+              ],
+              staticClass: "flex-none checkbox",
+              attrs: { type: "checkbox" },
+              domProps: {
+                checked: Array.isArray(_vm.filters.singleDateQuery)
+                  ? _vm._i(_vm.filters.singleDateQuery, null) > -1
+                  : _vm.filters.singleDateQuery
+              },
+              on: {
+                change: [
+                  function($event) {
+                    var $$a = _vm.filters.singleDateQuery,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(
+                            _vm.filters,
+                            "singleDateQuery",
+                            $$a.concat([$$v])
+                          )
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.filters,
+                            "singleDateQuery",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.filters, "singleDateQuery", $$c)
+                    }
+                  },
+                  _vm.clearDatepickers
+                ]
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "mb-3 text-center " }, [
+          _c(
+            "label",
+            {
+              staticClass: "block text-center mb-3 font-semibold",
+              attrs: { for: "search" }
+            },
+            [_vm._v("Search events:")]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.filters.search,
+                expression: "filters.search"
+              }
+            ],
+            staticClass: "input input-bordered border border-gray-800 mb-4 p-2",
+            attrs: {
+              type: "text",
+              id: "search",
+              name: "search",
+              placeholder: ""
+            },
+            domProps: { value: _vm.filters.search },
+            on: {
+              keyup: _vm.applyFilters,
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.filters, "search", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "mb-3 text-center" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c("div", { staticClass: "block text-center" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.filters.ignoreYearFromQuery,
+                  expression: "filters.ignoreYearFromQuery"
+                }
+              ],
+              staticClass: "flex-none checkbox",
+              attrs: { type: "checkbox" },
+              domProps: {
+                checked: Array.isArray(_vm.filters.ignoreYearFromQuery)
+                  ? _vm._i(_vm.filters.ignoreYearFromQuery, null) > -1
+                  : _vm.filters.ignoreYearFromQuery
+              },
+              on: {
+                change: function($event) {
+                  var $$a = _vm.filters.ignoreYearFromQuery,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 &&
+                        _vm.$set(
+                          _vm.filters,
+                          "ignoreYearFromQuery",
+                          $$a.concat([$$v])
+                        )
+                    } else {
+                      $$i > -1 &&
+                        _vm.$set(
+                          _vm.filters,
+                          "ignoreYearFromQuery",
+                          $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                        )
+                    }
+                  } else {
+                    _vm.$set(_vm.filters, "ignoreYearFromQuery", $$c)
+                  }
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c("div", { staticClass: "block text-center mb-" }, [
+            _c("span", { staticClass: "ml-2 text-center font-semibold" }, [
+              _vm._v("Reset filters")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-center m-4" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "cursor-pointer align-center",
+                  on: { click: _vm.removeFilters }
+                },
+                [
+                  _c("img", {
+                    staticClass: "transform hover:scale-110",
+                    attrs: { src: "images/filter-remove.png", width: "30" }
+                  })
+                ]
+              )
+            ])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "p-4 border-b border-b-gray-400 rounded-xl ml-2 mr-2'" },
+      [
+        _vm._l(_vm.paginator.data, function(event) {
+          return _c(
+            "div",
+            { key: event.id, staticClass: "flex flex-row justify-between p-2" },
+            [
+              _c(
+                "div",
+                { staticClass: "lg:flex lg:w-5/6 lg:grid lg:grid-cols-6" },
+                [
+                  _c("div", [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(event.date) +
+                        "\n                "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "lg:ml-8 lg:col-span-2" }, [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(event.name) +
+                        "\n                "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-span-3" }, [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(event.eventDescription) +
+                        "\n                "
+                    )
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "flex items-center text-center lg:mr-4" },
+                [
+                  _c("div", { staticClass: "mr-4 text-center" }, [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(event.isItRecurringYearly ? "✔" : "no") +
+                        "\n                "
+                    )
+                  ])
+                ]
+              )
+            ]
+          )
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "flex mt-4 justify-center" }, [
+          _c("div", { staticClass: "btn-group" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-sm cursor rounded-lg",
+                attrs: { disabled: _vm.isPreviousButtonDisabled },
+                on: {
+                  click: function($event) {
+                    return _vm.jumpToPage(1)
+                  }
+                }
+              },
               [
-                _c("div", [
-                  _vm._v(
-                    "\n                " + _vm._s(event.date) + "\n            "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "lg:ml-8 lg:col-span-2" }, [
-                  _vm._v(
-                    "\n                " + _vm._s(event.name) + "\n            "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-span-3" }, [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(event.eventDescription) +
-                      "\n            "
-                  )
-                ])
+                _vm._v(
+                  "\n                " +
+                    _vm._s(this.$options.static.firstButton) +
+                    "\n\n            "
+                )
               ]
             ),
             _vm._v(" "),
             _c(
-              "div",
-              { staticClass: "flex items-center text-center lg:mr-4" },
+              "button",
+              {
+                staticClass: "btn btn-sm cursor rounded-lg",
+                attrs: { disabled: _vm.isPreviousButtonDisabled },
+                on: { click: _vm.previousPage }
+              },
               [
-                _c("div", { staticClass: "mr-4 text-center" }, [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(event.isItRecurringYearly ? "✔" : "no") +
-                      "\n            "
-                  )
-                ])
+                _vm._v(
+                  "\n                " +
+                    _vm._s(this.$options.static.prevButton) +
+                    "\n            "
+                )
               ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "btn btn-sm", attrs: { disabled: "" } },
+              [
+                _vm._v(
+                  "\n            " + _vm._s(_vm.pageNumber) + "\n            "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.pageNumber + 1 <= _vm.paginator.last_page,
+                    expression: "pageNumber + 1 <= paginator.last_page"
+                  }
+                ],
+                staticClass: "btn btn-sm cursor",
+                on: {
+                  click: function($event) {
+                    return _vm.jumpToPage(_vm.pageNumber + 1)
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  "\n            " +
+                    _vm._s(_vm.pageNumber + 1) +
+                    "\n            "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.pageNumber + 2 <= _vm.paginator.last_page,
+                    expression: "pageNumber + 2 <= paginator.last_page"
+                  }
+                ],
+                staticClass: "btn btn-sm cursor",
+                on: {
+                  click: function($event) {
+                    return _vm.jumpToPage(_vm.pageNumber + 2)
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  "\n            " +
+                    _vm._s(_vm.pageNumber + 2) +
+                    "\n            "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-sm cursor",
+                attrs: { disabled: _vm.isNextButtonDisabled },
+                on: { click: _vm.nextPage }
+              },
+              [_vm._v("\n                >\n            ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-sm cursor",
+                attrs: { disabled: _vm.isNextButtonDisabled },
+                on: {
+                  click: function($event) {
+                    return _vm.jumpToPage(_vm.paginator.last_page)
+                  }
+                }
+              },
+              [_vm._v("\n                >>\n            ")]
             )
-          ]
-        )
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "flex mt-4 justify-center" }, [
-        _c("div", { staticClass: "btn-group" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-sm cursor rounded-lg",
-              attrs: { disabled: _vm.isPreviousButtonDisabled },
-              on: {
-                click: function($event) {
-                  return _vm.jumpToPage(1)
-                }
-              }
-            },
-            [
-              _vm._v(
-                "\n            " +
-                  _vm._s(this.$options.static.firstButton) +
-                  "\n\n        "
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-sm cursor rounded-lg",
-              attrs: { disabled: _vm.isPreviousButtonDisabled },
-              on: { click: _vm.previousPage }
-            },
-            [
-              _vm._v(
-                "\n            " +
-                  _vm._s(this.$options.static.prevButton) +
-                  "\n        "
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c("button", { staticClass: "btn btn-sm", attrs: { disabled: "" } }, [
-            _vm._v("\n        " + _vm._s(_vm.pageNumber) + "\n        ")
-          ]),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.pageNumber + 1 <= _vm.paginator.last_page,
-                  expression: "pageNumber + 1 <= paginator.last_page"
-                }
-              ],
-              staticClass: "btn btn-sm cursor",
-              on: {
-                click: function($event) {
-                  return _vm.jumpToPage(_vm.pageNumber + 1)
-                }
-              }
-            },
-            [_vm._v("\n        " + _vm._s(_vm.pageNumber + 1) + "\n        ")]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.pageNumber + 2 <= _vm.paginator.last_page,
-                  expression: "pageNumber + 2 <= paginator.last_page"
-                }
-              ],
-              staticClass: "btn btn-sm cursor",
-              on: {
-                click: function($event) {
-                  return _vm.jumpToPage(_vm.pageNumber + 2)
-                }
-              }
-            },
-            [_vm._v("\n        " + _vm._s(_vm.pageNumber + 2) + "\n        ")]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-sm cursor",
-              attrs: { disabled: _vm.isNextButtonDisabled },
-              on: { click: _vm.nextPage }
-            },
-            [_vm._v("\n            >\n        ")]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-sm cursor",
-              attrs: { disabled: _vm.isNextButtonDisabled },
-              on: {
-                click: function($event) {
-                  return _vm.jumpToPage(_vm.paginator.last_page)
-                }
-              }
-            },
-            [_vm._v("\n            >>\n        ")]
-          )
+          ])
         ])
-      ])
-    ],
-    2
-  )
+      ],
+      2
+    )
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "block mb-5" }, [
+      _c("span", { staticClass: "text-center font-semibold" }, [
+        _vm._v("Sigle date query")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "block mb-5" }, [
+      _c("span", { staticClass: "text-center font-semibold" }, [
+        _vm._v("Search interval over all years")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
