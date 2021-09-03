@@ -32,11 +32,11 @@ Route::get('/filters', function () {
     return view('filters');
 });
 
-Route::get("/events/{numberOfEventsPerPage}/{name}/{pageNumber}", [EventController::class, 'index']);
+Route::get("/events/{perPage}/{sortBy}/{page?}", [EventController::class, 'index']);
 
-Route::get("/events/{numberOfEventsPerPage}/{name}/{pageNumber}/{search}", [FilterController::class, 'searchString']);
 
-Route::post("/events/filters", [FilterController::class, 'search']);
+Route::get("/events/{perPage}/{sortBy}/{search}/{page?}", [FilterController::class, 'searchString']);
+
 
 Route::post('/events', [EventController::class, 'store']);
 

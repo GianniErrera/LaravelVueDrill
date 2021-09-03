@@ -12,9 +12,9 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($perPage, $name, $page)
+    public function index($perPage, $sortby, $page)
     {
-        return Event::paginate($perPage, ['*'], $name, $page);
+        return Event::paginate($perPage, ['*'], "page", $page);
     }
 
     /**

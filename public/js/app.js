@@ -4188,7 +4188,7 @@ var buttonLabels = {
       }],
       paginator: [],
       selected: "date"
-    }, _defineProperty(_ref, "paginator", []), _defineProperty(_ref, "pageNumber", 1), _defineProperty(_ref, "numberOfEventsPerPage", 15), _defineProperty(_ref, "name", "Events"), _ref;
+    }, _defineProperty(_ref, "paginator", []), _defineProperty(_ref, "pageNumber", 1), _defineProperty(_ref, "numberOfEventsPerPage", 15), _defineProperty(_ref, "name", "page"), _ref;
   },
   "static": {
     firstButton: "<<",
@@ -4196,8 +4196,8 @@ var buttonLabels = {
     prevButton: "<"
   },
   watch: {
-    "filters.search": {
-      handler: 'searchFilter',
+    "filters": {
+      handler: 'applyFilters',
       deep: true
     }
   },
@@ -4225,41 +4225,58 @@ var buttonLabels = {
     applyFilters: function applyFilters() {
       var _this = this;
 
-      axios.post("/events/filters", {
-        filters: this.filters
-      }).then(function (response) {
-        return _this.paginator = response.data;
-      });
+      if (this.filters.singleDate != "") {
+        axios.get("/events/single/".concat(this.numberOfEventsPerPage, "/1/").concat(this.filters.selected, "/").concat(this.filters.singleDate, "/").concat(this.filters.search)).then(function (response) {
+          return _this.paginator = response.data;
+        });
+      } else if (this.filters.searchRange != "") {
+        axios.get("/events/range/".concat(this.numberOfEventsPerPage, "/1/").concat(this.filters.selected, "/").concat(this.startDate, "/").concat(this.filters.endDate, "/").concat(this.filters.ignoreYearFromQuery, "/").concat(this.search)).then(function (response) {
+          return _this.paginator = response.data;
+        });
+      } else if (this.filters.search != "") {
+        axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.filters.search)).then(function (response) {
+          return _this.paginator = response.data;
+        });
+      } else {
+        axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.pageNumber)).then(function (response) {
+          return _this.paginator = response.data;
+        });
+      }
     },
-    searchFilter: function searchFilter() {
+    nextPage: function nextPage() {
       var _this2 = this;
 
-      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber, "/").concat(this.filters.search)).then(function (response) {
+      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber + 1)).then(function (response) {
         return _this2.paginator = response.data;
       });
     },
-    nextPage: function nextPage() {
+    previousPage: function previousPage() {
       var _this3 = this;
 
-      this.pageNumber = this.pageNumber + 1;
       axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
         return _this3.paginator = response.data;
       });
     },
-    previousPage: function previousPage() {
+    firstPage: function firstPage() {
       var _this4 = this;
 
-      this.pageNumber = this.pageNumber - 1;
-      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
+      axios.get("{this.paginator.first_page_url}").then(function (response) {
         return _this4.paginator = response.data;
       });
     },
-    jumpToPage: function jumpToPage($pageTarget) {
+    lastPage: function lastPage() {
       var _this5 = this;
 
-      this.pageNumber = $pageTarget;
-      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
+      axios.get("{this.paginator.last_page_url}").then(function (response) {
         return _this5.paginator = response.data;
+      });
+    },
+    jumpToPage: function jumpToPage($pageTarget) {
+      var _this6 = this;
+
+      this.pageNumber = $pageTarget;
+      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.pageNumber)).then(function (response) {
+        return _this6.paginator = response.data;
       });
     },
     isItFirstPage: function isItFirstPage() {
@@ -4279,10 +4296,10 @@ var buttonLabels = {
     }
   },
   mounted: function mounted() {
-    var _this6 = this;
+    var _this7 = this;
 
-    axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
-      return _this6.paginator = response.data;
+    axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.pageNumber)).then(function (response) {
+      return _this7.paginator = response.data;
     });
     this.datepicker = new Litepicker({
       element: document.getElementById('searchDate'),
@@ -4294,14 +4311,14 @@ var buttonLabels = {
       splitView: true,
       setup: function setup(picker) {
         picker.on('selected', function (date) {
-          console.log(_this6);
-          _this6.filters.search = "";
-          _this6.filters.singleFormattedDate = date.format('DD-MMM-YYYY');
-          _this6.filters.singleDate = date.format('YYYY-MM-DD');
-          _this6.filters.startDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+          console.log(_this7);
+          _this7.filters.search = "";
+          _this7.filters.singleFormattedDate = date.format('DD-MMM-YYYY');
+          _this7.filters.singleDate = date.format('YYYY-MM-DD');
+          _this7.filters.startDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
 
-          _this6.filters.endDate = "";
-          _this6.filters.searchRange = "";
+          _this7.filters.endDate = "";
+          _this7.filters.searchRange = "";
         });
       }
     });
@@ -4315,12 +4332,12 @@ var buttonLabels = {
       splitView: true,
       setup: function setup(picker) {
         picker.on('selected', function (startDate, endDate) {
-          _this6.filters.searchRange = startDate.format('DD-MMM-YYYY') + " - " + endDate.format('DD-MMM-YYYY');
-          _this6.filters.startDate = startDate.format('YYYY-MM-DD');
-          _this6.filters.endDate = endDate.format('YYYY-MM-DD');
-          _this6.filters.singleDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+          _this7.filters.searchRange = startDate.format('DD-MMM-YYYY') + " - " + endDate.format('DD-MMM-YYYY');
+          _this7.filters.startDate = startDate.format('YYYY-MM-DD');
+          _this7.filters.endDate = endDate.format('YYYY-MM-DD');
+          _this7.filters.singleDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
 
-          _this6.filters.singleFormattedDate = "";
+          _this7.filters.singleFormattedDate = "";
         });
       }
     });
