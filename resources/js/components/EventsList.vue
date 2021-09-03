@@ -50,6 +50,7 @@
                     <input
                         type="checkbox"
                         v-model="filters.singleDateQuery"
+                        v-on:change="clearDatepickers"
                         class="flex-none checkbox"
                     >
                 </div>
@@ -184,6 +185,7 @@
                     class="btn btn-sm cursor"
                     :disabled="isNextButtonDisabled"
                     >
+                    <!--This is just the "<" character -->
                     >
                 </button>
                 <button
@@ -191,6 +193,7 @@
                     class="btn btn-sm cursor"
                     :disabled="isNextButtonDisabled"
                     >
+                    <!--This is just the "<<" character -->
                     >>
                 </button>
                 </div>
@@ -253,10 +256,9 @@
         methods: {
             applyFilters() {
                 if(this.filters.singleDate != "") {
-                    axios.get(`/events/single/${this.numberOfEventsPerPage}/${this.pageNumber}/${this.filters.selected}/${this.filters.singleDate}/${this.filters.search}`)
+                    axios.get(`/events/singledate/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.filters.singleDate}/${this.filters.pageNumber}`)
                     .then(response=>this.paginator = response.data);
-                }
-                else if(this.filters.searchRange != "") {
+                } else if(this.filters.searchRange != "") {
                     axios.get(`/events/range/${this.numberOfEventsPerPage}/${this.pageNumber}/${this.filters.selected}/${this.startDate}/${this.filters.endDate}/${this.filters.ignoreYearFromQuery}/${this.search}`)
                     .then(response=>this.paginator = response.data);
                 } else if(this.filters.search != "") {

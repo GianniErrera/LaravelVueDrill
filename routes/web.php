@@ -37,6 +37,7 @@ Route::get("/events/{perPage}/{sortBy}/{page?}", [EventController::class, 'index
 
 Route::get("/events/search/{perPage}/{sortBy}/{search}/{page?}", [FilterController::class, 'searchString']);
 
+Route::get("/events/singledate/{perPage}/{sortBy}/{date}/{page?}", [FilterController::class, 'singleDate']);
 
 Route::post('/events', [EventController::class, 'store']);
 
