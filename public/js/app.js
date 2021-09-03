@@ -4188,7 +4188,7 @@ var buttonLabels = {
       }],
       paginator: [],
       selected: "date"
-    }, _defineProperty(_ref, "paginator", []), _defineProperty(_ref, "pageNumber", 1), _defineProperty(_ref, "numberOfEventsPerPage", 15), _defineProperty(_ref, "name", "page"), _ref;
+    }, _defineProperty(_ref, "paginator", []), _defineProperty(_ref, "pageNumber", 1), _defineProperty(_ref, "numberOfEventsPerPage", 15), _defineProperty(_ref, "paginatorPathURL", ""), _ref;
   },
   "static": {
     firstButton: "<<",
@@ -4199,9 +4199,35 @@ var buttonLabels = {
     "filters": {
       handler: 'applyFilters',
       deep: true
+    },
+    "paginator.data": {
+      handler: 'paginatorURL',
+      deep: true
     }
   },
   methods: {
+    applyFilters: function applyFilters() {
+      var _this = this;
+
+      if (this.filters.singleDate != "") {
+        axios.get("/events/single/".concat(this.numberOfEventsPerPage, "/").concat(this.pageNumber, "/").concat(this.filters.selected, "/").concat(this.filters.singleDate, "/").concat(this.filters.search)).then(function (response) {
+          return _this.paginator = response.data;
+        });
+      } else if (this.filters.searchRange != "") {
+        axios.get("/events/range/".concat(this.numberOfEventsPerPage, "/").concat(this.pageNumber, "/").concat(this.filters.selected, "/").concat(this.startDate, "/").concat(this.filters.endDate, "/").concat(this.filters.ignoreYearFromQuery, "/").concat(this.search)).then(function (response) {
+          return _this.paginator = response.data;
+        });
+      } else if (this.filters.search != "") {
+        this.pageNumber = 1;
+        axios.get("/events/search/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.filters.search, "/").concat(this.pageNumber)).then(function (response) {
+          return _this.paginator = response.data;
+        });
+      } else {
+        axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.pageNumber)).then(function (response) {
+          return _this.paginator = response.data;
+        });
+      }
+    },
     removeFilters: function removeFilters() {
       this.filters.selected = "date";
       this.filters.singleDateQuery = false;
@@ -4222,33 +4248,26 @@ var buttonLabels = {
       this.datepicker.clearSelection();
       this.rangepicker.clearSelection();
     },
-    applyFilters: function applyFilters() {
-      var _this = this;
+    paginatorURL: function paginatorURL() {
+      var indexOfLastSlash = 0;
 
-      if (this.filters.search != "") {
-        this.pageNumber = 1;
-        axios.get("/events/search/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.filters.search, "/").concat(this.pageNumber)).then(function (response) {
-          return _this.paginator = response.data;
-        });
-      } else if (this.filters.singleDate != "") {
-        axios.get("/events/single/".concat(this.numberOfEventsPerPage, "/1/").concat(this.filters.selected, "/").concat(this.filters.singleDate, "/").concat(this.filters.search)).then(function (response) {
-          return _this.paginator = response.data;
-        });
-      } else if (this.filters.searchRange != "") {
-        axios.get("/events/range/".concat(this.numberOfEventsPerPage, "/1/").concat(this.filters.selected, "/").concat(this.startDate, "/").concat(this.filters.endDate, "/").concat(this.filters.ignoreYearFromQuery, "/").concat(this.search)).then(function (response) {
-          return _this.paginator = response.data;
-        });
-      } else {
-        axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.pageNumber)).then(function (response) {
-          return _this.paginator = response.data;
-        });
+      for (var i = 0; i < this.paginator.path.length; i++) {
+        console.log(this.paginator.path[i]);
+
+        if (this.paginator.path[i] == "/") {
+          indexOfLastSlash = i;
+        }
+
+        ;
       }
+
+      this.paginatorPathURL = this.paginator.path.substring(0, indexOfLastSlash);
     },
     nextPage: function nextPage() {
       var _this2 = this;
 
       this.pageNumber += 1;
-      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.pageNumber)).then(function (response) {
+      axios.get("".concat(this.paginatorPathURL, "/").concat(this.pageNumber)).then(function (response) {
         return _this2.paginator = response.data;
       });
     },
@@ -4256,7 +4275,7 @@ var buttonLabels = {
       var _this3 = this;
 
       this.pageNumber -= 1;
-      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.pageNumber)).then(function (response) {
+      axios.get("".concat(this.paginatorPathURL, "/").concat(this.pageNumber)).then(function (response) {
         return _this3.paginator = response.data;
       });
     },
@@ -4264,7 +4283,7 @@ var buttonLabels = {
       var _this4 = this;
 
       this.pageNumber = 1;
-      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.pageNumber)).then(function (response) {
+      axios.get("".concat(this.paginatorPathURL, "/1}")).then(function (response) {
         return _this4.paginator = response.data;
       });
     },
@@ -4272,7 +4291,7 @@ var buttonLabels = {
       var _this5 = this;
 
       this.pageNumber = this.paginator.last_page;
-      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.pageNumber)).then(function (response) {
+      axios.get("".concat(this.paginatorPathURL, "/").concat(this.pageNumber)).then(function (response) {
         return _this5.paginator = response.data;
       });
     },
@@ -4280,16 +4299,9 @@ var buttonLabels = {
       var _this6 = this;
 
       this.pageNumber = $pageTarget;
-      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.pageNumber)).then(function (response) {
+      axios.get("".concat(this.paginatorPathURL, "/").concat(this.pageNumber)).then(function (response) {
         return _this6.paginator = response.data;
       });
-    },
-    isItFirstPage: function isItFirstPage() {
-      if (this.pageNumber == 0) {
-        return true;
-      } else {
-        return false;
-      }
     }
   },
   computed: {
@@ -24196,7 +24208,7 @@ var render = function() {
           )
         }),
         _vm._v(" "),
-        _c("div", { staticClass: "flex mt-4 justify-center" }, [
+        _c("div", { staticClass: "flex mt-4 justify-center hover:text-" }, [
           _c("div", { staticClass: "btn-group" }, [
             _c(
               "button",

@@ -130,7 +130,7 @@
                 </div>
             </div>
             <!-- Events paginator buttons -->
-            <div class="flex mt-4 justify-center">
+            <div class="flex mt-4 justify-center hover:text-">
                 <div class="btn-group">
                 <button
                     @click="jumpToPage(1)"
@@ -233,7 +233,7 @@
                 paginator: [],
                 pageNumber: 1,
                 numberOfEventsPerPage: 15,
-                name: "page"
+                paginatorPathURL: ""
                 }
             },
         static: {
@@ -244,9 +244,30 @@
             "filters": {
                 handler: 'applyFilters',
                 deep: true
+            },
+            "paginator.data": {
+                handler: 'paginatorURL',
+                deep: true
             }
         },
         methods: {
+            applyFilters() {
+                if(this.filters.singleDate != "") {
+                    axios.get(`/events/single/${this.numberOfEventsPerPage}/${this.pageNumber}/${this.filters.selected}/${this.filters.singleDate}/${this.filters.search}`)
+                    .then(response=>this.paginator = response.data);
+                }
+                else if(this.filters.searchRange != "") {
+                    axios.get(`/events/range/${this.numberOfEventsPerPage}/${this.pageNumber}/${this.filters.selected}/${this.startDate}/${this.filters.endDate}/${this.filters.ignoreYearFromQuery}/${this.search}`)
+                    .then(response=>this.paginator = response.data);
+                } else if(this.filters.search != "") {
+                    this.pageNumber = 1;
+                    axios.get(`/events/search/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.filters.search}/${this.pageNumber}`)
+                .then(response=>this.paginator = response.data);
+                } else {
+                    axios.get(`/events/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.pageNumber}`)
+                .then(response=>this.paginator = response.data);
+                }
+            },
             removeFilters() {
                 this.filters.selected = "date";
                 this.filters.singleDateQuery = false;
@@ -267,51 +288,36 @@
                 this.datepicker.clearSelection();
                 this.rangepicker.clearSelection();
             },
-            applyFilters() {
-                if(this.filters.search != "") {
-                    this.pageNumber = 1;
-                    axios.get(`/events/search/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.filters.search}/${this.pageNumber}`)
-                .then(response=>this.paginator = response.data);
-                } else if(this.filters.singleDate != "") {
-                    axios.get(`/events/single/${this.numberOfEventsPerPage}/1/${this.filters.selected}/${this.filters.singleDate}/${this.filters.search}`)
-                    .then(response=>this.paginator = response.data);
+            paginatorURL() {
+                var indexOfLastSlash = 0;
+                for(var i = 0; i < this.paginator.path.length; i++) {
+                    console.log(this.paginator.path.[i]);
+                    if(this.paginator.path.[i] == "/") {
+                        indexOfLastSlash = i;
+                    };
                 }
-                else if(this.filters.searchRange != "") {
-                    axios.get(`/events/range/${this.numberOfEventsPerPage}/1/${this.filters.selected}/${this.startDate}/${this.filters.endDate}/${this.filters.ignoreYearFromQuery}/${this.search}`)
-                    .then(response=>this.paginator = response.data);
-                } else {
-                    axios.get(`/events/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.pageNumber}`)
-                .then(response=>this.paginator = response.data);
-                }
+                this.paginatorPathURL = this.paginator.path.substring(0, indexOfLastSlash);
             },
             nextPage() {
                 this.pageNumber += 1;
-                axios.get(`/events/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.pageNumber}`)
+                axios.get(`${this.paginatorPathURL}/${this.pageNumber}`)
                 .then(response=>this.paginator = response.data);
             },
             previousPage() {
                 this.pageNumber -= 1;
-                axios.get(`/events/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.pageNumber}`).then(response=>this.paginator = response.data);
+                axios.get(`${this.paginatorPathURL}/${this.pageNumber}`).then(response=>this.paginator = response.data);
             },
             firstPage() {
                 this.pageNumber = 1;
-                axios.get(`/events/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.pageNumber}`).then(response=>this.paginator = response.data);
+                axios.get(`${this.paginatorPathURL}/1}`).then(response=>this.paginator = response.data);
             },
             lastPage() {
                 this.pageNumber = this.paginator.last_page;
-                axios.get(`/events/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.pageNumber}`).then(response=>this.paginator = response.data);
+                axios.get(`${this.paginatorPathURL}/${this.pageNumber}`).then(response=>this.paginator = response.data);
             },
             jumpToPage($pageTarget) {
                 this.pageNumber = $pageTarget;
-                axios.get(`/events/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.pageNumber}`).then(response=>this.paginator = response.data);
-            },
-            isItFirstPage() {
-                if (this.pageNumber == 0) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
+                axios.get(`${this.paginatorPathURL}/${this.pageNumber}`).then(response=>this.paginator = response.data);
             }
         },
         computed: {
