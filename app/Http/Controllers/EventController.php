@@ -14,7 +14,8 @@ class EventController extends Controller
      */
     public function index($perPage, $sortby, $page)
     {
-        return Event::paginate($perPage, ['*'], "page", $page);
+        return Event::orderBy($sortby)
+        ->paginate($perPage, ['*'], "page", $page);
     }
 
     /**

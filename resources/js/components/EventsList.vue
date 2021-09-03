@@ -157,7 +157,7 @@
                 <!--This is shown only when on last two pages -->
                 <button
                     class="btn btn-sm cursor"
-                    v-show="paginator.last_page > 3 && pageNumber >= paginator.last_page - 1"
+                    v-show="paginator.last_page >= 3 && pageNumber >= 2"
                     @click="jumpToPage(pageNumber - 1)">
                 {{ pageNumber - 1 }}
                 </button>
@@ -175,7 +175,7 @@
                 </button>
                 <button
                     class="btn btn-sm cursor"
-                    v-show="pageNumber + 2 <= paginator.last_page"
+                    v-show="pageNumber === 1 && pageNumber + 2 <= paginator.last_page"
                     @click="jumpToPage(pageNumber + 2)">
                 {{ pageNumber + 2 }}
                 </button>
@@ -268,39 +268,42 @@
                 this.rangepicker.clearSelection();
             },
             applyFilters() {
-                if(this.filters.singleDate != "") {
+                if(this.filters.search != "") {
+                    this.pageNumber = 1;
+                    axios.get(`/events/search/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.filters.search}/${this.pageNumber}`)
+                .then(response=>this.paginator = response.data);
+                } else if(this.filters.singleDate != "") {
                     axios.get(`/events/single/${this.numberOfEventsPerPage}/1/${this.filters.selected}/${this.filters.singleDate}/${this.filters.search}`)
                     .then(response=>this.paginator = response.data);
                 }
                 else if(this.filters.searchRange != "") {
                     axios.get(`/events/range/${this.numberOfEventsPerPage}/1/${this.filters.selected}/${this.startDate}/${this.filters.endDate}/${this.filters.ignoreYearFromQuery}/${this.search}`)
                     .then(response=>this.paginator = response.data);
-                }
-                else if(this.filters.search != "") {
-                     axios.get(`/events/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.filters.search}`)
-                .then(response=>this.paginator = response.data);
-                }
-                else {
+                } else {
                     axios.get(`/events/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.pageNumber}`)
                 .then(response=>this.paginator = response.data);
                 }
             },
             nextPage() {
-                axios.get(`/events/${this.numberOfEventsPerPage}/${this.name}/${this.pageNumber + 1}`)
+                this.pageNumber += 1;
+                axios.get(`/events/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.pageNumber}`)
                 .then(response=>this.paginator = response.data);
             },
             previousPage() {
-                axios.get(`/events/${this.numberOfEventsPerPage}/${this.name}/${this.pageNumber}`).then(response=>this.paginator = response.data);
+                this.pageNumber -= 1;
+                axios.get(`/events/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.pageNumber}`).then(response=>this.paginator = response.data);
             },
             firstPage() {
-                axios.get(`{this.paginator.first_page_url}`).then(response=>this.paginator = response.data);
+                this.pageNumber = 1;
+                axios.get(`/events/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.pageNumber}`).then(response=>this.paginator = response.data);
             },
             lastPage() {
-                axios.get(`{this.paginator.last_page_url}`).then(response=>this.paginator = response.data);
+                this.pageNumber = this.paginator.last_page;
+                axios.get(`/events/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.pageNumber}`).then(response=>this.paginator = response.data);
             },
             jumpToPage($pageTarget) {
                 this.pageNumber = $pageTarget;
-                axios.get(`/events/${this.numberOfEventsPerPage}/${this.pageNumber}`).then(response=>this.paginator = response.data);
+                axios.get(`/events/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.pageNumber}`).then(response=>this.paginator = response.data);
             },
             isItFirstPage() {
                 if (this.pageNumber == 0) {

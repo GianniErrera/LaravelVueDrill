@@ -4225,16 +4225,17 @@ var buttonLabels = {
     applyFilters: function applyFilters() {
       var _this = this;
 
-      if (this.filters.singleDate != "") {
+      if (this.filters.search != "") {
+        this.pageNumber = 1;
+        axios.get("/events/search/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.filters.search, "/").concat(this.pageNumber)).then(function (response) {
+          return _this.paginator = response.data;
+        });
+      } else if (this.filters.singleDate != "") {
         axios.get("/events/single/".concat(this.numberOfEventsPerPage, "/1/").concat(this.filters.selected, "/").concat(this.filters.singleDate, "/").concat(this.filters.search)).then(function (response) {
           return _this.paginator = response.data;
         });
       } else if (this.filters.searchRange != "") {
         axios.get("/events/range/".concat(this.numberOfEventsPerPage, "/1/").concat(this.filters.selected, "/").concat(this.startDate, "/").concat(this.filters.endDate, "/").concat(this.filters.ignoreYearFromQuery, "/").concat(this.search)).then(function (response) {
-          return _this.paginator = response.data;
-        });
-      } else if (this.filters.search != "") {
-        axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.filters.search)).then(function (response) {
           return _this.paginator = response.data;
         });
       } else {
@@ -4246,28 +4247,32 @@ var buttonLabels = {
     nextPage: function nextPage() {
       var _this2 = this;
 
-      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber + 1)).then(function (response) {
+      this.pageNumber += 1;
+      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.pageNumber)).then(function (response) {
         return _this2.paginator = response.data;
       });
     },
     previousPage: function previousPage() {
       var _this3 = this;
 
-      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.name, "/").concat(this.pageNumber)).then(function (response) {
+      this.pageNumber -= 1;
+      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.pageNumber)).then(function (response) {
         return _this3.paginator = response.data;
       });
     },
     firstPage: function firstPage() {
       var _this4 = this;
 
-      axios.get("{this.paginator.first_page_url}").then(function (response) {
+      this.pageNumber = 1;
+      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.pageNumber)).then(function (response) {
         return _this4.paginator = response.data;
       });
     },
     lastPage: function lastPage() {
       var _this5 = this;
 
-      axios.get("{this.paginator.last_page_url}").then(function (response) {
+      this.pageNumber = this.paginator.last_page;
+      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.pageNumber)).then(function (response) {
         return _this5.paginator = response.data;
       });
     },
@@ -4275,7 +4280,7 @@ var buttonLabels = {
       var _this6 = this;
 
       this.pageNumber = $pageTarget;
-      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.pageNumber)).then(function (response) {
+      axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.pageNumber)).then(function (response) {
         return _this6.paginator = response.data;
       });
     },
@@ -24266,11 +24271,8 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value:
-                      _vm.paginator.last_page > 3 &&
-                      _vm.pageNumber >= _vm.paginator.last_page - 1,
-                    expression:
-                      "paginator.last_page > 3 && pageNumber >= paginator.last_page - 1"
+                    value: _vm.paginator.last_page >= 3 && _vm.pageNumber >= 2,
+                    expression: "paginator.last_page >= 3 && pageNumber >= 2"
                   }
                 ],
                 staticClass: "btn btn-sm cursor",
@@ -24333,8 +24335,11 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.pageNumber + 2 <= _vm.paginator.last_page,
-                    expression: "pageNumber + 2 <= paginator.last_page"
+                    value:
+                      _vm.pageNumber === 1 &&
+                      _vm.pageNumber + 2 <= _vm.paginator.last_page,
+                    expression:
+                      "pageNumber === 1 && pageNumber + 2 <= paginator.last_page"
                   }
                 ],
                 staticClass: "btn btn-sm cursor",
