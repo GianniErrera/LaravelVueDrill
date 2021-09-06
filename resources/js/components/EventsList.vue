@@ -5,7 +5,7 @@
             <div class="lg:flex lg:justify-around pt-4">
 
             <div class="text-center mb-4 mt-8">
-                <select v-model="filters.selected" v-on:change="applyFilters" class="select select-bordered">
+                <select v-model="filters.selected" v-on:change="backToPageOne" class="select select-bordered">
                     <option v-for="option in options" v-bind:key="option.value" v-bind:value="option.value" >
                         {{ option.text }}
                     </option>
@@ -13,7 +13,7 @@
             </div>
 
 
-            <div v-show="!filters.Query" class="md:mb-3 block text-center">
+            <div v-show="!filters.single_date_query" class="md:mb-3 block text-center">
                 <label for="search_range" class="block text-center mb-3 font-size-14px font-semibold">Search over dates range:</label>
                 <input
                     v-model="filters.search_range"
@@ -27,7 +27,7 @@
             </div>
 
 
-            <div v-show="filters.Query" class="block md:mb-3 text-center">
+            <div v-show="filters.single_date_query" class="block md:mb-3 text-center">
                 <label for="searchDate" class="block text-center mb-3 font-size-14px font-semibold">Pick a date:</label>
 
                 <input
@@ -256,27 +256,13 @@
         },
         methods: {
             applyFilters() {
+                this.page_number = 1;
                 this.filters_string = JSON.stringify(this.filters);
-                alert(this.filters_string);
-
-                if(this.filters.single_date != "") {
-                    axios.get(`/events//${this.number_of_events_per_page}/${this.filters.selected}/${this.filters.single_date}/${this.filters.page_number}`)
-                    .then(response=>this.paginator = response.data);
-                } else if(this.filters.search_range != "") {
-                    axios.get(`/events/range/${this.number_of_events_per_page}/${this.page_number}/${this.filters.selected}/${this.start_date}/${this.filters.end_date}/${this.filters.ignore_year_from_query}/${this.search}`)
-                    .then(response=>this.paginator = response.data);
-                } else if(this.filters.search != "") {
-                    this.page_number = 1;
-                    axios.get(`/events/search/${this.number_of_events_per_page}/${this.filters.selected}/${this.filters.search}/${this.page_number}`)
-                .then(response=>this.paginator = response.data);
-                } else {
-                     axios.get(`/events/${this.number_of_events_per_page}/${this.filters.selected}/${this.pageNumber}`)
-                .then(response=>this.paginator = response.data);
-                }
+                axios.get(`/events/${this.filters_string}/${this.number_of_events_per_page}/${this.page_number}`).then(response=>this.paginator = response.data);
             },
             removeFilters() {
                 this.filters.selected = "date";
-                this.filters.Query = false;
+                this.filters.single_date_query = false;
                 this.filters.search = "";
                 this.filters.single_date = "";
                 this.filters.single_formatted_date = "";
@@ -284,6 +270,7 @@
                 this.filters.start_date = "";
                 this.filters.end_date = "";
                 this.filters.ignore_year_from_query = false;
+                this.page_number = 1;
             },
             clearDatepickers() {
                 this.filters.single_date = "";
@@ -291,6 +278,7 @@
                 this.filters.search_range = "";
                 this.filters.start_date = "";
                 this.filters.end_date = "";
+                this.page_number = 1;
                 this.datepicker.clearSelection();
                 this.rangepicker.clearSelection();
             },
@@ -302,6 +290,9 @@
                     };
                 }
                 this.paginator_path_url = this.paginator.path.substring(0, indexOfLastSlash);
+            },
+            backToPageOne() {
+                this.page_number = 1;
             },
             nextPage() {
                 this.page_number += 1;
@@ -334,8 +325,8 @@
             }
         },
         mounted() {
-
-            axios.get(`/events/${this.number_of_events_per_page}/${this.filters.selected}/${this.page_number}`).then(response=>this.paginator = response.data);
+            this.filters_string = JSON.stringify(this.filters);
+            axios.get(`/events/${this.filters_string}/${this.number_of_events_per_page}/${this.page_number}`).then(response=>this.paginator = response.data);
 
             this.datepicker= new Litepicker({
                 element: document.getElementById('searchDate'),

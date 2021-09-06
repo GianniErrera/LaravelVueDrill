@@ -12,9 +12,13 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($perPage, $sortby, $page)
+    public function index($filters, $perPage, $page = 1)
     {
-        return Event::orderBy($sortby)
+        $query_filters = json_decode($filters);
+
+        return Event::where('name', 'like', '%' . $query_filters->search . "%")
+        ->orWhere('eventDescription', 'like', '%' . $query_filters->search . "%")
+        ->orderBy($query_filters->selected)
         ->paginate($perPage, ['*'], "page", $page);
     }
 

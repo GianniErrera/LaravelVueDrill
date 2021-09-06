@@ -4213,31 +4213,15 @@ var buttonLabels = {
     applyFilters: function applyFilters() {
       var _this = this;
 
+      this.page_number = 1;
       this.filters_string = JSON.stringify(this.filters);
-      alert(this.filters_string);
-
-      if (this.filters.single_date != "") {
-        axios.get("/events//".concat(this.number_of_events_per_page, "/").concat(this.filters.selected, "/").concat(this.filters.single_date, "/").concat(this.filters.page_number)).then(function (response) {
-          return _this.paginator = response.data;
-        });
-      } else if (this.filters.search_range != "") {
-        axios.get("/events/range/".concat(this.number_of_events_per_page, "/").concat(this.page_number, "/").concat(this.filters.selected, "/").concat(this.start_date, "/").concat(this.filters.end_date, "/").concat(this.filters.ignore_year_from_query, "/").concat(this.search)).then(function (response) {
-          return _this.paginator = response.data;
-        });
-      } else if (this.filters.search != "") {
-        this.page_number = 1;
-        axios.get("/events/search/".concat(this.number_of_events_per_page, "/").concat(this.filters.selected, "/").concat(this.filters.search, "/").concat(this.page_number)).then(function (response) {
-          return _this.paginator = response.data;
-        });
-      } else {
-        axios.get("/events/".concat(this.number_of_events_per_page, "/").concat(this.filters.selected, "/").concat(this.pageNumber)).then(function (response) {
-          return _this.paginator = response.data;
-        });
-      }
+      axios.get("/events/".concat(this.filters_string, "/").concat(this.number_of_events_per_page, "/").concat(this.page_number)).then(function (response) {
+        return _this.paginator = response.data;
+      });
     },
     removeFilters: function removeFilters() {
       this.filters.selected = "date";
-      this.filters.Query = false;
+      this.filters.single_date_query = false;
       this.filters.search = "";
       this.filters.single_date = "";
       this.filters.single_formatted_date = "";
@@ -4245,6 +4229,7 @@ var buttonLabels = {
       this.filters.start_date = "";
       this.filters.end_date = "";
       this.filters.ignore_year_from_query = false;
+      this.page_number = 1;
     },
     clearDatepickers: function clearDatepickers() {
       this.filters.single_date = "";
@@ -4252,6 +4237,7 @@ var buttonLabels = {
       this.filters.search_range = "";
       this.filters.start_date = "";
       this.filters.end_date = "";
+      this.page_number = 1;
       this.datepicker.clearSelection();
       this.rangepicker.clearSelection();
     },
@@ -4267,6 +4253,9 @@ var buttonLabels = {
       }
 
       this.paginator_path_url = this.paginator.path.substring(0, indexOfLastSlash);
+    },
+    backToPageOne: function backToPageOne() {
+      this.page_number = 1;
     },
     nextPage: function nextPage() {
       var _this2 = this;
@@ -4320,7 +4309,8 @@ var buttonLabels = {
   mounted: function mounted() {
     var _this7 = this;
 
-    axios.get("/events/".concat(this.number_of_events_per_page, "/").concat(this.filters.selected, "/").concat(this.page_number)).then(function (response) {
+    this.filters_string = JSON.stringify(this.filters);
+    axios.get("/events/".concat(this.filters_string, "/").concat(this.number_of_events_per_page, "/").concat(this.page_number)).then(function (response) {
       return _this7.paginator = response.data;
     });
     this.datepicker = new Litepicker({
@@ -23854,7 +23844,7 @@ var render = function() {
                       $event.target.multiple ? $$selectedVal : $$selectedVal[0]
                     )
                   },
-                  _vm.applyFilters
+                  _vm.backToPageOne
                 ]
               }
             },
@@ -23882,8 +23872,8 @@ var render = function() {
               {
                 name: "show",
                 rawName: "v-show",
-                value: !_vm.filters.Query,
-                expression: "!filters.Query"
+                value: !_vm.filters.single_date_query,
+                expression: "!filters.single_date_query"
               }
             ],
             staticClass: "md:mb-3 block text-center"
@@ -23937,8 +23927,8 @@ var render = function() {
               {
                 name: "show",
                 rawName: "v-show",
-                value: _vm.filters.Query,
-                expression: "filters.Query"
+                value: _vm.filters.single_date_query,
+                expression: "filters.single_date_query"
               }
             ],
             staticClass: "block md:mb-3 text-center"
