@@ -4,8 +4,74 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use DateTime;
 
 class Event extends Model
 {
     use HasFactory;
+
+    public function scopeSingleDateQuery($query, $ignore_year_from_query, $single_date) {
+        if($ignore_year_from_query == false && $single_date != "") {
+            return $query->where('date', '=', $single_date);
+        } elseif ($ignore_year_from_query == true && $single_date != "") {
+           $month = date_format(date_create($single_date), 'm');
+           $day = date_format(date_create($single_date), 'd');
+           return $query->whereMonth('date', $month)
+            ->whereDay('date', $day);
+        }
+    }
+
+    public function scopeDateRangeQuery($query, $ignore_year_from_query, $start_date, $end_date) {
+        if($ignore_year_from_query == false && $start_date != "" && $end_date != "") {
+                $query->whereDate('date', '>=', date_format(date_create($start_date), 'Y-m-d'))
+                    ->whereDate('date', '<=', date_format(date_create($end_date), 'Y-m-d'));
+        } elseif ($ignore_year_from_query == true) {
+
+            if($start_date && $end_date) {
+                $rangeStartMonth = date_format(date_create($start_date), 'm');
+                $rangeStartDay = date_format(date_create($start_date), 'd');
+                $rangeEndMonth = date_format(date_create($end_date), 'm');
+                $rangeEndDay = date_format(date_create($end_date), 'd');
+                $start_dateNoYear = DateTime::createFromFormat('m-d', $rangeStartMonth . "-" . $rangeStartDay);
+                $end_dateNoYear = DateTime::createFromFormat('m-d', $rangeEndMonth . "-" . $rangeEndDay);
+
+
+                if($start_dateNoYear <= $end_dateNoYear) {  // if start date is less or equal end date we take all dates over the range between them
+
+                    if($rangeStartMonth == $rangeEndMonth) { // if start_date and end_date are on the same month, we must take all days in between range
+
+                        $query->
+                            whereDay('date', '>=', date_format(date_create($start_date), 'd'))->
+                            whereDay('date', '<=', date_format(date_create($end_date), 'd'));
+                    }
+
+                    else {
+
+                        $query->
+                            whereMonth('date', '>', date_format(date_create($start_date), 'm'))-> // take all months between start and end date, if any
+                            whereMonth('date', '<', date_format(date_create($end_date), 'm'))->
+                            orWhereMonth('date', '=', date_format(date_create($start_date), 'm'))-> // since start_date is after end_date, in the corner case they should be both in the same month we take e.g. all days > 20 and all days < 15
+                            whereDay('date', '>=', date_format(date_create($start_date), 'd'))->
+                            orWhereMonth('date', '=', date_format(date_create($end_date), 'm'))->
+                            whereDay('date', '<=', date_format(date_create($end_date), 'd'));
+                    }
+
+                }
+
+                else { // end_date is earlier than start_date
+                    $query->
+                        whereMonth('date', '>', date_format(date_create($start_date), 'm'))-> //if start_date is after end_date we take all months in the desired interval
+                        orWhereMonth('date', '<', date_format(date_create($end_date), 'm'))->
+                        orWhereMonth('date', '=', date_format(date_create($start_date), 'm'))-> // since start_date is after end_date, in the corner case they should be both in the same month we take e.g. all days > 20 and all days < 15
+                        whereDay('date', '>=', date_format(date_create($start_date), 'd'))->
+                        orWhereMonth('date', '=', date_format(date_create($end_date), 'm'))->
+                        whereDay('date', '<=', date_format(date_create($end_date), 'd'));
+                }
+            }
+
+        }
+    }
+
+
+
 }

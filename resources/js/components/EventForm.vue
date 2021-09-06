@@ -83,6 +83,7 @@
                 allowRepick: true,
                 autoRefresh: true,
                 splitView: true,
+                dropdowns: {"minYear":null,"maxYear":null,"months":true,"years":true},
                 setup: (picker) => {
                     picker.on('selected', (date) => {
                         this.formattedDate = date.format('DD-MMM-YYYY');

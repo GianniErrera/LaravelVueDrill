@@ -3890,6 +3890,12 @@ __webpack_require__.r(__webpack_exports__);
       allowRepick: true,
       autoRefresh: true,
       splitView: true,
+      dropdowns: {
+        "minYear": null,
+        "maxYear": null,
+        "months": true,
+        "years": true
+      },
       setup: function setup(picker) {
         picker.on('selected', function (date) {
           _this.formattedDate = date.format('DD-MMM-YYYY');
@@ -4157,7 +4163,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 var buttonLabels = {
   first: "<<",
   prev: "<",
@@ -4172,9 +4177,7 @@ var buttonLabels = {
       filters: {
         "selected": "date",
         "search": "",
-        "single_date_query": false,
         "single_date": "",
-        "single_formatted_date": "",
         "search_range": "",
         "start_date": "",
         "end_date": "",
@@ -4192,7 +4195,7 @@ var buttonLabels = {
       filters_string: "somthing",
       paginator: [],
       selected: "date"
-    }, _defineProperty(_ref, "paginator", []), _defineProperty(_ref, "page_number", 1), _defineProperty(_ref, "number_of_events_per_page", 15), _defineProperty(_ref, "paginator_path_url", ""), _ref;
+    }, _defineProperty(_ref, "paginator", []), _defineProperty(_ref, "page_number", 1), _defineProperty(_ref, "number_of_events_per_page", 15), _defineProperty(_ref, "paginator_path_url", ""), _defineProperty(_ref, "single_date_query", false), _defineProperty(_ref, "single_formatted_date", ""), _ref;
   },
   "static": {
     first_button: "<<",
@@ -4224,7 +4227,7 @@ var buttonLabels = {
       this.filters.single_date_query = false;
       this.filters.search = "";
       this.filters.single_date = "";
-      this.filters.single_formatted_date = "";
+      this.single_formatted_date = "";
       this.filters.search_range = "";
       this.filters.start_date = "";
       this.filters.end_date = "";
@@ -4233,7 +4236,7 @@ var buttonLabels = {
     },
     clearDatepickers: function clearDatepickers() {
       this.filters.single_date = "";
-      this.filters.single_formatted_date = "";
+      this.single_formatted_date = "";
       this.filters.search_range = "";
       this.filters.start_date = "";
       this.filters.end_date = "";
@@ -4253,9 +4256,6 @@ var buttonLabels = {
       }
 
       this.paginator_path_url = this.paginator.path.substring(0, indexOfLastSlash);
-    },
-    backToPageOne: function backToPageOne() {
-      this.page_number = 1;
     },
     nextPage: function nextPage() {
       var _this2 = this;
@@ -4321,11 +4321,17 @@ var buttonLabels = {
       allowRepick: true,
       autoRefresh: true,
       splitView: true,
+      dropdowns: {
+        "minYear": null,
+        "maxYear": null,
+        "months": true,
+        "years": true
+      },
       setup: function setup(picker) {
         picker.on('selected', function (date) {
           console.log(_this7);
           _this7.filters.search = "";
-          _this7.filters.single_formatted_date = date.format('DD-MMM-YYYY');
+          _this7.single_formatted_date = date.format('DD-MMM-YYYY');
           _this7.filters.single_date = date.format('YYYY-MM-DD');
           _this7.filters.start_date = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
 
@@ -4342,6 +4348,12 @@ var buttonLabels = {
       allowRepick: true,
       autoRefresh: true,
       splitView: true,
+      dropdowns: {
+        "minYear": null,
+        "maxYear": null,
+        "months": true,
+        "years": true
+      },
       setup: function setup(picker) {
         picker.on('selected', function (start_date, end_date) {
           _this7.filters.search_range = start_date.format('DD-MMM-YYYY') + " - " + end_date.format('DD-MMM-YYYY');
@@ -4349,7 +4361,7 @@ var buttonLabels = {
           _this7.filters.end_date = end_date.format('YYYY-MM-DD');
           _this7.filters.single_date = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
 
-          _this7.filters.single_formatted_date = "";
+          _this7.single_formatted_date = "";
         });
       }
     });
@@ -23828,24 +23840,21 @@ var render = function() {
               ],
               staticClass: "select select-bordered",
               on: {
-                change: [
-                  function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.filters,
-                      "selected",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
-                  },
-                  _vm.backToPageOne
-                ]
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.filters,
+                    "selected",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                }
               }
             },
             _vm._l(_vm.options, function(option) {
@@ -23949,8 +23958,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.filters.single_formatted_date,
-                  expression: "filters.single_formatted_date"
+                  value: _vm.single_formatted_date,
+                  expression: "single_formatted_date"
                 }
               ],
               staticClass:
@@ -23962,17 +23971,13 @@ var render = function() {
                 size: "28",
                 readonly: ""
               },
-              domProps: { value: _vm.filters.single_formatted_date },
+              domProps: { value: _vm.single_formatted_date },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(
-                    _vm.filters,
-                    "single_formatted_date",
-                    $event.target.value
-                  )
+                  _vm.single_formatted_date = $event.target.value
                 }
               }
             })
@@ -24140,7 +24145,7 @@ var render = function() {
                 [
                   _c("img", {
                     staticClass: "transform hover:scale-110",
-                    attrs: { src: "images/filter-remove.png", width: "30" }
+                    attrs: { src: "images/funnel.svg", width: "30" }
                   })
                 ]
               )

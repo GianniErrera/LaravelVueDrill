@@ -17,7 +17,7 @@ class FilterController extends Controller
     }
 
     public function singleDate($perPage, $sortby, $date, $page) {
-        return Event:: where('date', "", $date)
+        return Event:: where('date', "=", $date)
         ->orderBy($sortby)
         ->paginate($perPage, ['*'], "page", $page);
     }

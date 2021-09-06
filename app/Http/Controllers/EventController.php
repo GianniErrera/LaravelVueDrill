@@ -16,10 +16,14 @@ class EventController extends Controller
     {
         $query_filters = json_decode($filters);
 
+
         return Event::where('name', 'like', '%' . $query_filters->search . "%")
-        ->orWhere('eventDescription', 'like', '%' . $query_filters->search . "%")
-        ->orderBy($query_filters->selected)
-        ->paginate($perPage, ['*'], "page", $page);
+            ->orWhere('eventDescription', 'like', '%' . $query_filters->search . "%")
+            ->singleDateQuery($query_filters->ignore_year_from_query, $query_filters->single_date)
+            ->dateRangeQuery($query_filters->ignore_year_from_query, $query_filters->start_date, $query_filters->end_date)
+            ->orderBy($query_filters->selected)
+            ->paginate($perPage, ['*'], "page", $page);
+
     }
 
     /**

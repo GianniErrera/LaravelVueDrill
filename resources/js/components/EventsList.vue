@@ -5,7 +5,7 @@
             <div class="lg:flex lg:justify-around pt-4">
 
             <div class="text-center mb-4 mt-8">
-                <select v-model="filters.selected" v-on:change="backToPageOne" class="select select-bordered">
+                <select v-model="filters.selected" class="select select-bordered">
                     <option v-for="option in options" v-bind:key="option.value" v-bind:value="option.value" >
                         {{ option.text }}
                     </option>
@@ -31,7 +31,7 @@
                 <label for="searchDate" class="block text-center mb-3 font-size-14px font-semibold">Pick a date:</label>
 
                 <input
-                    v-model="filters.single_formatted_date"
+                    v-model="single_formatted_date"
                     id="searchDate"
                     name="searchDate"
                     type="text"
@@ -92,9 +92,8 @@
                         <button
                             v-on:click="removeFilters"
                             class="cursor-pointer align-center">
-
-                                <img
-                                    src ="images/filter-remove.png"
+                               <img
+                                    src ="images/funnel.svg"
                                     width="30"
                                     class="transform hover:scale-110"
                                     >
@@ -218,9 +217,7 @@
                 filters: {
                     "selected": "date",
                     "search": "",
-                    "single_date_query": false,
                     "single_date": "",
-                    "single_formatted_date": "",
                     "search_range": "",
                     "start_date": "",
                     "end_date": "",
@@ -237,7 +234,9 @@
                 paginator: [],
                 page_number: 1,
                 number_of_events_per_page: 15,
-                paginator_path_url: ""
+                paginator_path_url: "",
+                single_date_query: false,
+                single_formatted_date: ""
                 }
             },
         static: {
@@ -265,7 +264,7 @@
                 this.filters.single_date_query = false;
                 this.filters.search = "";
                 this.filters.single_date = "";
-                this.filters.single_formatted_date = "";
+                this.single_formatted_date = "";
                 this.filters.search_range = "";
                 this.filters.start_date = "";
                 this.filters.end_date = "";
@@ -274,7 +273,7 @@
             },
             clearDatepickers() {
                 this.filters.single_date = "";
-                this.filters.single_formatted_date = "";
+                this.single_formatted_date = "";
                 this.filters.search_range = "";
                 this.filters.start_date = "";
                 this.filters.end_date = "";
@@ -290,9 +289,6 @@
                     };
                 }
                 this.paginator_path_url = this.paginator.path.substring(0, indexOfLastSlash);
-            },
-            backToPageOne() {
-                this.page_number = 1;
             },
             nextPage() {
                 this.page_number += 1;
@@ -336,11 +332,12 @@
                 allowRepick: true,
                 autoRefresh: true,
                 splitView: true,
+                dropdowns: {"minYear":null,"maxYear":null,"months":true,"years":true},
                 setup: (picker) => {
                     picker.on('selected', (date) => {
                         console.log(this);
                         this.filters.search = "";
-                        this.filters.single_formatted_date = date.format('DD-MMM-YYYY');
+                        this.single_formatted_date = date.format('DD-MMM-YYYY');
                         this.filters.single_date = date.format('YYYY-MM-DD');
                         this.filters.start_date = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
                         this.filters.end_date = "";
@@ -360,6 +357,7 @@
                 allowRepick: true,
                 autoRefresh: true,
                 splitView: true,
+                dropdowns: {"minYear":null,"maxYear":null,"months":true,"years":true},
                 setup: (picker) => {
 
                     picker.on('selected', (start_date, end_date) => {
@@ -367,7 +365,7 @@
                         this.filters.start_date = start_date.format('YYYY-MM-DD');
                         this.filters.end_date = end_date.format('YYYY-MM-DD');
                         this.filters.single_date = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
-                        this.filters.single_formatted_date = "";
+                        this.single_formatted_date = "";
 
                     })
                 }
