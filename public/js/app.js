@@ -4172,13 +4172,13 @@ var buttonLabels = {
       filters: {
         "selected": "date",
         "search": "",
-        "singleDateQuery": false,
-        "singleDate": "",
-        "singleFormattedDate": "",
-        "searchRange": "",
-        "startDate": "",
-        "endDate": "",
-        "ignoreYearFromQuery": false
+        "single_date_query": false,
+        "single_date": "",
+        "single_formatted_date": "",
+        "search_range": "",
+        "start_date": "",
+        "end_date": "",
+        "ignore_year_from_query": false
       },
       "options": [{
         text: "Order by date",
@@ -4189,14 +4189,15 @@ var buttonLabels = {
         value: "created_at",
         id: 2
       }],
+      filters_string: "somthing",
       paginator: [],
       selected: "date"
-    }, _defineProperty(_ref, "paginator", []), _defineProperty(_ref, "pageNumber", 1), _defineProperty(_ref, "numberOfEventsPerPage", 15), _defineProperty(_ref, "paginatorPathURL", ""), _ref;
+    }, _defineProperty(_ref, "paginator", []), _defineProperty(_ref, "page_number", 1), _defineProperty(_ref, "number_of_events_per_page", 15), _defineProperty(_ref, "paginator_path_url", ""), _ref;
   },
   "static": {
-    firstButton: "<<",
+    first_button: "<<",
     // these two strings are used as "<" symbol may be interpreted as first character of tag
-    prevButton: "<"
+    prev_button: "<"
   },
   watch: {
     "filters": {
@@ -4212,42 +4213,45 @@ var buttonLabels = {
     applyFilters: function applyFilters() {
       var _this = this;
 
-      if (this.filters.singleDate != "") {
-        axios.get("/events/singledate/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.filters.singleDate, "/").concat(this.filters.pageNumber)).then(function (response) {
+      this.filters_string = JSON.stringify(this.filters);
+      alert(this.filters_string);
+
+      if (this.filters.single_date != "") {
+        axios.get("/events//".concat(this.number_of_events_per_page, "/").concat(this.filters.selected, "/").concat(this.filters.single_date, "/").concat(this.filters.page_number)).then(function (response) {
           return _this.paginator = response.data;
         });
-      } else if (this.filters.searchRange != "") {
-        axios.get("/events/range/".concat(this.numberOfEventsPerPage, "/").concat(this.pageNumber, "/").concat(this.filters.selected, "/").concat(this.startDate, "/").concat(this.filters.endDate, "/").concat(this.filters.ignoreYearFromQuery, "/").concat(this.search)).then(function (response) {
+      } else if (this.filters.search_range != "") {
+        axios.get("/events/range/".concat(this.number_of_events_per_page, "/").concat(this.page_number, "/").concat(this.filters.selected, "/").concat(this.start_date, "/").concat(this.filters.end_date, "/").concat(this.filters.ignore_year_from_query, "/").concat(this.search)).then(function (response) {
           return _this.paginator = response.data;
         });
       } else if (this.filters.search != "") {
-        this.pageNumber = 1;
-        axios.get("/events/search/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.filters.search, "/").concat(this.pageNumber)).then(function (response) {
+        this.page_number = 1;
+        axios.get("/events/search/".concat(this.number_of_events_per_page, "/").concat(this.filters.selected, "/").concat(this.filters.search, "/").concat(this.page_number)).then(function (response) {
           return _this.paginator = response.data;
         });
       } else {
-        axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.pageNumber)).then(function (response) {
+        axios.get("/events/".concat(this.number_of_events_per_page, "/").concat(this.filters.selected, "/").concat(this.pageNumber)).then(function (response) {
           return _this.paginator = response.data;
         });
       }
     },
     removeFilters: function removeFilters() {
       this.filters.selected = "date";
-      this.filters.singleDateQuery = false;
+      this.filters.Query = false;
       this.filters.search = "";
-      this.filters.singleDate = "";
-      this.filters.singleFormattedDate = "";
-      this.filters.searchRange = "";
-      this.filters.startDate = "";
-      this.filters.endDate = "";
-      this.filters.ignoreYearFromQuery = false;
+      this.filters.single_date = "";
+      this.filters.single_formatted_date = "";
+      this.filters.search_range = "";
+      this.filters.start_date = "";
+      this.filters.end_date = "";
+      this.filters.ignore_year_from_query = false;
     },
     clearDatepickers: function clearDatepickers() {
-      this.filters.singleDate = "";
-      this.filters.singleFormattedDate = "";
-      this.filters.searchRange = "";
-      this.filters.startDate = "";
-      this.filters.endDate = "";
+      this.filters.single_date = "";
+      this.filters.single_formatted_date = "";
+      this.filters.search_range = "";
+      this.filters.start_date = "";
+      this.filters.end_date = "";
       this.datepicker.clearSelection();
       this.rangepicker.clearSelection();
     },
@@ -4255,8 +4259,6 @@ var buttonLabels = {
       var indexOfLastSlash = 0;
 
       for (var i = 0; i < this.paginator.path.length; i++) {
-        console.log(this.paginator.path[i]);
-
         if (this.paginator.path[i] == "/") {
           indexOfLastSlash = i;
         }
@@ -4264,61 +4266,61 @@ var buttonLabels = {
         ;
       }
 
-      this.paginatorPathURL = this.paginator.path.substring(0, indexOfLastSlash);
+      this.paginator_path_url = this.paginator.path.substring(0, indexOfLastSlash);
     },
     nextPage: function nextPage() {
       var _this2 = this;
 
-      this.pageNumber += 1;
-      axios.get("".concat(this.paginatorPathURL, "/").concat(this.pageNumber)).then(function (response) {
+      this.page_number += 1;
+      axios.get("".concat(this.paginator_path_url, "/").concat(this.page_number)).then(function (response) {
         return _this2.paginator = response.data;
       });
     },
     previousPage: function previousPage() {
       var _this3 = this;
 
-      this.pageNumber -= 1;
-      axios.get("".concat(this.paginatorPathURL, "/").concat(this.pageNumber)).then(function (response) {
+      this.page_number -= 1;
+      axios.get("".concat(this.paginator_path_url, "/").concat(this.page_number)).then(function (response) {
         return _this3.paginator = response.data;
       });
     },
     firstPage: function firstPage() {
       var _this4 = this;
 
-      this.pageNumber = 1;
-      axios.get("".concat(this.paginatorPathURL, "/1}")).then(function (response) {
+      this.page_number = 1;
+      axios.get("".concat(this.paginator_path_url, "/1}")).then(function (response) {
         return _this4.paginator = response.data;
       });
     },
     lastPage: function lastPage() {
       var _this5 = this;
 
-      this.pageNumber = this.paginator.last_page;
-      axios.get("".concat(this.paginatorPathURL, "/").concat(this.pageNumber)).then(function (response) {
+      this.page_number = this.paginator.last_page;
+      axios.get("".concat(this.paginator_path_url, "/").concat(this.page_number)).then(function (response) {
         return _this5.paginator = response.data;
       });
     },
     jumpToPage: function jumpToPage($pageTarget) {
       var _this6 = this;
 
-      this.pageNumber = $pageTarget;
-      axios.get("".concat(this.paginatorPathURL, "/").concat(this.pageNumber)).then(function (response) {
+      this.page_number = $pageTarget;
+      axios.get("".concat(this.paginator_path_url, "/").concat(this.page_number)).then(function (response) {
         return _this6.paginator = response.data;
       });
     }
   },
   computed: {
     isPreviousButtonDisabled: function isPreviousButtonDisabled() {
-      return this.pageNumber === 1;
+      return this.page_number === 1;
     },
     isNextButtonDisabled: function isNextButtonDisabled() {
-      return this.pageNumber === this.paginator.last_page;
+      return this.page_number === this.paginator.last_page;
     }
   },
   mounted: function mounted() {
     var _this7 = this;
 
-    axios.get("/events/".concat(this.numberOfEventsPerPage, "/").concat(this.filters.selected, "/").concat(this.pageNumber)).then(function (response) {
+    axios.get("/events/".concat(this.number_of_events_per_page, "/").concat(this.filters.selected, "/").concat(this.page_number)).then(function (response) {
       return _this7.paginator = response.data;
     });
     this.datepicker = new Litepicker({
@@ -4333,17 +4335,17 @@ var buttonLabels = {
         picker.on('selected', function (date) {
           console.log(_this7);
           _this7.filters.search = "";
-          _this7.filters.singleFormattedDate = date.format('DD-MMM-YYYY');
-          _this7.filters.singleDate = date.format('YYYY-MM-DD');
-          _this7.filters.startDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+          _this7.filters.single_formatted_date = date.format('DD-MMM-YYYY');
+          _this7.filters.single_date = date.format('YYYY-MM-DD');
+          _this7.filters.start_date = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
 
-          _this7.filters.endDate = "";
-          _this7.filters.searchRange = "";
+          _this7.filters.end_date = "";
+          _this7.filters.search_range = "";
         });
       }
     });
     this.rangepicker = new Litepicker({
-      element: document.getElementById('searchRange'),
+      element: document.getElementById('search_range'),
       format: 'DD-MM-YYYY',
       resetButton: true,
       singleMode: false,
@@ -4351,13 +4353,13 @@ var buttonLabels = {
       autoRefresh: true,
       splitView: true,
       setup: function setup(picker) {
-        picker.on('selected', function (startDate, endDate) {
-          _this7.filters.searchRange = startDate.format('DD-MMM-YYYY') + " - " + endDate.format('DD-MMM-YYYY');
-          _this7.filters.startDate = startDate.format('YYYY-MM-DD');
-          _this7.filters.endDate = endDate.format('YYYY-MM-DD');
-          _this7.filters.singleDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+        picker.on('selected', function (start_date, end_date) {
+          _this7.filters.search_range = start_date.format('DD-MMM-YYYY') + " - " + end_date.format('DD-MMM-YYYY');
+          _this7.filters.start_date = start_date.format('YYYY-MM-DD');
+          _this7.filters.end_date = end_date.format('YYYY-MM-DD');
+          _this7.filters.single_date = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
 
-          _this7.filters.singleFormattedDate = "";
+          _this7.filters.single_formatted_date = "";
         });
       }
     });
@@ -23880,8 +23882,8 @@ var render = function() {
               {
                 name: "show",
                 rawName: "v-show",
-                value: !_vm.filters.singleDateQuery,
-                expression: "!filters.singleDateQuery"
+                value: !_vm.filters.Query,
+                expression: "!filters.Query"
               }
             ],
             staticClass: "md:mb-3 block text-center"
@@ -23892,7 +23894,7 @@ var render = function() {
               {
                 staticClass:
                   "block text-center mb-3 font-size-14px font-semibold",
-                attrs: { for: "searchRange" }
+                attrs: { for: "search_range" }
               },
               [_vm._v("Search over dates range:")]
             ),
@@ -23902,26 +23904,26 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.filters.searchRange,
-                  expression: "filters.searchRange"
+                  value: _vm.filters.search_range,
+                  expression: "filters.search_range"
                 }
               ],
               staticClass:
                 "text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800",
               attrs: {
-                id: "searchRange",
-                name: "searchRange",
+                id: "search_range",
+                name: "search_range",
                 type: "text",
                 size: "28",
                 readonly: ""
               },
-              domProps: { value: _vm.filters.searchRange },
+              domProps: { value: _vm.filters.search_range },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.filters, "searchRange", $event.target.value)
+                  _vm.$set(_vm.filters, "search_range", $event.target.value)
                 }
               }
             })
@@ -23935,8 +23937,8 @@ var render = function() {
               {
                 name: "show",
                 rawName: "v-show",
-                value: _vm.filters.singleDateQuery,
-                expression: "filters.singleDateQuery"
+                value: _vm.filters.Query,
+                expression: "filters.Query"
               }
             ],
             staticClass: "block md:mb-3 text-center"
@@ -23957,8 +23959,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.filters.singleFormattedDate,
-                  expression: "filters.singleFormattedDate"
+                  value: _vm.filters.single_formatted_date,
+                  expression: "filters.single_formatted_date"
                 }
               ],
               staticClass:
@@ -23970,7 +23972,7 @@ var render = function() {
                 size: "28",
                 readonly: ""
               },
-              domProps: { value: _vm.filters.singleFormattedDate },
+              domProps: { value: _vm.filters.single_formatted_date },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
@@ -23978,7 +23980,7 @@ var render = function() {
                   }
                   _vm.$set(
                     _vm.filters,
-                    "singleFormattedDate",
+                    "single_formatted_date",
                     $event.target.value
                   )
                 }
@@ -23996,21 +23998,21 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.filters.singleDateQuery,
-                  expression: "filters.singleDateQuery"
+                  value: _vm.filters.single_date_query,
+                  expression: "filters.single_date_query"
                 }
               ],
               staticClass: "flex-none checkbox",
               attrs: { type: "checkbox" },
               domProps: {
-                checked: Array.isArray(_vm.filters.singleDateQuery)
-                  ? _vm._i(_vm.filters.singleDateQuery, null) > -1
-                  : _vm.filters.singleDateQuery
+                checked: Array.isArray(_vm.filters.single_date_query)
+                  ? _vm._i(_vm.filters.single_date_query, null) > -1
+                  : _vm.filters.single_date_query
               },
               on: {
                 change: [
                   function($event) {
-                    var $$a = _vm.filters.singleDateQuery,
+                    var $$a = _vm.filters.single_date_query,
                       $$el = $event.target,
                       $$c = $$el.checked ? true : false
                     if (Array.isArray($$a)) {
@@ -24020,19 +24022,19 @@ var render = function() {
                         $$i < 0 &&
                           _vm.$set(
                             _vm.filters,
-                            "singleDateQuery",
+                            "single_date_query",
                             $$a.concat([$$v])
                           )
                       } else {
                         $$i > -1 &&
                           _vm.$set(
                             _vm.filters,
-                            "singleDateQuery",
+                            "single_date_query",
                             $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                           )
                       }
                     } else {
-                      _vm.$set(_vm.filters, "singleDateQuery", $$c)
+                      _vm.$set(_vm.filters, "single_date_query", $$c)
                     }
                   },
                   _vm.clearDatepickers
@@ -24089,20 +24091,20 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.filters.ignoreYearFromQuery,
-                  expression: "filters.ignoreYearFromQuery"
+                  value: _vm.filters.ignore_year_from_query,
+                  expression: "filters.ignore_year_from_query"
                 }
               ],
               staticClass: "flex-none checkbox",
               attrs: { type: "checkbox" },
               domProps: {
-                checked: Array.isArray(_vm.filters.ignoreYearFromQuery)
-                  ? _vm._i(_vm.filters.ignoreYearFromQuery, null) > -1
-                  : _vm.filters.ignoreYearFromQuery
+                checked: Array.isArray(_vm.filters.ignore_year_from_query)
+                  ? _vm._i(_vm.filters.ignore_year_from_query, null) > -1
+                  : _vm.filters.ignore_year_from_query
               },
               on: {
                 change: function($event) {
-                  var $$a = _vm.filters.ignoreYearFromQuery,
+                  var $$a = _vm.filters.ignore_year_from_query,
                     $$el = $event.target,
                     $$c = $$el.checked ? true : false
                   if (Array.isArray($$a)) {
@@ -24112,19 +24114,19 @@ var render = function() {
                       $$i < 0 &&
                         _vm.$set(
                           _vm.filters,
-                          "ignoreYearFromQuery",
+                          "ignore_year_from_query",
                           $$a.concat([$$v])
                         )
                     } else {
                       $$i > -1 &&
                         _vm.$set(
                           _vm.filters,
-                          "ignoreYearFromQuery",
+                          "ignore_year_from_query",
                           $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                         )
                     }
                   } else {
-                    _vm.$set(_vm.filters, "ignoreYearFromQuery", $$c)
+                    _vm.$set(_vm.filters, "ignore_year_from_query", $$c)
                   }
                 }
               }
@@ -24214,7 +24216,7 @@ var render = function() {
           )
         }),
         _vm._v(" "),
-        _c("div", { staticClass: "flex mt-4 justify-center hover:text-" }, [
+        _c("div", { staticClass: "flex mt-4 justify-center" }, [
           _c("div", { staticClass: "btn-group" }, [
             _c(
               "button",
@@ -24230,7 +24232,7 @@ var render = function() {
               [
                 _vm._v(
                   "\n                " +
-                    _vm._s(this.$options.static.firstButton) +
+                    _vm._s(this.$options.static.first_button) +
                     "\n\n            "
                 )
               ]
@@ -24246,7 +24248,7 @@ var render = function() {
               [
                 _vm._v(
                   "\n                " +
-                    _vm._s(this.$options.static.prevButton) +
+                    _vm._s(this.$options.static.prev_button) +
                     "\n            "
                 )
               ]
@@ -24260,23 +24262,25 @@ var render = function() {
                     name: "show",
                     rawName: "v-show",
                     value:
-                      _vm.paginator.last_page > 3 &&
-                      _vm.pageNumber === _vm.paginator.last_page,
+                      (_vm.paginator.last_page === 3 &&
+                        _vm.page_number === 3) ||
+                      (_vm.paginator.last_page > 3 &&
+                        _vm.page_number === _vm.paginator.last_page),
                     expression:
-                      "paginator.last_page > 3 && pageNumber === paginator.last_page"
+                      "paginator.last_page === 3 && page_number === 3 || paginator.last_page > 3 && page_number === paginator.last_page"
                   }
                 ],
                 staticClass: "btn btn-sm cursor",
                 on: {
                   click: function($event) {
-                    return _vm.jumpToPage(_vm.pageNumber - 2)
+                    return _vm.jumpToPage(_vm.page_number - 2)
                   }
                 }
               },
               [
                 _vm._v(
                   "\n            " +
-                    _vm._s(_vm.pageNumber - 2) +
+                    _vm._s(_vm.page_number - 2) +
                     "\n            "
                 )
               ]
@@ -24289,21 +24293,24 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.paginator.last_page >= 3 && _vm.pageNumber >= 2,
-                    expression: "paginator.last_page >= 3 && pageNumber >= 2"
+                    value:
+                      (_vm.paginator.last_page < 3 && _vm.page_number === 2) ||
+                      (_vm.paginator.last_page >= 3 && _vm.page_number >= 2),
+                    expression:
+                      "paginator.last_page < 3 && page_number === 2 || (paginator.last_page >= 3 && page_number >= 2)"
                   }
                 ],
                 staticClass: "btn btn-sm cursor",
                 on: {
                   click: function($event) {
-                    return _vm.jumpToPage(_vm.pageNumber - 1)
+                    return _vm.jumpToPage(_vm.page_number - 1)
                   }
                 }
               },
               [
                 _vm._v(
                   "\n            " +
-                    _vm._s(_vm.pageNumber - 1) +
+                    _vm._s(_vm.page_number - 1) +
                     "\n            "
                 )
               ]
@@ -24314,7 +24321,7 @@ var render = function() {
               { staticClass: "btn btn-sm", attrs: { disabled: "" } },
               [
                 _vm._v(
-                  "\n            " + _vm._s(_vm.pageNumber) + "\n            "
+                  "\n            " + _vm._s(_vm.page_number) + "\n            "
                 )
               ]
             ),
@@ -24326,21 +24333,21 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.pageNumber + 1 <= _vm.paginator.last_page,
-                    expression: "pageNumber + 1 <= paginator.last_page"
+                    value: _vm.page_number + 1 <= _vm.paginator.last_page,
+                    expression: "page_number + 1 <= paginator.last_page"
                   }
                 ],
                 staticClass: "btn btn-sm cursor",
                 on: {
                   click: function($event) {
-                    return _vm.jumpToPage(_vm.pageNumber + 1)
+                    return _vm.jumpToPage(_vm.page_number + 1)
                   }
                 }
               },
               [
                 _vm._v(
                   "\n            " +
-                    _vm._s(_vm.pageNumber + 1) +
+                    _vm._s(_vm.page_number + 1) +
                     "\n            "
                 )
               ]
@@ -24354,23 +24361,23 @@ var render = function() {
                     name: "show",
                     rawName: "v-show",
                     value:
-                      _vm.pageNumber === 1 &&
-                      _vm.pageNumber + 2 <= _vm.paginator.last_page,
+                      _vm.page_number === 1 &&
+                      _vm.page_number + 2 <= _vm.paginator.last_page,
                     expression:
-                      "pageNumber === 1 && pageNumber + 2 <= paginator.last_page"
+                      "page_number === 1 && page_number + 2 <= paginator.last_page"
                   }
                 ],
                 staticClass: "btn btn-sm cursor",
                 on: {
                   click: function($event) {
-                    return _vm.jumpToPage(_vm.pageNumber + 2)
+                    return _vm.jumpToPage(_vm.page_number + 2)
                   }
                 }
               },
               [
                 _vm._v(
                   "\n            " +
-                    _vm._s(_vm.pageNumber + 2) +
+                    _vm._s(_vm.page_number + 2) +
                     "\n            "
                 )
               ]

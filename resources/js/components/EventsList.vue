@@ -13,12 +13,12 @@
             </div>
 
 
-            <div v-show="!filters.singleDateQuery" class="md:mb-3 block text-center">
-                <label for="searchRange" class="block text-center mb-3 font-size-14px font-semibold">Search over dates range:</label>
+            <div v-show="!filters.Query" class="md:mb-3 block text-center">
+                <label for="search_range" class="block text-center mb-3 font-size-14px font-semibold">Search over dates range:</label>
                 <input
-                    v-model="filters.searchRange"
-                    id="searchRange"
-                    name="searchRange"
+                    v-model="filters.search_range"
+                    id="search_range"
+                    name="search_range"
                     type="text"
                     size="28"
                     class="text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800"
@@ -27,11 +27,11 @@
             </div>
 
 
-            <div v-show="filters.singleDateQuery" class="block md:mb-3 text-center">
+            <div v-show="filters.Query" class="block md:mb-3 text-center">
                 <label for="searchDate" class="block text-center mb-3 font-size-14px font-semibold">Pick a date:</label>
 
                 <input
-                    v-model="filters.singleFormattedDate"
+                    v-model="filters.single_formatted_date"
                     id="searchDate"
                     name="searchDate"
                     type="text"
@@ -49,7 +49,7 @@
                 <div>
                     <input
                         type="checkbox"
-                        v-model="filters.singleDateQuery"
+                        v-model="filters.single_date_query"
                         v-on:change="clearDatepickers"
                         class="flex-none checkbox"
                     >
@@ -79,7 +79,7 @@
                 <div class="block text-center">
                     <input
                     type="checkbox"
-                    v-model="filters.ignoreYearFromQuery"
+                    v-model="filters.ignore_year_from_query"
                     class="flex-none checkbox">
                 </div>
 
@@ -131,14 +131,14 @@
                 </div>
             </div>
             <!-- Events paginator buttons -->
-            <div class="flex mt-4 justify-center hover:text-">
+            <div class="flex mt-4 justify-center">
                 <div class="btn-group">
                 <button
                     @click="jumpToPage(1)"
                     class="btn btn-sm cursor rounded-lg"
                     :disabled="isPreviousButtonDisabled"
                 >
-                    {{this.$options.static.firstButton}}
+                    {{this.$options.static.first_button}}
 
                 </button>
                 <button
@@ -146,39 +146,39 @@
                     class="btn btn-sm cursor rounded-lg"
                     :disabled="isPreviousButtonDisabled"
                 >
-                    {{this.$options.static.prevButton}}
+                    {{this.$options.static.prev_button}}
                 </button>
                 <!--This is shown only when on last page -->
                 <button
                     class="btn btn-sm cursor"
-                    v-show="paginator.last_page > 3 && pageNumber === paginator.last_page"
-                    @click="jumpToPage(pageNumber - 2)">
-                {{ pageNumber - 2 }}
+                    v-show="paginator.last_page === 3 && page_number === 3 || paginator.last_page > 3 && page_number === paginator.last_page"
+                    @click="jumpToPage(page_number - 2)">
+                {{ page_number - 2 }}
                 </button>
                 <!--This is shown only when on last two pages -->
                 <button
                     class="btn btn-sm cursor"
-                    v-show="paginator.last_page >= 3 && pageNumber >= 2"
-                    @click="jumpToPage(pageNumber - 1)">
-                {{ pageNumber - 1 }}
+                    v-show="paginator.last_page < 3 && page_number === 2 || (paginator.last_page >= 3 && page_number >= 2)"
+                    @click="jumpToPage(page_number - 1)">
+                {{ page_number - 1 }}
                 </button>
                 <button
                 class="btn btn-sm"
                 disabled
                 >
-                {{ pageNumber }}
+                {{ page_number }}
                 </button>
                 <button
                     class="btn btn-sm cursor"
-                    v-show="pageNumber + 1 <= paginator.last_page"
-                    @click="jumpToPage(pageNumber + 1)">
-                {{ pageNumber + 1 }}
+                    v-show="page_number + 1 <= paginator.last_page"
+                    @click="jumpToPage(page_number + 1)">
+                {{ page_number + 1 }}
                 </button>
                 <button
                     class="btn btn-sm cursor"
-                    v-show="pageNumber === 1 && pageNumber + 2 <= paginator.last_page"
-                    @click="jumpToPage(pageNumber + 2)">
-                {{ pageNumber + 2 }}
+                    v-show="page_number === 1 && page_number + 2 <= paginator.last_page"
+                    @click="jumpToPage(page_number + 2)">
+                {{ page_number + 2 }}
                 </button>
                 <button
                     @click="nextPage"
@@ -218,30 +218,31 @@
                 filters: {
                     "selected": "date",
                     "search": "",
-                    "singleDateQuery": false,
-                    "singleDate": "",
-                    "singleFormattedDate": "",
-                    "searchRange": "",
-                    "startDate": "",
-                    "endDate": "",
-                    "ignoreYearFromQuery": false,
+                    "single_date_query": false,
+                    "single_date": "",
+                    "single_formatted_date": "",
+                    "search_range": "",
+                    "start_date": "",
+                    "end_date": "",
+                    "ignore_year_from_query": false,
 
                 },
                 "options": [
                     { text: "Order by date", value: "date", id: 1 },
                     { text: "Order by creation date", value: "created_at", id: 2}
                 ],
+                filters_string: "somthing",
                 paginator: [],
                 selected: "date",
                 paginator: [],
-                pageNumber: 1,
-                numberOfEventsPerPage: 15,
-                paginatorPathURL: ""
+                page_number: 1,
+                number_of_events_per_page: 15,
+                paginator_path_url: ""
                 }
             },
         static: {
-            firstButton: "<<", // these two strings are used as "<" symbol may be interpreted as first character of tag
-            prevButton: "<"
+            first_button: "<<", // these two strings are used as "<" symbol may be interpreted as first character of tag
+            prev_button: "<"
         },
         watch: {
             "filters": {
@@ -255,84 +256,86 @@
         },
         methods: {
             applyFilters() {
-                if(this.filters.singleDate != "") {
-                    axios.get(`/events/singledate/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.filters.singleDate}/${this.filters.pageNumber}`)
+                this.filters_string = JSON.stringify(this.filters);
+                alert(this.filters_string);
+
+                if(this.filters.single_date != "") {
+                    axios.get(`/events//${this.number_of_events_per_page}/${this.filters.selected}/${this.filters.single_date}/${this.filters.page_number}`)
                     .then(response=>this.paginator = response.data);
-                } else if(this.filters.searchRange != "") {
-                    axios.get(`/events/range/${this.numberOfEventsPerPage}/${this.pageNumber}/${this.filters.selected}/${this.startDate}/${this.filters.endDate}/${this.filters.ignoreYearFromQuery}/${this.search}`)
+                } else if(this.filters.search_range != "") {
+                    axios.get(`/events/range/${this.number_of_events_per_page}/${this.page_number}/${this.filters.selected}/${this.start_date}/${this.filters.end_date}/${this.filters.ignore_year_from_query}/${this.search}`)
                     .then(response=>this.paginator = response.data);
                 } else if(this.filters.search != "") {
-                    this.pageNumber = 1;
-                    axios.get(`/events/search/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.filters.search}/${this.pageNumber}`)
+                    this.page_number = 1;
+                    axios.get(`/events/search/${this.number_of_events_per_page}/${this.filters.selected}/${this.filters.search}/${this.page_number}`)
                 .then(response=>this.paginator = response.data);
                 } else {
-                    axios.get(`/events/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.pageNumber}`)
+                     axios.get(`/events/${this.number_of_events_per_page}/${this.filters.selected}/${this.pageNumber}`)
                 .then(response=>this.paginator = response.data);
                 }
             },
             removeFilters() {
                 this.filters.selected = "date";
-                this.filters.singleDateQuery = false;
+                this.filters.Query = false;
                 this.filters.search = "";
-                this.filters.singleDate = "";
-                this.filters.singleFormattedDate = "";
-                this.filters.searchRange = "";
-                this.filters.startDate = "";
-                this.filters.endDate = "";
-                this.filters.ignoreYearFromQuery = false;
+                this.filters.single_date = "";
+                this.filters.single_formatted_date = "";
+                this.filters.search_range = "";
+                this.filters.start_date = "";
+                this.filters.end_date = "";
+                this.filters.ignore_year_from_query = false;
             },
             clearDatepickers() {
-                this.filters.singleDate = "";
-                this.filters.singleFormattedDate = "";
-                this.filters.searchRange = "";
-                this.filters.startDate = "";
-                this.filters.endDate = "";
+                this.filters.single_date = "";
+                this.filters.single_formatted_date = "";
+                this.filters.search_range = "";
+                this.filters.start_date = "";
+                this.filters.end_date = "";
                 this.datepicker.clearSelection();
                 this.rangepicker.clearSelection();
             },
             paginatorURL() {
                 var indexOfLastSlash = 0;
                 for(var i = 0; i < this.paginator.path.length; i++) {
-                    console.log(this.paginator.path.[i]);
                     if(this.paginator.path.[i] == "/") {
                         indexOfLastSlash = i;
                     };
                 }
-                this.paginatorPathURL = this.paginator.path.substring(0, indexOfLastSlash);
+                this.paginator_path_url = this.paginator.path.substring(0, indexOfLastSlash);
             },
             nextPage() {
-                this.pageNumber += 1;
-                axios.get(`${this.paginatorPathURL}/${this.pageNumber}`)
+                this.page_number += 1;
+                axios.get(`${this.paginator_path_url}/${this.page_number}`)
                 .then(response=>this.paginator = response.data);
             },
             previousPage() {
-                this.pageNumber -= 1;
-                axios.get(`${this.paginatorPathURL}/${this.pageNumber}`).then(response=>this.paginator = response.data);
+                this.page_number -= 1;
+                axios.get(`${this.paginator_path_url}/${this.page_number}`).then(response=>this.paginator = response.data);
             },
             firstPage() {
-                this.pageNumber = 1;
-                axios.get(`${this.paginatorPathURL}/1}`).then(response=>this.paginator = response.data);
+                this.page_number = 1;
+                axios.get(`${this.paginator_path_url}/1}`).then(response=>this.paginator = response.data);
             },
             lastPage() {
-                this.pageNumber = this.paginator.last_page;
-                axios.get(`${this.paginatorPathURL}/${this.pageNumber}`).then(response=>this.paginator = response.data);
+                this.page_number = this.paginator.last_page;
+                axios.get(`${this.paginator_path_url}/${this.page_number}`).then(response=>this.paginator = response.data);
             },
             jumpToPage($pageTarget) {
-                this.pageNumber = $pageTarget;
-                axios.get(`${this.paginatorPathURL}/${this.pageNumber}`).then(response=>this.paginator = response.data);
+                this.page_number = $pageTarget;
+                axios.get(`${this.paginator_path_url}/${this.page_number}`).then(response=>this.paginator = response.data);
             }
         },
         computed: {
             isPreviousButtonDisabled() {
-                return this.pageNumber === 1
+                return this.page_number === 1
             },
             isNextButtonDisabled() {
-                return this.pageNumber === this.paginator.last_page;
+                return this.page_number === this.paginator.last_page;
             }
         },
         mounted() {
 
-            axios.get(`/events/${this.numberOfEventsPerPage}/${this.filters.selected}/${this.pageNumber}`).then(response=>this.paginator = response.data);
+            axios.get(`/events/${this.number_of_events_per_page}/${this.filters.selected}/${this.page_number}`).then(response=>this.paginator = response.data);
 
             this.datepicker= new Litepicker({
                 element: document.getElementById('searchDate'),
@@ -346,11 +349,11 @@
                     picker.on('selected', (date) => {
                         console.log(this);
                         this.filters.search = "";
-                        this.filters.singleFormattedDate = date.format('DD-MMM-YYYY');
-                        this.filters.singleDate = date.format('YYYY-MM-DD');
-                        this.filters.startDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
-                        this.filters.endDate = "";
-                        this.filters.searchRange = "";
+                        this.filters.single_formatted_date = date.format('DD-MMM-YYYY');
+                        this.filters.single_date = date.format('YYYY-MM-DD');
+                        this.filters.start_date = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+                        this.filters.end_date = "";
+                        this.filters.search_range = "";
                         })
                     }
 
@@ -359,7 +362,7 @@
 
 
             this.rangepicker= new Litepicker({
-                element: document.getElementById('searchRange'),
+                element: document.getElementById('search_range'),
                 format: 'DD-MM-YYYY',
                 resetButton: true,
                 singleMode: false,
@@ -368,12 +371,12 @@
                 splitView: true,
                 setup: (picker) => {
 
-                    picker.on('selected', (startDate, endDate) => {
-                        this.filters.searchRange = startDate.format('DD-MMM-YYYY') + " - " + endDate.format('DD-MMM-YYYY');
-                        this.filters.startDate = startDate.format('YYYY-MM-DD');
-                        this.filters.endDate = endDate.format('YYYY-MM-DD');
-                        this.filters.singleDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
-                        this.filters.singleFormattedDate = "";
+                    picker.on('selected', (start_date, end_date) => {
+                        this.filters.search_range = start_date.format('DD-MMM-YYYY') + " - " + end_date.format('DD-MMM-YYYY');
+                        this.filters.start_date = start_date.format('YYYY-MM-DD');
+                        this.filters.end_date = end_date.format('YYYY-MM-DD');
+                        this.filters.single_date = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+                        this.filters.single_formatted_date = "";
 
                     })
                 }
