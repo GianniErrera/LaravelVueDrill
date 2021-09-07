@@ -83,9 +83,9 @@
                     </div>
                     <div class="block text-center">
                         <input
-                        type="checkbox"
-                        v-model="filters.ignore_year_from_query"
-                        class="flex-none checkbox">
+                            type="checkbox"
+                            v-model="filters.ignore_year_from_query"
+                            class="flex-none checkbox">
                     </div>
 
                 </div>
@@ -131,6 +131,16 @@
                     <div class="mr-4 text-center">
                         {{ event.isItRecurringYearly ? "&#10004;" : "no" }}
                     </div>
+
+                        <button
+                        class="btn btn-primary"
+                            v-clipboard="() => eventToString(event)">
+                            Copy to clipboard
+                        </button>
+
+
+
+
 
                 </div>
             </div>
@@ -209,6 +219,11 @@
 </template>
 
 <script>
+import Clipboard from 'v-clipboard'
+
+Vue.use(Clipboard)
+
+import Input from '../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Input.vue';
     const buttonLabels = {
         first: "<<",
         prev: "<",
@@ -217,6 +232,7 @@
     };
 
     export default {
+  components: { Input },
        data() {
             return {
                 filters: {
@@ -233,13 +249,13 @@
                     { text: "Order by date", value: "date", id: 1 },
                     { text: "Order by creation date", value: "created_at", id: 2}
                 ],
-                filters_string: "somthing",
-                paginator: [],
-                selected: "date",
+                events_array: {},
+                filters_string: "",
+                number_of_events_per_page: 15,
                 paginator: [],
                 page_number: 1,
-                number_of_events_per_page: 15,
                 paginator_path_url: "",
+                selected: "date",
                 single_date_query: false,
                 single_formatted_date: ""
                 }
@@ -315,6 +331,18 @@
             jumpToPage($pageTarget) {
                 this.page_number = $pageTarget;
                 axios.get(`${this.paginator_path_url}/${this.page_number}`).then(response=>this.paginator = response.data);
+            },
+            eventToString($event) {
+                let $recurringOrNot = "";
+                if($event.isItRecurringYearly) {
+                    $recurringOrNot = "Event recurring each year";
+                } else {
+                     $recurringOrNot = "Not recurring event";
+                }
+
+                let $event_to_string = $event.date + " - " + $event.name + " - " + $event.eventDescription + " - " + $recurringOrNot;
+                return($event_to_string);
+
             }
         },
         computed: {

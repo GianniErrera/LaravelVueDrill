@@ -26,6 +26,7 @@
         "clipboard": "^2.0.8",
         "daisyui": "^1.13.2",
         "litepicker": "^2.0.11",
+        "v-clipboard": "^2.2.3",
         "vue": "^2.6.14"
     }
 }
