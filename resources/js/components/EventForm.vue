@@ -74,8 +74,8 @@
                 },
         },
         mounted() {
-              console.log(sourceOfTruth);
-              const datepicker= new Litepicker({
+                console.log(sourceOfTruth);
+                const datepicker= new Litepicker({
                 element: document.getElementById('date'),
                 format: 'DD-MM-YYYY',
                 resetButton: true,
@@ -88,11 +88,11 @@
                     picker.on('selected', (date) => {
                         this.formattedDate = date.format('DD-MMM-YYYY');
                         this.date = date.format('YYYY-MM-DD')
-                })
-            },
+                    })
+                }
 
             })
-            },
+        },
         methods: {
             formValidation(e) {
                 this.errors = [];
@@ -123,22 +123,23 @@
                     name: this.name,
                     description: this.description,
                     isItYearly: this.isItYearly
-                })
-                .then(
-                    this.date = "",
-                    this.formattedDate = "",
-                    this.name = "",
-                    this.description = "",
-                    this.isItYearly = false
-                )
-                .catch(error => {
-                    console.log(error.response);
-                })
+                    })
+                    .then(
+                        this.date = "",
+                        this.formattedDate = "",
+                        this.name = "",
+                        this.description = "",
+                        this.isItYearly = false
+                    )
+                    .catch(error => {
+                        console.log(error.response);
+                    })
 
-            },
-            test() {
-                alert("OK");
+                this.$emit('event-published'); // this is going to trigger a listener on parent component to refresh the paginator to include new event.
+
             }
+
+
         }
     }
 

@@ -3936,9 +3936,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(this.date = "", this.formattedDate = "", this.name = "", this.description = "", this.isItYearly = false)["catch"](function (error) {
         console.log(error.response);
       });
-    },
-    test: function test() {
-      alert("OK");
+      this.$emit('event-published'); // this is going to trigger a listener on parent component to refresh the paginator to include new event.
     }
   }
 });
@@ -3958,6 +3956,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4416,9 +4419,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
-//
-//
 //
 //
 //
@@ -23824,6 +23824,18 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _c(
+      "div",
+      { staticClass: "border border-red-800" },
+      [
+        _c("event-form", {
+          attrs: { fonte: _vm.fontediVerità, paginator: _vm.paginator },
+          on: { "event-published": _vm.applyFilters }
+        })
+      ],
+      1
+    ),
+    _vm._v(" "),
     _c("div", { staticClass: "border border-red-800" }, [
       _c("div", { staticClass: "lg:flex lg:justify-around pt-4" }, [
         _c("div", { staticClass: "text-center mb-4 mt-8" }, [
@@ -23863,9 +23875,9 @@ var render = function() {
                 { key: option.value, domProps: { value: option.value } },
                 [
                   _vm._v(
-                    "\n                    " +
+                    "\n                        " +
                       _vm._s(option.text) +
-                      "\n                "
+                      "\n                    "
                   )
                 ]
               )
@@ -24507,17 +24519,6 @@ var render = function() {
         "border border-blue-400 rounded-lg px-8 py-6 lg:ml-6 mb-6 mr-2 md:mx-auto"
     },
     [
-      _c(
-        "div",
-        { staticClass: "border border-red-800" },
-        [
-          _c("event-form", {
-            attrs: { fonte: _vm.fontediVerità, paginator: _vm.paginator }
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
       _c(
         "div",
         { staticClass: "p-4 border-b border-b-gray-400 rounded-xl ml-2 mr-2'" },

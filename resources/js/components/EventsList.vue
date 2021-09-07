@@ -1,108 +1,113 @@
 <template>
     <div>
+        <!--Event creation form -->
+        <div class="border border-red-800">
+            <event-form v-bind:fonte="fontediVerità" v-bind:paginator="paginator" v-on:event-published="applyFilters"></event-form>
+        </div>
+        <!--End event creation form -->
         <!--Events filters div -->
         <div class="border border-red-800">
             <div class="lg:flex lg:justify-around pt-4">
 
-            <div class="text-center mb-4 mt-8">
-                <select v-model="filters.selected" class="select select-bordered">
-                    <option v-for="option in options" v-bind:key="option.value" v-bind:value="option.value" >
-                        {{ option.text }}
-                    </option>
-                </select>
-            </div>
-
-
-            <div v-show="!filters.single_date_query" class="md:mb-3 block text-center">
-                <label for="search_range" class="block text-center mb-3 font-size-14px font-semibold">Search over dates range:</label>
-                <input
-                    v-model="filters.search_range"
-                    id="search_range"
-                    name="search_range"
-                    type="text"
-                    size="28"
-                    class="text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800"
-                    readonly
-                >
-            </div>
-
-
-            <div v-show="filters.single_date_query" class="block md:mb-3 text-center">
-                <label for="searchDate" class="block text-center mb-3 font-size-14px font-semibold">Pick a date:</label>
-
-                <input
-                    v-model="single_formatted_date"
-                    id="searchDate"
-                    name="searchDate"
-                    type="text"
-                    size="28"
-                    class="text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800"
-                    readonly
-                >
-
-            </div>
-
-            <div class="mb-3 text-center">
-                <div class="block mb-5">
-                    <span class="text-center font-semibold">Sigle date query</span>
+                <div class="text-center mb-4 mt-8">
+                    <select v-model="filters.selected" class="select select-bordered">
+                        <option v-for="option in options" v-bind:key="option.value" v-bind:value="option.value" >
+                            {{ option.text }}
+                        </option>
+                    </select>
                 </div>
-                <div>
+
+
+                <div v-show="!filters.single_date_query" class="md:mb-3 block text-center">
+                    <label for="search_range" class="block text-center mb-3 font-size-14px font-semibold">Search over dates range:</label>
                     <input
-                        type="checkbox"
-                        v-model="filters.single_date_query"
-                        v-on:change="clearDatepickers"
-                        class="flex-none checkbox"
+                        v-model="filters.search_range"
+                        id="search_range"
+                        name="search_range"
+                        type="text"
+                        size="28"
+                        class="text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800"
+                        readonly
                     >
                 </div>
 
-            </div>
 
+                <div v-show="filters.single_date_query" class="block md:mb-3 text-center">
+                    <label for="searchDate" class="block text-center mb-3 font-size-14px font-semibold">Pick a date:</label>
 
-            <div class="mb-3 text-center ">
-                <label for="search" class="block text-center mb-3 font-semibold">Search events:</label>
-
-                <input
-                    type="text"
-                    v-model="filters.search"
-                    id="search"
-                    name="search"
-                    placeholder=""
-                    class="input input-bordered border border-gray-800 mb-4 p-2"
-                />
-            </div>
-
-
-            <div class="mb-3 text-center">
-                <div class="block mb-5">
-                    <span class="text-center font-semibold">Search interval over all years</span>
-                </div>
-                <div class="block text-center">
                     <input
-                    type="checkbox"
-                    v-model="filters.ignore_year_from_query"
-                    class="flex-none checkbox">
+                        v-model="single_formatted_date"
+                        id="searchDate"
+                        name="searchDate"
+                        type="text"
+                        size="28"
+                        class="text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800"
+                        readonly
+                    >
+
                 </div>
 
-            </div>
+                <div class="mb-3 text-center">
+                    <div class="block mb-5">
+                        <span class="text-center font-semibold">Sigle date query</span>
+                    </div>
+                    <div>
+                        <input
+                            type="checkbox"
+                            v-model="filters.single_date_query"
+                            v-on:change="clearDatepickers"
+                            class="flex-none checkbox"
+                        >
+                    </div>
 
-            <div>
-                <div class="block text-center mb-">
-                    <span class="ml-2 text-center font-semibold">Reset filters</span>
-                    <div class="text-center m-4">
-                        <button
-                            v-on:click="removeFilters"
-                            class="cursor-pointer align-center">
-                               <img
+                </div>
+
+
+                <div class="mb-3 text-center ">
+                    <label for="search" class="block text-center mb-3 font-semibold">Search events:</label>
+
+                    <input
+                        type="text"
+                        v-model="filters.search"
+                        id="search"
+                        name="search"
+                        placeholder=""
+                        class="input input-bordered border border-gray-800 mb-4 p-2"
+                    />
+                </div>
+
+
+                <div class="mb-3 text-center">
+                    <div class="block mb-5">
+                        <span class="text-center font-semibold">Search interval over all years</span>
+                    </div>
+                    <div class="block text-center">
+                        <input
+                        type="checkbox"
+                        v-model="filters.ignore_year_from_query"
+                        class="flex-none checkbox">
+                    </div>
+
+                </div>
+
+                <div>
+                    <div class="block text-center mb-">
+                        <span class="ml-2 text-center font-semibold">Reset filters</span>
+                        <div class="text-center m-4">
+                            <button
+                                v-on:click="removeFilters"
+                                class="cursor-pointer align-center">
+                                <img
                                     src ="images/funnel.svg"
                                     width="30"
                                     class="transform hover:scale-110"
                                     >
-                        </button>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        </div>
+            </div>
         </div>
         <!--End events filters div -->
 
