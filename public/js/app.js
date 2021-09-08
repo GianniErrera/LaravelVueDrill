@@ -24309,7 +24309,7 @@ var render = function() {
     _vm._v(" "),
     _c(
       "div",
-      { staticClass: "p-4 border-b border-b-gray-400 rounded-xl ml-2 mr-2'" },
+      { staticClass: "p-4 border-b border-b-gray-400 rounded-xl" },
       [
         _vm._l(_vm.paginator.data, function(event) {
           return _c(
@@ -24394,7 +24394,7 @@ var render = function() {
         }),
         _vm._v(" "),
         _c("div", { staticClass: "flex mt-4 justify-center" }, [
-          _c("div", { staticClass: "btn-group" }, [
+          _c("div", { staticClass: "btn-group flex-nowrap mx-auto" }, [
             _c(
               "button",
               {
@@ -24408,9 +24408,9 @@ var render = function() {
               },
               [
                 _vm._v(
-                  "\n                " +
+                  "\n                    " +
                     _vm._s(this.$options.static.first_button) +
-                    "\n\n            "
+                    "\n\n                "
                 )
               ]
             ),
@@ -24424,9 +24424,9 @@ var render = function() {
               },
               [
                 _vm._v(
-                  "\n                " +
+                  "\n                    " +
                     _vm._s(this.$options.static.prev_button) +
-                    "\n            "
+                    "\n                "
                 )
               ]
             ),
@@ -24456,9 +24456,9 @@ var render = function() {
               },
               [
                 _vm._v(
-                  "\n            " +
+                  "\n                " +
                     _vm._s(_vm.page_number - 2) +
-                    "\n            "
+                    "\n                "
                 )
               ]
             ),
@@ -24486,9 +24486,9 @@ var render = function() {
               },
               [
                 _vm._v(
-                  "\n            " +
+                  "\n                " +
                     _vm._s(_vm.page_number - 1) +
-                    "\n            "
+                    "\n                "
                 )
               ]
             ),
@@ -24498,7 +24498,9 @@ var render = function() {
               { staticClass: "btn btn-sm", attrs: { disabled: "" } },
               [
                 _vm._v(
-                  "\n            " + _vm._s(_vm.page_number) + "\n            "
+                  "\n                " +
+                    _vm._s(_vm.page_number) +
+                    "\n                "
                 )
               ]
             ),
@@ -24523,9 +24525,9 @@ var render = function() {
               },
               [
                 _vm._v(
-                  "\n            " +
+                  "\n                " +
                     _vm._s(_vm.page_number + 1) +
-                    "\n            "
+                    "\n                "
                 )
               ]
             ),
@@ -24553,9 +24555,9 @@ var render = function() {
               },
               [
                 _vm._v(
-                  "\n            " +
+                  "\n                " +
                     _vm._s(_vm.page_number + 2) +
-                    "\n            "
+                    "\n                "
                 )
               ]
             ),
@@ -24567,7 +24569,7 @@ var render = function() {
                 attrs: { disabled: _vm.isNextButtonDisabled },
                 on: { click: _vm.nextPage }
               },
-              [_vm._v("\n                >\n            ")]
+              [_vm._v("\n                    >\n                ")]
             ),
             _vm._v(" "),
             _c(
@@ -24581,7 +24583,7 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("\n                >>\n            ")]
+              [_vm._v("\n                    >>\n                ")]
             )
           ])
         ])

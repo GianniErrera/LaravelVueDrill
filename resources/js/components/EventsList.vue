@@ -112,7 +112,7 @@
         <!--End events filters div -->
 
         <!-- Events list div -->
-        <div class="p-4 border-b border-b-gray-400 rounded-xl ml-2 mr-2'">
+        <div class="p-4 border-b border-b-gray-400 rounded-xl">
             <div class="lg:flex lg:flex-row justify-between p-2" v-for="event in paginator.data" :key="event.id">
                 <div class="lg:flex w-4/6 lg:grid lg:grid-cols-6 lg:grid-cols-6">
 
@@ -141,70 +141,70 @@
             </div>
             <!-- Events paginator buttons -->
             <div class="flex mt-4 justify-center">
-                <div class="btn-group">
-                <button
-                    @click="jumpToPage(1)"
-                    class="btn btn-sm cursor rounded-lg"
-                    :disabled="isPreviousButtonDisabled"
-                >
-                    {{this.$options.static.first_button}}
+                <div class="btn-group flex-nowrap mx-auto">
+                    <button
+                        @click="jumpToPage(1)"
+                        class="btn btn-sm cursor rounded-lg"
+                        :disabled="isPreviousButtonDisabled"
+                    >
+                        {{this.$options.static.first_button}}
 
-                </button>
-                <button
-                    @click="previousPage"
-                    class="btn btn-sm cursor rounded-lg"
-                    :disabled="isPreviousButtonDisabled"
-                >
-                    {{this.$options.static.prev_button}}
-                </button>
-                <!--This is shown only when on last page -->
-                <button
-                    class="btn btn-sm cursor"
-                    v-show="paginator.last_page === 3 && page_number === 3 || paginator.last_page > 3 && page_number === paginator.last_page"
-                    @click="jumpToPage(page_number - 2)">
-                {{ page_number - 2 }}
-                </button>
-                <!--This is shown only when on last two pages -->
-                <button
-                    class="btn btn-sm cursor"
-                    v-show="paginator.last_page < 3 && page_number === 2 || (paginator.last_page >= 3 && page_number >= 2)"
-                    @click="jumpToPage(page_number - 1)">
-                {{ page_number - 1 }}
-                </button>
-                <button
-                class="btn btn-sm"
-                disabled
-                >
-                {{ page_number }}
-                </button>
-                <button
-                    class="btn btn-sm cursor"
-                    v-show="page_number + 1 <= paginator.last_page"
-                    @click="jumpToPage(page_number + 1)">
-                {{ page_number + 1 }}
-                </button>
-                <button
-                    class="btn btn-sm cursor"
-                    v-show="page_number === 1 && page_number + 2 <= paginator.last_page"
-                    @click="jumpToPage(page_number + 2)">
-                {{ page_number + 2 }}
-                </button>
-                <button
-                    @click="nextPage"
-                    class="btn btn-sm cursor"
-                    :disabled="isNextButtonDisabled"
+                    </button>
+                    <button
+                        @click="previousPage"
+                        class="btn btn-sm cursor rounded-lg"
+                        :disabled="isPreviousButtonDisabled"
                     >
-                    <!--This is just the "<" character -->
+                        {{this.$options.static.prev_button}}
+                    </button>
+                    <!--This is shown only when on last page -->
+                    <button
+                        class="btn btn-sm cursor"
+                        v-show="paginator.last_page === 3 && page_number === 3 || paginator.last_page > 3 && page_number === paginator.last_page"
+                        @click="jumpToPage(page_number - 2)">
+                    {{ page_number - 2 }}
+                    </button>
+                    <!--This is shown only when on last two pages -->
+                    <button
+                        class="btn btn-sm cursor"
+                        v-show="paginator.last_page < 3 && page_number === 2 || (paginator.last_page >= 3 && page_number >= 2)"
+                        @click="jumpToPage(page_number - 1)">
+                    {{ page_number - 1 }}
+                    </button>
+                    <button
+                    class="btn btn-sm"
+                    disabled
                     >
-                </button>
-                <button
-                    @click="jumpToPage(paginator.last_page)"
-                    class="btn btn-sm cursor"
-                    :disabled="isNextButtonDisabled"
-                    >
-                    <!--This is just the "<<" character -->
-                    >>
-                </button>
+                    {{ page_number }}
+                    </button>
+                    <button
+                        class="btn btn-sm cursor"
+                        v-show="page_number + 1 <= paginator.last_page"
+                        @click="jumpToPage(page_number + 1)">
+                    {{ page_number + 1 }}
+                    </button>
+                    <button
+                        class="btn btn-sm cursor"
+                        v-show="page_number === 1 && page_number + 2 <= paginator.last_page"
+                        @click="jumpToPage(page_number + 2)">
+                    {{ page_number + 2 }}
+                    </button>
+                    <button
+                        @click="nextPage"
+                        class="btn btn-sm cursor"
+                        :disabled="isNextButtonDisabled"
+                        >
+                        <!--This is just the "<" character -->
+                        >
+                    </button>
+                    <button
+                        @click="jumpToPage(paginator.last_page)"
+                        class="btn btn-sm cursor"
+                        :disabled="isNextButtonDisabled"
+                        >
+                        <!--This is just the "<<" character -->
+                        >>
+                    </button>
                 </div>
             </div>
             <!-- End events paginator buttons -->
