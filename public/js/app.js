@@ -4172,6 +4172,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 Vue.use((v_clipboard__WEBPACK_IMPORTED_MODULE_0___default()));
 
@@ -24356,37 +24359,51 @@ var render = function() {
                 "div",
                 { staticClass: "items-center text-center lg:ml-2 lg:mr-4" },
                 [
-                  _c("div", { staticClass: "ml-4 mr-4  mb-2 text-center" }, [
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(
-                          event.isItRecurringYearly ? "✔" : "not yearly event"
-                        ) +
-                        "\n\n                    "
-                    ),
-                    _c(
-                      "button",
-                      {
-                        directives: [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "lg:flex lg:flex-row text-center lg:ml-2 lg:mr-4"
+                    },
+                    [
+                      _c("div", { staticClass: "mb-2" }, [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(
+                              event.isItRecurringYearly
+                                ? "✔"
+                                : "not yearly event"
+                            ) +
+                            "\n                    "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", [
+                        _c(
+                          "button",
                           {
-                            name: "clipboard",
-                            rawName: "v-clipboard",
-                            value: function() {
-                              return _vm.eventToString(event)
-                            },
-                            expression: "() => eventToString(event)"
-                          }
-                        ],
-                        staticClass:
-                          "btn btn-primary cursor-pointer  mb-2 ml-2  "
-                      },
-                      [
-                        _c("span", { staticClass: "text-sm" }, [
-                          _vm._v("Copy to clipboard")
-                        ])
-                      ]
-                    )
-                  ])
+                            directives: [
+                              {
+                                name: "clipboard",
+                                rawName: "v-clipboard",
+                                value: function() {
+                                  return _vm.eventToString(event)
+                                },
+                                expression: "() => eventToString(event)"
+                              }
+                            ],
+                            staticClass:
+                              "btn btn-primary cursor-pointer  mb-2 ml-2  "
+                          },
+                          [
+                            _c("span", { staticClass: "text-sm" }, [
+                              _vm._v("Copy to clipboard")
+                            ])
+                          ]
+                        )
+                      ])
+                    ]
+                  )
                 ]
               )
             ]
@@ -24688,7 +24705,7 @@ var render = function() {
     "div",
     {
       staticClass:
-        "border border-blue-400 rounded-lg px-8 py-6 lg:ml-6 mb-6 mr-2 md:mx-auto"
+        "border border-blue-400 rounded-lg px-2 py-6 lg:ml-6 mb-6 mr-2 md:mx-auto"
     },
     [
       _c(

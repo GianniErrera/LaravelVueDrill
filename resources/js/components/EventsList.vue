@@ -128,14 +128,17 @@
 
                 </div>
                 <div class="items-center text-center lg:ml-2 lg:mr-4">
-                    <div class="ml-4 mr-4  mb-2 text-center">
-                        {{ event.isItRecurringYearly ? "&#10004;" : "not yearly event" }}
-
-                        <button
-                            class="btn btn-primary cursor-pointer  mb-2 ml-2  "
-                                v-clipboard="() => eventToString(event)">
-                                <span class="text-sm">Copy to clipboard</span>
-                        </button>
+                    <div class="lg:flex lg:flex-row text-center lg:ml-2 lg:mr-4">
+                        <div class="mb-2">
+                            {{ event.isItRecurringYearly ? "&#10004;" : "not yearly event" }}
+                        </div>
+                        <div>
+                                <button
+                                    class="btn btn-primary cursor-pointer  mb-2 ml-2  "
+                                        v-clipboard="() => eventToString(event)">
+                                        <span class="text-sm">Copy to clipboard</span>
+                                </button>
+                        </div>
                     </div>
                 </div>
             </div>
