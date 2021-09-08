@@ -4172,11 +4172,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 
 Vue.use((v_clipboard__WEBPACK_IMPORTED_MODULE_0___default()));
 
@@ -4322,6 +4317,13 @@ var buttonLabels = {
       });
     },
     eventToString: function eventToString($event) {
+      var $date = new Date($event.date);
+      var options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      };
       var $recurringOrNot = "";
 
       if ($event.isItRecurringYearly) {
@@ -4330,7 +4332,7 @@ var buttonLabels = {
         $recurringOrNot = "Not recurring event";
       }
 
-      var $event_to_string = $event.date + " - " + $event.name + " - " + $event.eventDescription + " - " + $recurringOrNot;
+      var $event_to_string = $date.toLocaleString('en-GB', options) + " - " + $event.name + " - " + $event.eventDescription + " - " + $recurringOrNot;
       return $event_to_string;
     }
   },
@@ -23700,7 +23702,7 @@ var render = function() {
     "div",
     {
       staticClass:
-        "border border-blue-400 rounded-lg px-8 py-6 lg:ml-6 mb-6 mr-2 md:mx-auto"
+        "border border-blue-400 rounded-lg px-8 py-6 lg:ml-6 mb-6 lg:mr-6 md:mx-auto"
     },
     [
       _vm.errors.length
@@ -23721,7 +23723,7 @@ var render = function() {
       _c(
         "form",
         {
-          staticClass: "border border-gray-800 m-4",
+          staticClass: "border border-gray-800 lg:m-4",
           on: {
             submit: function($event) {
               $event.preventDefault()
@@ -23746,7 +23748,7 @@ var render = function() {
                     staticClass: "block mb-2 text-center font-semibold",
                     attrs: { for: "start" }
                   },
-                  [_vm._v("Start date:")]
+                  [_vm._v("Event date:")]
                 ),
                 _vm._v(" "),
                 _c("input", {
@@ -23758,7 +23760,8 @@ var render = function() {
                       expression: "formattedDate"
                     }
                   ],
-                  staticClass: "mb-4 input input-bordered border-gray-800",
+                  staticClass:
+                    "px-4 mb-4 input input-bordered border-gray-800 flex-grow w-full text-center",
                   attrs: {
                     id: "date",
                     name: "date",
@@ -23779,7 +23782,10 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "lg:ml-6 mr-4 lg:p-4 mb-6 lg:flex-grow lg:h-8" },
+                {
+                  staticClass:
+                    "lg:ml-6 text-center px-4 mb-6 lg:flex-grow lg:h-8"
+                },
                 [
                   _c(
                     "label",
@@ -23800,7 +23806,7 @@ var render = function() {
                       }
                     ],
                     staticClass:
-                      "ml-4 mr-4 input input-bordered flex-grow w-full",
+                      "px-4 input input-bordered flex-grow w-full text-center",
                     attrs: { name: "name", type: "text", required: "" },
                     domProps: { value: _vm.name },
                     on: {
@@ -23817,101 +23823,92 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "lg:flex lg:justify-between mr-4 ml-5 mt-2 mb-6" },
-            [
-              _c("div", { staticClass: "w-4/5" }, [
-                _c(
-                  "label",
+          _c("div", { staticClass: "lg:flex lg:justify-between mt-2 mb-6" }, [
+            _c("div", { staticClass: "lg:w-4/5 px-4 text-center" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "block mb-2 text-center font-semibold",
+                  attrs: { for: "description" }
+                },
+                [_vm._v("Event description:")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
                   {
-                    staticClass: "block mb-2 text-center font-semibold",
-                    attrs: { for: "description" }
-                  },
-                  [_vm._v("Event description:")]
-                ),
-                _vm._v(" "),
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.description,
+                    expression: "description"
+                  }
+                ],
+                staticClass: "mt-4 input input-bordered w-full text-center",
+                attrs: { name: "description", type: "text" },
+                domProps: { value: _vm.description },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.description = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("label", { staticClass: "text-center cursor-pointer lg:mr-4" }, [
+              _c(
+                "span",
+                {
+                  staticClass: "ml-2 font-semibold block mr-4 mt-4 text-center"
+                },
+                [_vm._v("Does this event occur every year?")]
+              ),
+              _vm._v(" "),
+              _c("div", [
                 _c("input", {
                   directives: [
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.description,
-                      expression: "description"
+                      value: _vm.isItYearly,
+                      expression: "isItYearly"
                     }
                   ],
-                  staticClass: "ml-4 mr-4 mt-4 input input-bordered w-full",
-                  attrs: { name: "description", type: "text" },
-                  domProps: { value: _vm.description },
+                  staticClass:
+                    "items-center border border-rounded-xl toggle cursor-pointer mt-2 justify-center",
+                  attrs: { type: "checkbox" },
+                  domProps: {
+                    checked: Array.isArray(_vm.isItYearly)
+                      ? _vm._i(_vm.isItYearly, null) > -1
+                      : _vm.isItYearly
+                  },
                   on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+                    change: function($event) {
+                      var $$a = _vm.isItYearly,
+                        $$el = $event.target,
+                        $$c = $$el.checked ? true : false
+                      if (Array.isArray($$a)) {
+                        var $$v = null,
+                          $$i = _vm._i($$a, $$v)
+                        if ($$el.checked) {
+                          $$i < 0 && (_vm.isItYearly = $$a.concat([$$v]))
+                        } else {
+                          $$i > -1 &&
+                            (_vm.isItYearly = $$a
+                              .slice(0, $$i)
+                              .concat($$a.slice($$i + 1)))
+                        }
+                      } else {
+                        _vm.isItYearly = $$c
                       }
-                      _vm.description = $event.target.value
                     }
                   }
                 })
-              ]),
-              _vm._v(" "),
-              _c(
-                "label",
-                { staticClass: "text-center cursor-pointer lg:mr-4" },
-                [
-                  _c(
-                    "span",
-                    {
-                      staticClass:
-                        "ml-2 font-semibold block mr-4 mt-4 text-center"
-                    },
-                    [_vm._v("Does this event recur every year?")]
-                  ),
-                  _vm._v(" "),
-                  _c("div", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.isItYearly,
-                          expression: "isItYearly"
-                        }
-                      ],
-                      staticClass:
-                        "items-center border border-rounded-xl toggle cursor-pointer mt-2 justify-center",
-                      attrs: { type: "checkbox" },
-                      domProps: {
-                        checked: Array.isArray(_vm.isItYearly)
-                          ? _vm._i(_vm.isItYearly, null) > -1
-                          : _vm.isItYearly
-                      },
-                      on: {
-                        change: function($event) {
-                          var $$a = _vm.isItYearly,
-                            $$el = $event.target,
-                            $$c = $$el.checked ? true : false
-                          if (Array.isArray($$a)) {
-                            var $$v = null,
-                              $$i = _vm._i($$a, $$v)
-                            if ($$el.checked) {
-                              $$i < 0 && (_vm.isItYearly = $$a.concat([$$v]))
-                            } else {
-                              $$i > -1 &&
-                                (_vm.isItYearly = $$a
-                                  .slice(0, $$i)
-                                  .concat($$a.slice($$i + 1)))
-                            }
-                          } else {
-                            _vm.isItYearly = $$c
-                          }
-                        }
-                      }
-                    })
-                  ])
-                ]
-              )
-            ]
-          ),
+              ])
+            ])
+          ]),
           _vm._v(" "),
           _vm._m(0)
         ]
@@ -23966,7 +23963,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { staticClass: "border border-red-800" }, [
     _c(
       "div",
       { staticClass: "border border-red-800" },
@@ -24063,12 +24060,12 @@ var render = function() {
                 }
               ],
               staticClass:
-                "text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800",
+                "text-center mx-4 mb-4 p-2 input input-bordered border border-gray-800",
               attrs: {
                 id: "search_range",
                 name: "search_range",
                 type: "text",
-                size: "28",
+                size: "24",
                 readonly: ""
               },
               domProps: { value: _vm.filters.search_range },
@@ -24118,12 +24115,12 @@ var render = function() {
                 }
               ],
               staticClass:
-                "text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800",
+                "text-center mx-4 mb-4 p-2 input input-bordered border border-gray-800",
               attrs: {
                 id: "searchDate",
                 name: "searchDate",
                 type: "text",
-                size: "28",
+                size: "24",
                 readonly: ""
               },
               domProps: { value: _vm.single_formatted_date },
@@ -24285,7 +24282,7 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", [
-          _c("div", { staticClass: "block text-center mb-" }, [
+          _c("div", { staticClass: "block text-center" }, [
             _c("span", { staticClass: "ml-2 text-center font-semibold" }, [
               _vm._v("Reset filters")
             ]),
@@ -24317,13 +24314,19 @@ var render = function() {
         _vm._l(_vm.paginator.data, function(event) {
           return _c(
             "div",
-            { key: event.id, staticClass: "flex flex-row justify-between p-2" },
+            {
+              key: event.id,
+              staticClass: "lg:flex lg:flex-row justify-between p-2"
+            },
             [
               _c(
                 "div",
-                { staticClass: "lg:flex lg:w-5/6 lg:grid lg:grid-cols-6" },
+                {
+                  staticClass:
+                    "lg:flex w-4/6 lg:grid lg:grid-cols-6 lg:grid-cols-6"
+                },
                 [
-                  _c("div", [
+                  _c("div", { staticClass: "ml-4 mb-2 lg:col-span-1" }, [
                     _vm._v(
                       "\n                    " +
                         _vm._s(event.date) +
@@ -24331,7 +24334,7 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "lg:ml-8 lg:col-span-2" }, [
+                  _c("div", { staticClass: "ml-4 mb-2 lg:ml-8 col-span-2" }, [
                     _vm._v(
                       "\n                    " +
                         _vm._s(event.name) +
@@ -24339,7 +24342,7 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "col-span-3" }, [
+                  _c("div", { staticClass: "ml-4 mb-2 lg:col-span-3" }, [
                     _vm._v(
                       "\n                    " +
                         _vm._s(event.eventDescription) +
@@ -24351,37 +24354,39 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "div",
-                { staticClass: "flex items-center text-center lg:mr-4" },
+                { staticClass: "items-center text-center lg:ml-2 lg:mr-4" },
                 [
-                  _c("div", { staticClass: "mr-4 text-center" }, [
+                  _c("div", { staticClass: "ml-4 mr-4  mb-2 text-center" }, [
                     _vm._v(
                       "\n                    " +
-                        _vm._s(event.isItRecurringYearly ? "✔" : "no") +
-                        "\n                "
+                        _vm._s(
+                          event.isItRecurringYearly ? "✔" : "not yearly event"
+                        ) +
+                        "\n\n                    "
+                    ),
+                    _c(
+                      "button",
+                      {
+                        directives: [
+                          {
+                            name: "clipboard",
+                            rawName: "v-clipboard",
+                            value: function() {
+                              return _vm.eventToString(event)
+                            },
+                            expression: "() => eventToString(event)"
+                          }
+                        ],
+                        staticClass:
+                          "btn btn-primary cursor-pointer  mb-2 ml-2  "
+                      },
+                      [
+                        _c("span", { staticClass: "text-sm" }, [
+                          _vm._v("Copy to clipboard")
+                        ])
+                      ]
                     )
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      directives: [
-                        {
-                          name: "clipboard",
-                          rawName: "v-clipboard",
-                          value: function() {
-                            return _vm.eventToString(event)
-                          },
-                          expression: "() => eventToString(event)"
-                        }
-                      ],
-                      staticClass: "btn btn-primary"
-                    },
-                    [
-                      _vm._v(
-                        "\n                        Copy to clipboard\n                    "
-                      )
-                    ]
-                  )
+                  ])
                 ]
               )
             ]

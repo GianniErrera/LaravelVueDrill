@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="border border-red-800">
         <!--Event creation form -->
         <div class="border border-red-800">
             <event-form v-bind:fonte="fontediVerità" v-bind:paginator="paginator" v-on:event-published="applyFilters"></event-form>
@@ -25,8 +25,8 @@
                         id="search_range"
                         name="search_range"
                         type="text"
-                        size="28"
-                        class="text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800"
+                        size="24"
+                        class="text-center mx-4 mb-4 p-2 input input-bordered border border-gray-800"
                         readonly
                     >
                 </div>
@@ -40,8 +40,8 @@
                         id="searchDate"
                         name="searchDate"
                         type="text"
-                        size="28"
-                        class="text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800"
+                        size="24"
+                        class="text-center mx-4 mb-4 p-2 input input-bordered border border-gray-800"
                         readonly
                     >
 
@@ -91,7 +91,7 @@
                 </div>
 
                 <div>
-                    <div class="block text-center mb-">
+                    <div class="block text-center">
                         <span class="ml-2 text-center font-semibold">Reset filters</span>
                         <div class="text-center m-4">
                             <button
@@ -113,35 +113,30 @@
 
         <!-- Events list div -->
         <div class="p-4 border-b border-b-gray-400 rounded-xl ml-2 mr-2'">
-            <div class="flex flex-row justify-between p-2" v-for="event in paginator.data" :key="event.id">
-                <div class="lg:flex lg:w-5/6 lg:grid lg:grid-cols-6">
+            <div class="lg:flex lg:flex-row justify-between p-2" v-for="event in paginator.data" :key="event.id">
+                <div class="lg:flex w-4/6 lg:grid lg:grid-cols-6 lg:grid-cols-6">
 
-                    <div>
+                    <div class="ml-4 mb-2 lg:col-span-1">
                         {{ event.date }}
                     </div>
-                    <div class="lg:ml-8 lg:col-span-2">
+                    <div class="ml-4 mb-2 lg:ml-8 col-span-2">
                         {{ event.name }}
                     </div>
-                    <div class="col-span-3">
+                    <div class="ml-4 mb-2 lg:col-span-3">
                         {{ event.eventDescription }}
                     </div>
 
                 </div>
-                <div class="flex items-center text-center lg:mr-4">
-                    <div class="mr-4 text-center">
-                        {{ event.isItRecurringYearly ? "&#10004;" : "no" }}
-                    </div>
+                <div class="items-center text-center lg:ml-2 lg:mr-4">
+                    <div class="ml-4 mr-4  mb-2 text-center">
+                        {{ event.isItRecurringYearly ? "&#10004;" : "not yearly event" }}
 
                         <button
-                        class="btn btn-primary"
-                            v-clipboard="() => eventToString(event)">
-                            Copy to clipboard
+                            class="btn btn-primary cursor-pointer  mb-2 ml-2  "
+                                v-clipboard="() => eventToString(event)">
+                                <span class="text-sm">Copy to clipboard</span>
                         </button>
-
-
-
-
-
+                    </div>
                 </div>
             </div>
             <!-- Events paginator buttons -->
@@ -232,7 +227,7 @@ import Input from '../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js
     };
 
     export default {
-  components: { Input },
+       components: { Input },
        data() {
             return {
                 filters: {
@@ -333,6 +328,8 @@ import Input from '../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js
                 axios.get(`${this.paginator_path_url}/${this.page_number}`).then(response=>this.paginator = response.data);
             },
             eventToString($event) {
+                let $date = new Date($event.date);
+                var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                 let $recurringOrNot = "";
                 if($event.isItRecurringYearly) {
                     $recurringOrNot = "Event recurring each year";
@@ -340,7 +337,7 @@ import Input from '../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js
                      $recurringOrNot = "Not recurring event";
                 }
 
-                let $event_to_string = $event.date + " - " + $event.name + " - " + $event.eventDescription + " - " + $recurringOrNot;
+                let $event_to_string = $date.toLocaleString('en-GB', options) + " - " + $event.name + " - " + $event.eventDescription + " - " + $recurringOrNot;
                 return($event_to_string);
 
             }

@@ -1,44 +1,44 @@
 <template>
-    <div class="border border-blue-400 rounded-lg px-8 py-6 lg:ml-6 mb-6 mr-2 md:mx-auto">
+    <div class="border border-blue-400 rounded-lg px-8 py-6 lg:ml-6 mb-6 lg:mr-6 md:mx-auto">
         <p v-if="errors.length" class="text-error m-4">
                     <b>Please correct the following error(s):</b>
                     <ul class="list-disc">
                     <li v-for="error in errors" :key="error.id">{{ error }}</li>
                     </ul>
                 </p>
-        <form  class="border border-gray-800 m-4" @submit.prevent="formValidation">
+        <form  class="border border-gray-800 lg:m-4" @submit.prevent="formValidation">
             <div class="lg:flex justify-between p-4 text-center">
                 <input type="hidden" name="_token" :value="csrf">
 
                 <div class="mx-2 lg:p-4 mb-2 text-center">
-                    <label for="start" class="block mb-2 text-center font-semibold">Start date:</label>
+                    <label for="start" class="block mb-2 text-center font-semibold">Event date:</label>
                     <input
                             v-model="formattedDate"
                             id="date"
                             name="date"
-                            class="mb-4 input input-bordered border-gray-800"
+                            class="px-4 mb-4 input input-bordered border-gray-800 flex-grow w-full text-center"
                             required
                             readonly
                             >
                 </div>
-                <div class="lg:ml-6 mr-4 lg:p-4 mb-6 lg:flex-grow lg:h-8">
+                <div class="lg:ml-6 text-center px-4 mb-6 lg:flex-grow lg:h-8">
                     <label for="name" class="block mb-2 text-center font-semibold">Event name:</label>
                         <input name="name"
-                            class="ml-4 mr-4 input input-bordered flex-grow w-full"
+                            class="px-4 input input-bordered flex-grow w-full text-center"
                             type="text"
                             required
                             v-model="name">
                 </div>
             </div>
 
-            <div class="lg:flex lg:justify-between mr-4 ml-5 mt-2 mb-6">
-                <div class="w-4/5">
+            <div class="lg:flex lg:justify-between mt-2 mb-6">
+                <div class="lg:w-4/5 px-4 text-center">
                     <label for="description" class="block mb-2 text-center font-semibold">Event description:</label>
-                    <input name="description" class="ml-4 mr-4 mt-4 input input-bordered w-full" type="text" v-model="description">
+                    <input name="description" class="mt-4 input input-bordered w-full text-center" type="text" v-model="description">
                 </div>
 
                 <label class="text-center cursor-pointer lg:mr-4">
-                    <span class="ml-2 font-semibold block mr-4 mt-4 text-center">Does this event recur every year?</span>
+                    <span class="ml-2 font-semibold block mr-4 mt-4 text-center">Does this event occur every year?</span>
                     <div>
                         <input type="checkbox"
                             v-model="isItYearly"
