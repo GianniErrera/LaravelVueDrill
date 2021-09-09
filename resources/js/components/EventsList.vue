@@ -113,11 +113,11 @@
             </div>
         </div>
         <!--End events filters div -->
-
+        <div class="border border-black less-than-lg:hidden">schermi grandi</div>
+        <div class="border border-red-800 lg:hidden">schermi piccoli</div>
         <!-- Events list div -->
         <div class="p-4 border-b border-b-gray-400 rounded-xl">
-            <!-- <div class="less-than-lg:hidden">schermi grandi</div>
-            <div class="lg:hidden">schermi piccoli</div> -->
+
             <div v-for="event in paginator.data" :key="event.id">
 
                 <!-- Events history for screens larger than medium-->

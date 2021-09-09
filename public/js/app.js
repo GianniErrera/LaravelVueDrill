@@ -24607,6 +24607,14 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
+    _c("div", { staticClass: "border border-black less-than-lg:hidden" }, [
+      _vm._v("schermi grandi")
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "border border-red-800 lg:hidden" }, [
+      _vm._v("schermi piccoli")
+    ]),
+    _vm._v(" "),
     _c(
       "div",
       { staticClass: "p-4 border-b border-b-gray-400 rounded-xl" },
@@ -25030,7 +25038,7 @@ var render = function() {
             {
               staticClass:
                 "flex m-4 p-4 justify-between bg-blue-800 text-white",
-              attrs: { id: "`${index}`" }
+              attrs: { id: index }
             },
             [
               _c("div", { staticClass: "flex reminder" }, [
