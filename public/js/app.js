@@ -4175,6 +4175,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 Vue.use((v_clipboard__WEBPACK_IMPORTED_MODULE_0___default()));
 
@@ -24315,66 +24356,58 @@ var render = function() {
       { staticClass: "p-4 border-b border-b-gray-400 rounded-xl" },
       [
         _vm._l(_vm.paginator.data, function(event) {
-          return _c(
-            "div",
-            {
-              key: event.id,
-              staticClass: "lg:flex lg:flex-row justify-between p-2"
-            },
-            [
+          return _c("div", { key: event.id }, [
+            _c("div", { staticClass: "less-than-lg:hidden" }, [
               _c(
                 "div",
-                {
-                  staticClass:
-                    "lg:flex w-4/6 lg:grid lg:grid-cols-6 lg:grid-cols-6"
-                },
+                { staticClass: "lg:flex lg:flex-row justify-between p-2" },
                 [
-                  _c("div", { staticClass: "ml-4 mb-2 lg:col-span-1" }, [
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(event.date) +
-                        "\n                "
-                    )
+                  _c("div", { staticClass: "w-4/6 lg:grid lg:grid-cols-6" }, [
+                    _c("div", { staticClass: "ml-4 mb-2 lg:col-span-1" }, [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(event.date) +
+                          "\n                        "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "ml-4 mb-2 lg:ml-8 lg:col-span-2" },
+                      [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(event.name) +
+                            "\n                        "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "ml-4 mb-2 lg:col-span-3" }, [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(event.eventDescription) +
+                          "\n                        "
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "ml-4 mb-2 lg:ml-8 col-span-2" }, [
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(event.name) +
-                        "\n                "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "ml-4 mb-2 lg:col-span-3" }, [
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(event.eventDescription) +
-                        "\n                "
-                    )
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "items-center text-center lg:ml-2 lg:mr-4" },
-                [
                   _c(
                     "div",
                     {
                       staticClass:
-                        "lg:flex lg:flex-row text-center lg:ml-2 lg:mr-4"
+                        "lg:ml-2 lg:mr-4 lg:flex lg:flex-row text-center items-center lg:ml-2 lg:mr-4"
                     },
                     [
                       _c("div", { staticClass: "mb-2" }, [
                         _vm._v(
-                          "\n                        " +
+                          "\n                            " +
                             _vm._s(
                               event.isItRecurringYearly
                                 ? "✔"
                                 : "not yearly event"
                             ) +
-                            "\n                    "
+                            "\n                        "
                         )
                       ]),
                       _vm._v(" "),
@@ -24393,7 +24426,7 @@ var render = function() {
                               }
                             ],
                             staticClass:
-                              "btn btn-primary cursor-pointer  mb-2 ml-2  "
+                              "btn btn-primary cursor-pointer mb-2 ml-2  "
                           },
                           [
                             _c("span", { staticClass: "text-sm" }, [
@@ -24406,8 +24439,80 @@ var render = function() {
                   )
                 ]
               )
-            ]
-          )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "lg:hidden" }, [
+              _c("div", { staticClass: "w-full grid grid-cols-1" }, [
+                _c("div", { staticClass: "text-center mb-2" }, [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(event.date) +
+                      "\n                    "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "text-center mb-2 lg:ml-8" }, [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(event.name) +
+                      "\n                    "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "text-center mb-2 lg:col-span-3" }, [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(event.eventDescription) +
+                      "\n                    "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "lg:ml-2 lg:mr-4 lg:flex lg:flex-row text-center items-center"
+                },
+                [
+                  _c("div", { staticClass: "mb-2" }, [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(
+                          event.isItRecurringYearly ? "✔" : "not yearly event"
+                        ) +
+                        "\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [
+                    _c(
+                      "button",
+                      {
+                        directives: [
+                          {
+                            name: "clipboard",
+                            rawName: "v-clipboard",
+                            value: function() {
+                              return _vm.eventToString(event)
+                            },
+                            expression: "() => eventToString(event)"
+                          }
+                        ],
+                        staticClass:
+                          "btn btn-primary cursor-pointer  mb-2 ml-2  "
+                      },
+                      [
+                        _c("span", { staticClass: "text-sm" }, [
+                          _vm._v("Copy to clipboard")
+                        ])
+                      ]
+                    )
+                  ])
+                ]
+              )
+            ])
+          ])
         }),
         _vm._v(" "),
         _c("div", { staticClass: "flex mt-4 justify-center" }, [

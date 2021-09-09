@@ -113,22 +113,62 @@
 
         <!-- Events list div -->
         <div class="p-4 border-b border-b-gray-400 rounded-xl">
-            <div class="lg:flex lg:flex-row justify-between p-2" v-for="event in paginator.data" :key="event.id">
-                <div class="lg:flex w-4/6 lg:grid lg:grid-cols-6 lg:grid-cols-6">
+            <!-- <div class="less-than-lg:hidden">schermi grandi</div>
+            <div class="lg:hidden">schermi piccoli</div> -->
+            <div v-for="event in paginator.data" :key="event.id">
 
-                    <div class="ml-4 mb-2 lg:col-span-1">
-                        {{ event.date }}
-                    </div>
-                    <div class="ml-4 mb-2 lg:ml-8 col-span-2">
-                        {{ event.name }}
-                    </div>
-                    <div class="ml-4 mb-2 lg:col-span-3">
-                        {{ event.eventDescription }}
-                    </div>
+                <!-- Events history for screens larger than medium-->
+                <div class="less-than-lg:hidden">
 
+                    <div class="lg:flex lg:flex-row justify-between p-2">
+
+                        <div class="w-4/6 lg:grid lg:grid-cols-6">
+
+                            <div class="ml-4 mb-2 lg:col-span-1">
+                                {{ event.date }}
+                            </div>
+                            <div class="ml-4 mb-2 lg:ml-8 lg:col-span-2">
+                                {{ event.name }}
+                            </div>
+                            <div class="ml-4 mb-2 lg:col-span-3">
+                                {{ event.eventDescription }}
+                            </div>
+
+                        </div>
+
+                        <div class="lg:ml-2 lg:mr-4 lg:flex lg:flex-row text-center items-center lg:ml-2 lg:mr-4">
+                            <div class="mb-2">
+                                {{ event.isItRecurringYearly ? "&#10004;" : "not yearly event" }}
+                            </div>
+                            <div>
+                                    <button
+                                        class="btn btn-primary cursor-pointer mb-2 ml-2  "
+                                            v-clipboard="() => eventToString(event)">
+                                            <span class="text-sm">Copy to clipboard</span>
+                                    </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="items-center text-center lg:ml-2 lg:mr-4">
-                    <div class="lg:flex lg:flex-row text-center lg:ml-2 lg:mr-4">
+                <!-- End events history for screens larger than medium-->
+                <!-- Events history for mobile devices-->
+
+                <div class="lg:hidden">
+                    <div class="w-full grid grid-cols-1">
+
+                        <div class="text-center mb-2">
+                            {{ event.date }}
+                        </div>
+                        <div class="text-center mb-2 lg:ml-8">
+                            {{ event.name }}
+                        </div>
+                        <div class="text-center mb-2 lg:col-span-3">
+                            {{ event.eventDescription }}
+                        </div>
+
+                    </div>
+
+                    <div class="lg:ml-2 lg:mr-4 lg:flex lg:flex-row text-center items-center">
                         <div class="mb-2">
                             {{ event.isItRecurringYearly ? "&#10004;" : "not yearly event" }}
                         </div>
@@ -141,6 +181,7 @@
                         </div>
                     </div>
                 </div>
+                <!--End events list for mobile devices-->
             </div>
             <!-- Events paginator buttons -->
             <div class="flex mt-4 justify-center">
