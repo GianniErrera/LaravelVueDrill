@@ -1,7 +1,10 @@
 <template>
     <div class="border border-red-800">
-        <!--Event creation form -->
+
         <div class="border border-red-800">
+            <!--Event reminders -->
+            <events-reminders></events-reminders>
+            <!--Event creation form -->
             <event-form v-bind:fonte="fontediVerità" v-bind:paginator="paginator" v-on:event-published="applyFilters"></event-form>
         </div>
         <!--End event creation form -->
@@ -263,6 +266,7 @@ import Clipboard from 'v-clipboard'
 Vue.use(Clipboard)
 
 import Input from '../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Input.vue';
+import EventsReminders from './EventsReminders.vue';
     const buttonLabels = {
         first: "<<",
         prev: "<",
@@ -271,7 +275,7 @@ import Input from '../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js
     };
 
     export default {
-       components: { Input },
+       components: { Input, EventsReminders },
        data() {
             return {
                 filters: {
@@ -297,8 +301,8 @@ import Input from '../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js
                 selected: "date",
                 single_date_query: false,
                 single_formatted_date: ""
-                }
-            },
+            }
+        },
         static: {
             first_button: "<<", // these two strings are used as "<" symbol may be interpreted as first character of tag
             prev_button: "<"

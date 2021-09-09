@@ -20,7 +20,7 @@
         },
         mounted() {
             //  axios.get('/events').then(response=>this.events = response.data);
-             console.log("WTF");
+
         }
     }
 </script>

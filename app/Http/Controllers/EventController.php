@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class EventController extends Controller
 {
@@ -24,6 +25,22 @@ class EventController extends Controller
             ->orderBy($query_filters->selected)
             ->paginate($perPage, ['*'], "page", $page);
 
+    }
+
+
+    /**
+     * Returns upcoming events or yesterday events
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function reminders()
+    {
+       return Event::
+        where('date', '>=', Carbon::yesterday())->
+        where('date', '<=', Carbon::today()->addDays(30))->
+        orderBy('date')->
+        take(10)->
+        get();
     }
 
     /**

@@ -37,6 +37,8 @@ Route::get("/events/{filters}/{perPage}/{page}", [EventController::class, 'index
 
 Route::post('/events', [EventController::class, 'store']);
 
+Route::get('/reminders', [EventController::class, 'reminders']);
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
