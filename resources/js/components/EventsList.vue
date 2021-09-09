@@ -1,5 +1,6 @@
 <template>
     <div class="border border-red-800">
+        <flash-message></flash-message>
 
         <div class="border border-red-800">
             <!--Event reminders -->
@@ -267,6 +268,7 @@ Vue.use(Clipboard)
 
 import Input from '../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Input.vue';
 import EventsReminders from './EventsReminders.vue';
+import FlashMessage from './FlashMessage.vue';
     const buttonLabels = {
         first: "<<",
         prev: "<",
@@ -275,7 +277,7 @@ import EventsReminders from './EventsReminders.vue';
     };
 
     export default {
-       components: { Input, EventsReminders },
+       components: { Input, EventsReminders, FlashMessage },
        data() {
             return {
                 filters: {
@@ -402,6 +404,7 @@ import EventsReminders from './EventsReminders.vue';
             this.filters_string = JSON.stringify(this.filters);
             axios.get(`/events/${this.filters_string}/${this.number_of_events_per_page}/${this.page_number}`).then(response=>this.paginator = response.data);
 
+
             this.datepicker= new Litepicker({
                 element: document.getElementById('searchDate'),
                 format: 'DD-MM-YYYY',
@@ -456,3 +459,17 @@ import EventsReminders from './EventsReminders.vue';
 
     }
 </script>
+
+    <style scoped>
+    .slide-fade-enter-active,
+    .slide-fade-leave-active {
+    transition: all 0.4s;
+    }
+
+    .slide-fade-enter,
+    .slide-fade-leave-to {
+    transform: translateX(400px);
+    opacity: 0;
+    }
+
+</style>

@@ -6,8 +6,11 @@
                     :id="index"
                     class="flex m-4 p-4 justify-between bg-blue-800 text-white">
                     <div class="flex reminder">
-                        <div>
-                        {{ formatDate(reminder.date)}} - {{reminder.name }}
+                        <div class="lg:hidden">
+                        {{ reminder.date}} - {{reminder.name }}
+                        </div>
+                        <div class="less-than-lg:hidden">
+                        {{ formatDate(reminder.date)}} - {{reminder.name }} - {{ reminder.eventDescription}}
                         </div>
 
                     </div>

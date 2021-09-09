@@ -10,7 +10,7 @@
             <div class="lg:flex justify-between p-4 text-center">
                 <input type="hidden" name="_token" :value="csrf">
 
-                <div class="mx-2 lg:p-4 mb-2 text-center">
+                <div class="mx-2 lg:p-4 mb-6 text-center">
                     <label for="start" class="block mb-2 text-center font-semibold">Event date:</label>
                     <input
                             v-model="formattedDate"
@@ -21,10 +21,10 @@
                             readonly
                             >
                 </div>
-                <div class="lg:ml-6 text-center px-4 mb-6 lg:flex-grow lg:h-8">
+                <div class="lg:ml-6 lg:p-4 text-center px-4 mb-6 lg:flex-grow lg:h-8">
                     <label for="name" class="block mb-2 text-center font-semibold">Event name:</label>
                         <input name="name"
-                            class="px-4 input input-bordered flex-grow w-full text-center"
+                            class="px-4 input input-bordered flex-grow w-full"
                             type="text"
                             required
                             v-model="name">
@@ -34,7 +34,7 @@
             <div class="lg:flex lg:justify-between mt-2 mb-6">
                 <div class="lg:w-4/5 px-4 text-center">
                     <label for="description" class="block mb-2 text-center font-semibold">Event description:</label>
-                    <input name="description" class="mt-4 input input-bordered w-full text-center" type="text" v-model="description">
+                    <input name="description" class="mt-4 input input-bordered w-full" type="text" v-model="description">
                 </div>
 
                 <label class="text-center cursor-pointer lg:mr-4">
@@ -65,7 +65,11 @@
                 date: "",
                 formattedDate: "", // this is the date format to display on screen
                 isItYearly: false,
-                errors: []
+                errors: [],
+                message: {
+                    text: null,
+                    type: 'success'
+                }
             }
         },
         computed: {
@@ -105,9 +109,6 @@
                     this.errors.push("A valid date must be picked");
                 }
 
-                if (!this.description) {
-                    this.errors.push('Event description required.');
-                }
 
                 if (!this.errors.length) {
                     this.onSubmit();
@@ -117,6 +118,8 @@
 
             },
             onSubmit() {
+
+
 
                 axios.post('/events', {
                     date: this.date,
@@ -129,13 +132,22 @@
                         this.formattedDate = "",
                         this.name = "",
                         this.description = "",
-                        this.isItYearly = false
+                        this.isItYearly = false,
+                        this.message.type = "success",
+                        this.message.text = "Event published successfully!"
                     )
                     .catch(error => {
                         console.log(error.response);
+                        this.message.type = "error",
+                        this.message.text = "Something has gone wrong, sorry."
                     })
 
                 this.$emit('event-published'); // this is going to trigger a listener on parent component to refresh the paginator to include new event.
+                Bus.$emit('flash-message', this.message); // this sends a broadcast message so that a flash message may be displayed
+                this.message = { // sets message back to default values
+                    text: null,
+                    type: 'success'
+                }
 
             }
 
