@@ -25076,7 +25076,9 @@ var staticRenderFns = [
       [
         _c(
           "div",
-          { staticClass: "flex font-xl font-bold text-grey-900 text-center" },
+          {
+            staticClass: "ml-2 flex font-xl font-bold text-grey-900 text-center"
+          },
           [_vm._v("\n                        X\n                    ")]
         )
       ]

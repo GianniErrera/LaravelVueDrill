@@ -12,7 +12,7 @@
 
                     </div>
                     <button onclick="this.parentElement.style.display = 'none';" >
-                        <div class="flex font-xl font-bold text-grey-900 text-center">
+                        <div class="ml-2 flex font-xl font-bold text-grey-900 text-center">
                             X
                         </div>
                     </button>
