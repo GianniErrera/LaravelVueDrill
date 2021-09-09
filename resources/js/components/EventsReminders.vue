@@ -2,7 +2,7 @@
     <div>
         <div
             v-for="(reminder, index) in reminders" :key="index">
-                <div v-show="isVisible"
+                <div
                     id="`${index}`"
                     class="flex m-4 p-4 justify-between bg-blue-800 text-white">
                     <div class="flex reminder">
