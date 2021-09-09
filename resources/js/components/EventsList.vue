@@ -153,7 +153,7 @@
                 <!-- End events history for screens larger than medium-->
                 <!-- Events history for mobile devices-->
 
-                <div class="lg:hidden">
+                <div class="lg:hidden border border-2 border-base-900 mb-2">
                     <div class="w-full grid grid-cols-1">
 
                         <div class="text-center mb-2">
