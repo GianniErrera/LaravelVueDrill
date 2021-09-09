@@ -4623,6 +4623,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {};
@@ -25194,25 +25196,27 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal", attrs: { id: "my-modal" } }, [
-      _c("div", { staticClass: "modal-box" }, [
-        _c("p", [_vm._v("some stuff")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "modal-action" }, [
-          _c(
-            "a",
-            {
-              staticClass: "btn btn-primary",
-              attrs: { href: "/components/modal#" }
-            },
-            [_vm._v("Accept")]
-          ),
+    return _c("div", [
+      _c("div", { staticClass: "modal", attrs: { id: "my-modal" } }, [
+        _c("div", { staticClass: "modal-box" }, [
+          _c("p", [_vm._v("some stuff")]),
           _vm._v(" "),
-          _c(
-            "a",
-            { staticClass: "btn", attrs: { href: "/components/modal#" } },
-            [_vm._v("Close")]
-          )
+          _c("div", { staticClass: "modal-action" }, [
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { href: "/components/modal#" }
+              },
+              [_vm._v("Accept")]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              { staticClass: "btn", attrs: { href: "/components/modal#" } },
+              [_vm._v("Close")]
+            )
+          ])
         ])
       ])
     ])

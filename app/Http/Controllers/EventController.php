@@ -22,7 +22,7 @@ class EventController extends Controller
             ->orWhere('eventDescription', 'like', '%' . $query_filters->search . "%")
             ->singleDateQuery($query_filters->ignore_year_from_query, $query_filters->single_date)
             ->dateRangeQuery($query_filters->ignore_year_from_query, $query_filters->start_date, $query_filters->end_date)
-            ->orderBy($query_filters->selected)
+            ->orderBy($query_filters->selected, 'desc')
             ->paginate($perPage, ['*'], "page", $page);
 
     }
