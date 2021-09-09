@@ -6,13 +6,18 @@
                     id="`${index}`"
                     class="flex m-4 p-4 justify-between bg-blue-800 text-white">
                     <div class="flex reminder">
-                        {{reminder.eventDescription}}
+                        <div>
+                        {{ formatDate(reminder.date)}} - {{reminder.name }}
+                        </div>
+
                     </div>
                     <button onclick="this.parentElement.style.display = 'none';" >
                         <div class="flex font-xl font-bold text-grey-900 text-center">
                             X
                         </div>
                     </button>
+
+
                 </div>
                 <modal :reminder="reminder">
                 </modal>
@@ -28,6 +33,14 @@ import Modal from './Modal.vue';
             return {
                 reminders: []
 
+            }
+        },
+        methods: {
+            formatDate($event_date) {
+                let $date = new Date($event_date);
+                var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+                return($date.toLocaleString('en-GB', options));
             }
         },
         mounted() {

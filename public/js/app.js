@@ -4492,6 +4492,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -4501,6 +4506,18 @@ __webpack_require__.r(__webpack_exports__);
     return {
       reminders: []
     };
+  },
+  methods: {
+    formatDate: function formatDate($event_date) {
+      var $date = new Date($event_date);
+      var options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      };
+      return $date.toLocaleString('en-GB', options);
+    }
   },
   mounted: function mounted() {
     var _this = this;
@@ -25015,11 +25032,15 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "flex reminder" }, [
-                _vm._v(
-                  "\n                    " +
-                    _vm._s(reminder.eventDescription) +
-                    "\n                "
-                )
+                _c("div", [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.formatDate(reminder.date)) +
+                      " - " +
+                      _vm._s(reminder.name) +
+                      "\n                    "
+                  )
+                ])
               ]),
               _vm._v(" "),
               _vm._m(0, true)
