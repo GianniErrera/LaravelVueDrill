@@ -79,7 +79,7 @@
         },
         mounted() {
                 console.log(sourceOfTruth);
-                const datepicker= new Litepicker({
+                this.datepicker= new Litepicker({
                 element: document.getElementById('date'),
                 format: 'DD-MM-YYYY',
                 resetButton: true,
@@ -128,6 +128,7 @@
                     isItYearly: this.isItYearly
                     })
                     .then(
+                        this.datepicker.clearSelection(),
                         this.date = "",
                         this.formattedDate = "",
                         this.name = "",
@@ -137,7 +138,7 @@
                         this.message.text = "Event published successfully!"
                     )
                     .catch(error => {
-                        console.log(error.response);
+                        console.log(error.response),
                         this.message.type = "error",
                         this.message.text = "Something has gone wrong, sorry."
                     })

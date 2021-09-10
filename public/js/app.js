@@ -3886,7 +3886,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     console.log(sourceOfTruth);
-    var datepicker = new Litepicker({
+    this.datepicker = new Litepicker({
       element: document.getElementById('date'),
       format: 'DD-MM-YYYY',
       resetButton: true,
@@ -3935,9 +3935,8 @@ __webpack_require__.r(__webpack_exports__);
         name: this.name,
         description: this.description,
         isItYearly: this.isItYearly
-      }).then(this.date = "", this.formattedDate = "", this.name = "", this.description = "", this.isItYearly = false, this.message.type = "success", this.message.text = "Event published successfully!")["catch"](function (error) {
-        console.log(error.response);
-        _this2.message.type = "error", _this2.message.text = "Something has gone wrong, sorry.";
+      }).then(this.datepicker.clearSelection(), this.date = "", this.formattedDate = "", this.name = "", this.description = "", this.isItYearly = false, this.message.type = "success", this.message.text = "Event published successfully!")["catch"](function (error) {
+        console.log(error.response), _this2.message.type = "error", _this2.message.text = "Something has gone wrong, sorry.";
       });
       this.$emit('event-published'); // this is going to trigger a listener on parent component to refresh the paginator to include new event.
 
