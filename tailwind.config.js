@@ -13,7 +13,7 @@ module.exports = {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
             screens: {
-                'less-than-lg': {'max': '1100px'}
+                'less-than-lg': {'max': '1023px'}
                 // => @media (orientation: portrait) { ... }
             }
         },
