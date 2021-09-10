@@ -46,14 +46,14 @@ export default {
   },
     mounted() {
         let timer;
-            Bus.$on('flash-message', (message) => {
-                clearTimeout(timer);
-                this.message = message;
+        Bus.$on('flash-message', (message) => {
+            clearTimeout(timer);
+            this.message = message;
 
-                setTimeout(() => {
-                this.message = null;
-                }, 5000);
-            });
+            setTimeout(() => {
+            this.message = null;
+            }, 5000);
+        });
     },
 };
 
