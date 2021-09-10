@@ -58,3 +58,17 @@ export default {
 };
 
 </script>
+
+<style scoped>
+    .slide-fade-enter-active,
+    .slide-fade-leave-active {
+    transition: all 0.4s;
+    }
+
+    .slide-fade-enter,
+    .slide-fade-leave-to {
+    transform: translateX(400px);
+    opacity: 0;
+    }
+
+</style>

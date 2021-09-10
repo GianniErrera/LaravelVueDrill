@@ -114,8 +114,7 @@
             </div>
         </div>
         <!--End events filters div -->
-        <div class="border border-black less-than-lg:hidden">schermi grandi</div>
-        <div class="border border-red-800 lg:hidden">schermi piccoli</div>
+
         <!-- Events list div -->
         <div class="p-4 border-b border-b-gray-400 rounded-xl">
 
@@ -458,18 +457,5 @@ import FlashMessage from './FlashMessage.vue';
         }
 
     }
+
 </script>
-
-    <style scoped>
-    .slide-fade-enter-active,
-    .slide-fade-leave-active {
-    transition: all 0.4s;
-    }
-
-    .slide-fade-enter,
-    .slide-fade-leave-to {
-    transform: translateX(400px);
-    opacity: 0;
-    }
-
-</style>
