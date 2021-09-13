@@ -59,7 +59,6 @@
                         <input
                             type="checkbox"
                             v-model="filters.single_date_query"
-                            v-on:change="clearDatepickers"
                             class="flex-none checkbox"
                         >
                     </div>
@@ -335,6 +334,7 @@ import FlashMessage from './FlashMessage.vue';
                 this.filters.end_date = "";
                 this.filters.ignore_year_from_query = false;
                 this.page_number = 1;
+                this.clearDatepickers();
             },
             clearDatepickers() {
                 this.filters.single_date = "";
@@ -422,6 +422,7 @@ import FlashMessage from './FlashMessage.vue';
                         this.filters.start_date = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
                         this.filters.end_date = "";
                         this.filters.search_range = "";
+                        this.rangepicker.clearSelection();
                         })
                     }
 
@@ -446,7 +447,7 @@ import FlashMessage from './FlashMessage.vue';
                         this.filters.end_date = end_date.format('YYYY-MM-DD');
                         this.filters.single_date = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
                         this.single_formatted_date = "";
-
+                        this.datepicker.clearSelection();
                     })
                 }
 

@@ -4230,7 +4230,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 Vue.use((v_clipboard__WEBPACK_IMPORTED_MODULE_0___default()));
 
@@ -4315,6 +4314,7 @@ var buttonLabels = {
       this.filters.end_date = "";
       this.filters.ignore_year_from_query = false;
       this.page_number = 1;
+      this.clearDatepickers();
     },
     clearDatepickers: function clearDatepickers() {
       this.filters.single_date = "";
@@ -4438,6 +4438,8 @@ var buttonLabels = {
 
           _this7.filters.end_date = "";
           _this7.filters.search_range = "";
+
+          _this7.rangepicker.clearSelection();
         });
       }
     });
@@ -4463,6 +4465,8 @@ var buttonLabels = {
           _this7.filters.single_date = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
 
           _this7.single_formatted_date = "";
+
+          _this7.datepicker.clearSelection();
         });
       }
     });
@@ -25042,35 +25046,32 @@ var render = function() {
                     : _vm.filters.single_date_query
                 },
                 on: {
-                  change: [
-                    function($event) {
-                      var $$a = _vm.filters.single_date_query,
-                        $$el = $event.target,
-                        $$c = $$el.checked ? true : false
-                      if (Array.isArray($$a)) {
-                        var $$v = null,
-                          $$i = _vm._i($$a, $$v)
-                        if ($$el.checked) {
-                          $$i < 0 &&
-                            _vm.$set(
-                              _vm.filters,
-                              "single_date_query",
-                              $$a.concat([$$v])
-                            )
-                        } else {
-                          $$i > -1 &&
-                            _vm.$set(
-                              _vm.filters,
-                              "single_date_query",
-                              $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                            )
-                        }
+                  change: function($event) {
+                    var $$a = _vm.filters.single_date_query,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(
+                            _vm.filters,
+                            "single_date_query",
+                            $$a.concat([$$v])
+                          )
                       } else {
-                        _vm.$set(_vm.filters, "single_date_query", $$c)
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.filters,
+                            "single_date_query",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
                       }
-                    },
-                    _vm.clearDatepickers
-                  ]
+                    } else {
+                      _vm.$set(_vm.filters, "single_date_query", $$c)
+                    }
+                  }
                 }
               })
             ])
