@@ -38,7 +38,7 @@
                 </div>
 
                 <label class="text-center cursor-pointer lg:mr-4">
-                    <span class="ml-2 font-semibold block mr-4 mt-4 text-center">Does this event occur every year?</span>
+                    <span class="ml-2 font-semibold block mr-4 mt-4 text-center">Does this event recur every year?</span>
                     <div>
                         <input type="checkbox"
                             v-model="isItYearly"

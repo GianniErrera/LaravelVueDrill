@@ -24753,7 +24753,7 @@ var render = function() {
                 {
                   staticClass: "ml-2 font-semibold block mr-4 mt-4 text-center"
                 },
-                [_vm._v("Does this event occur every year?")]
+                [_vm._v("Does this event recur every year?")]
               ),
               _vm._v(" "),
               _c("div", [
