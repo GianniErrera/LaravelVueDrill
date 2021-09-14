@@ -3888,7 +3888,7 @@ __webpack_require__.r(__webpack_exports__);
     console.log(sourceOfTruth);
     this.datepicker = new Litepicker({
       element: document.getElementById('date'),
-      format: 'DD-MM-YYYY',
+      format: 'YYYY-MM-DD',
       resetButton: true,
       singleMode: true,
       allowRepick: true,
@@ -3902,7 +3902,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       setup: function setup(picker) {
         picker.on('selected', function (date) {
-          _this.formattedDate = date.format('DD-MMM-YYYY');
+          _this.formattedDate = date.format('DD MMMM YYYY');
           _this.date = date.format('YYYY-MM-DD');
         });
       }

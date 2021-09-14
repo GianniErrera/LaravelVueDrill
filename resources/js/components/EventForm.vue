@@ -81,7 +81,7 @@
                 console.log(sourceOfTruth);
                 this.datepicker= new Litepicker({
                 element: document.getElementById('date'),
-                format: 'DD-MM-YYYY',
+                format: 'YYYY-MM-DD',
                 resetButton: true,
                 singleMode: true,
                 allowRepick: true,
@@ -90,7 +90,7 @@
                 dropdowns: {"minYear":null,"maxYear":null,"months":true,"years":true},
                 setup: (picker) => {
                     picker.on('selected', (date) => {
-                        this.formattedDate = date.format('DD-MMM-YYYY');
+                        this.formattedDate = date.format('DD MMMM YYYY');
                         this.date = date.format('YYYY-MM-DD')
                     })
                 }
