@@ -49,11 +49,17 @@ class Event extends Model
                             whereDay('date', '<=', $rangeEndDay);
                     }
 
+                } else { // end_date is earlier than start_date
+                    $query->
+                        whereMonth('date', '>', date_format(date_create($start_date), 'm'))-> //if start_date is after end_date we take all months in the desired interval
+                        orWhereMonth('date', '<', date_format(date_create($end_date), 'm'))->
+                        orWhereMonth('date', '=', date_format(date_create($start_date), 'm'))-> // since start_date is after end_date, in the corner case they should be both in the same month we take e.g. all days > 20 and all days < 15
+                        whereDay('date', '>=', date_format(date_create($start_date), 'd'))->
+                        orWhereMonth('date', '=', date_format(date_create($end_date), 'm'))->
+                        whereDay('date', '<=', date_format(date_create($end_date), 'd'));
                 }
 
-            }
-
-            else {
+            } else {
                 return $query;
             }
 
