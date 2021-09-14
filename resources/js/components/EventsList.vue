@@ -379,14 +379,20 @@ import FlashMessage from './FlashMessage.vue';
             eventToString($event) {
                 let $date = new Date($event.date);
                 var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                let $eventDescription = "";
+                if($event.eventDescription != null) {
+                    $eventDescription = $event.eventDescription;
+                } else {
+                    $eventDescription = "no description provided";
+                }
                 let $recurringOrNot = "";
                 if($event.isItRecurringYearly) {
-                    $recurringOrNot = "Event recurring each year";
+                    $recurringOrNot = "event recurring each year";
                 } else {
-                     $recurringOrNot = "Not recurring event";
+                     $recurringOrNot = "not recurring event";
                 }
 
-                let $event_to_string = $date.toLocaleString('en-GB', options) + " - " + $event.name + " - " + $event.eventDescription + " - " + $recurringOrNot;
+                let $event_to_string = $date.toLocaleString('en-GB', options) + " - " + $event.name + " - " + $eventDescription + " - " + $recurringOrNot;
                 return($event_to_string);
 
             }
