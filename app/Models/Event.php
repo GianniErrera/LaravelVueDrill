@@ -29,10 +29,6 @@ class Event extends Model
                 $rangeStartDay = date_format(date_create($start_date), 'd');
                 $rangeEndMonth = date_format(date_create($end_date), 'm');
                 $rangeEndDay = date_format(date_create($end_date), 'd');
-                $start_date_no_year = DateTime::createFromFormat('m-d', $rangeStartMonth . "-" . $rangeStartDay);
-                $end_date_no_year = DateTime::createFromFormat('m-d', $rangeEndMonth . "-" . $rangeEndDay);
-
-
 
                 if($rangeStartMonth == $rangeEndMonth) { // if start_date and end_date are on the same month, we must take all days in between range
                     $query->

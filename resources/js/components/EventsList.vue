@@ -121,67 +121,13 @@
 
                 <!-- Events history for screens larger than medium-->
                 <div class="less-than-lg:hidden">
-
-                    <div class="lg:flex lg:flex-row justify-between p-2">
-
-                        <div class="w-4/6 lg:grid lg:grid-cols-6">
-
-                            <div class="ml-4 mb-2 lg:col-span-1">
-                                {{ event.date }}
-                            </div>
-                            <div class="ml-4 mb-2 lg:ml-8 lg:col-span-2">
-                                {{ event.name }}
-                            </div>
-                            <div class="ml-4 mb-2 lg:col-span-3">
-                                {{ event.eventDescription }}
-                            </div>
-
-                        </div>
-
-                        <div class="lg:ml-2 lg:mr-4 lg:flex lg:flex-row text-center items-center lg:ml-2 lg:mr-4">
-                            <div class="mb-2">
-                                {{ event.isItRecurringYearly ? "&#10004;" : "not yearly event" }}
-                            </div>
-                            <div>
-                                    <button
-                                        class="btn btn-primary cursor-pointer mb-2 ml-2  "
-                                            v-clipboard="() => eventToString(event)">
-                                            <span class="text-sm">Copy to clipboard</span>
-                                    </button>
-                            </div>
-                        </div>
-                    </div>
+                    <event-high-res :event="event" />
                 </div>
                 <!-- End events history for screens larger than medium-->
+
                 <!-- Events history for mobile devices-->
-
                 <div class="lg:hidden border border-2 border-base-900 mb-2">
-                    <div class="w-full grid grid-cols-1">
-
-                        <div class="text-center mb-2">
-                            {{ event.date }}
-                        </div>
-                        <div class="text-center mb-2 lg:ml-8">
-                            {{ event.name }}
-                        </div>
-                        <div class="text-center mb-2 lg:col-span-3">
-                            {{ event.eventDescription }}
-                        </div>
-
-                    </div>
-
-                    <div class="lg:ml-2 lg:mr-4 lg:flex lg:flex-row text-center items-center">
-                        <div class="mb-2">
-                            {{ event.isItRecurringYearly ? "&#10004;" : "not yearly event" }}
-                        </div>
-                        <div>
-                                <button
-                                    class="btn btn-primary cursor-pointer  mb-2 ml-2  "
-                                        v-clipboard="() => eventToString(event)">
-                                        <span class="text-sm">Copy to clipboard</span>
-                                </button>
-                        </div>
-                    </div>
+                    <event-low-res :event="event" />
                 </div>
                 <!--End events list for mobile devices-->
             </div>
@@ -267,6 +213,8 @@ Vue.use(Clipboard)
 import Input from '../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Input.vue';
 import EventsReminders from './EventsReminders.vue';
 import FlashMessage from './FlashMessage.vue';
+import EventHighRes from './EventHighRes.vue';
+import EventLowRes from './EventLowRes.vue';
     const buttonLabels = {
         first: "<<",
         prev: "<",
@@ -275,7 +223,7 @@ import FlashMessage from './FlashMessage.vue';
     };
 
     export default {
-       components: { Input, EventsReminders, FlashMessage },
+       components: { Input, EventsReminders, FlashMessage, EventHighRes, EventLowRes },
        data() {
             return {
                 filters: {
