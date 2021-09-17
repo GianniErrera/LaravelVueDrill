@@ -3885,7 +3885,6 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
-    console.log(sourceOfTruth);
     this.datepicker = new Litepicker({
       element: document.getElementById('date'),
       format: 'YYYY-MM-DD',
@@ -4252,19 +4251,13 @@ __webpack_require__.r(__webpack_exports__);
       this.filters.selected = "date";
       this.filters.search = "";
       this.filters.ignore_year_from_query = false;
+      this.filters.singleDate = "";
+      this.filters.start_date = "";
+      this.filters.end_date = "";
       this.clearDatepickers();
     },
     clearDatepickers: function clearDatepickers() {
-      this.clearSingleDatepicker();
-      this.clearRangeDatepicker();
-    },
-    clearSingleDatepicker: function clearSingleDatepicker() {
-      this.filters.singleDate = "";
       this.singledatepicker.clearSelection();
-    },
-    clearRangeDatepicker: function clearRangeDatepicker() {
-      this.filters.start_date = "";
-      this.filters.end_date = "";
       this.rangepicker.clearSelection();
     }
   },
@@ -4279,6 +4272,12 @@ __webpack_require__.r(__webpack_exports__);
       allowRepick: true,
       autoRefresh: true,
       splitView: true,
+      dropdowns: {
+        "minYear": null,
+        "maxYear": null,
+        "months": true,
+        "years": true
+      },
       setup: function setup(picker) {
         picker.on('selected', function (date) {
           _this.rangepicker.clearSelection();
@@ -4300,6 +4299,14 @@ __webpack_require__.r(__webpack_exports__);
       allowRepick: true,
       autoRefresh: true,
       splitView: true,
+      numberOfMonths: 2,
+      numberOfColumns: 2,
+      dropdowns: {
+        "minYear": null,
+        "maxYear": null,
+        "months": true,
+        "years": true
+      },
       setup: function setup(picker) {
         picker.on('selected', function (startDate, endDate) {
           _this.singledatepicker.clearSelection();
@@ -4328,70 +4335,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var v_clipboard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! v-clipboard */ "./node_modules/v-clipboard/dist/index.min.js");
 /* harmony import */ var v_clipboard__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(v_clipboard__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _vendor_laravel_breeze_stubs_inertia_vue_resources_js_Components_Input_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Input.vue */ "./vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Input.vue");
-/* harmony import */ var _EventsReminders_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./EventsReminders.vue */ "./resources/js/components/EventsReminders.vue");
-/* harmony import */ var _FlashMessage_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./FlashMessage.vue */ "./resources/js/components/FlashMessage.vue");
-/* harmony import */ var _EventHighRes_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./EventHighRes.vue */ "./resources/js/components/EventHighRes.vue");
-/* harmony import */ var _EventLowRes_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./EventLowRes.vue */ "./resources/js/components/EventLowRes.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _EventsPagination_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./EventsPagination.vue */ "./resources/js/components/EventsPagination.vue");
+/* harmony import */ var _EventsReminders_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./EventsReminders.vue */ "./resources/js/components/EventsReminders.vue");
+/* harmony import */ var _FlashMessage_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./FlashMessage.vue */ "./resources/js/components/FlashMessage.vue");
+/* harmony import */ var _EventHighRes_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./EventHighRes.vue */ "./resources/js/components/EventHighRes.vue");
+/* harmony import */ var _EventLowRes_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./EventLowRes.vue */ "./resources/js/components/EventLowRes.vue");
 //
 //
 //
@@ -4448,19 +4396,15 @@ Vue.use((v_clipboard__WEBPACK_IMPORTED_MODULE_0___default()));
 
 
 
-var buttonLabels = {
-  first: "<<",
-  prev: "<",
-  next: ">",
-  last: ">>"
-};
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     Input: _vendor_laravel_breeze_stubs_inertia_vue_resources_js_Components_Input_vue__WEBPACK_IMPORTED_MODULE_1__.default,
-    EventsReminders: _EventsReminders_vue__WEBPACK_IMPORTED_MODULE_2__.default,
-    FlashMessage: _FlashMessage_vue__WEBPACK_IMPORTED_MODULE_3__.default,
-    EventHighRes: _EventHighRes_vue__WEBPACK_IMPORTED_MODULE_4__.default,
-    EventLowRes: _EventLowRes_vue__WEBPACK_IMPORTED_MODULE_5__.default
+    EventsPagination: _EventsPagination_vue__WEBPACK_IMPORTED_MODULE_2__.default,
+    EventsReminders: _EventsReminders_vue__WEBPACK_IMPORTED_MODULE_3__.default,
+    FlashMessage: _FlashMessage_vue__WEBPACK_IMPORTED_MODULE_4__.default,
+    EventHighRes: _EventHighRes_vue__WEBPACK_IMPORTED_MODULE_5__.default,
+    EventLowRes: _EventLowRes_vue__WEBPACK_IMPORTED_MODULE_6__.default
   },
   data: function data() {
     return {
@@ -4477,11 +4421,6 @@ var buttonLabels = {
       paginator: [],
       page_number: 1
     };
-  },
-  "static": {
-    first_button: "<<",
-    // these two strings are used as "<" symbol may be interpreted as first character of tag
-    prev_button: "<"
   },
   watch: {
     "filters": {
@@ -4500,15 +4439,136 @@ var buttonLabels = {
         return _this.paginator = response.data;
       });
     },
-    changePageNumber: function changePageNumber() {
+    changePageNumber: function changePageNumber($pageTarget) {
       var _this2 = this;
 
+      this.page_number = $pageTarget;
       axios.get("/events/".concat(this.filters_string, "/").concat(this.number_of_events_per_page, "/").concat(this.page_number)).then(function (response) {
         return _this2.paginator = response.data;
       });
+    }
+  },
+  mounted: function mounted() {
+    var _this3 = this;
+
+    this.filters_string = JSON.stringify(this.filters);
+    axios.get("/events/".concat(this.filters_string, "/").concat(this.number_of_events_per_page, "/").concat(this.page_number)).then(function (response) {
+      return _this3.paginator = response.data;
+    });
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EventsPagination.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EventsPagination.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['paginator', 'page_number'],
+  "static": {
+    first_button: "<<",
+    // strings starting with "<" symbol may be interpreted as first character of HTML tag
+    prev_button: "<",
+    next_button: ">",
+    last_button: ">>"
+  },
+  methods: {
+    changePage: function changePage() {
+      this.$emit('change-page', this.page_number);
     },
     nextPage: function nextPage() {
       this.page_number += 1;
+      this.changePage();
     },
     previousPage: function previousPage() {
       this.page_number -= 1;
@@ -4530,14 +4590,6 @@ var buttonLabels = {
     isNextButtonDisabled: function isNextButtonDisabled() {
       return this.page_number === this.paginator.last_page;
     }
-  },
-  mounted: function mounted() {
-    var _this3 = this;
-
-    this.filters_string = JSON.stringify(this.filters);
-    axios.get("/events/".concat(this.filters_string, "/").concat(this.number_of_events_per_page, "/").concat(this.page_number)).then(function (response) {
-      return _this3.paginator = response.data;
-    });
   }
 });
 
@@ -4851,6 +4903,7 @@ window.sourceOfTruth = {
 Vue.component('event-form', __webpack_require__(/*! ./components/EventForm.vue */ "./resources/js/components/EventForm.vue").default);
 Vue.component('events-filters', __webpack_require__(/*! ./components/EventsFilters.vue */ "./resources/js/components/EventsFilters.vue").default);
 Vue.component('events-list', __webpack_require__(/*! ./components/EventsList.vue */ "./resources/js/components/EventsList.vue").default);
+Vue.component('events-pagination', __webpack_require__(/*! ./components/EventsPagination.vue */ "./resources/js/components/EventsPagination.vue").default);
 Vue.component('events-reminders', __webpack_require__(/*! ./components/EventsReminders.vue */ "./resources/js/components/EventsReminders.vue").default);
 Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue").default);
 Vue.component('flash-message', __webpack_require__(/*! ./components/FlashMessage.vue */ "./resources/js/components/FlashMessage.vue").default);
@@ -23935,6 +23988,45 @@ component.options.__file = "resources/js/components/EventsList.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/EventsPagination.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/EventsPagination.vue ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _EventsPagination_vue_vue_type_template_id_077aba7e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EventsPagination.vue?vue&type=template&id=077aba7e& */ "./resources/js/components/EventsPagination.vue?vue&type=template&id=077aba7e&");
+/* harmony import */ var _EventsPagination_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EventsPagination.vue?vue&type=script&lang=js& */ "./resources/js/components/EventsPagination.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _EventsPagination_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _EventsPagination_vue_vue_type_template_id_077aba7e___WEBPACK_IMPORTED_MODULE_0__.render,
+  _EventsPagination_vue_vue_type_template_id_077aba7e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/EventsPagination.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/EventsReminders.vue":
 /*!*****************************************************!*\
   !*** ./resources/js/components/EventsReminders.vue ***!
@@ -24251,6 +24343,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/EventsPagination.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/EventsPagination.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EventsPagination_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EventsPagination.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EventsPagination.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EventsPagination_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/components/EventsReminders.vue?vue&type=script&lang=js&":
 /*!******************************************************************************!*\
   !*** ./resources/js/components/EventsReminders.vue?vue&type=script&lang=js& ***!
@@ -24441,6 +24549,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EventsList_vue_vue_type_template_id_3bf6fa82___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EventsList_vue_vue_type_template_id_3bf6fa82___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EventsList.vue?vue&type=template&id=3bf6fa82& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EventsList.vue?vue&type=template&id=3bf6fa82&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/EventsPagination.vue?vue&type=template&id=077aba7e&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/EventsPagination.vue?vue&type=template&id=077aba7e& ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EventsPagination_vue_vue_type_template_id_077aba7e___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EventsPagination_vue_vue_type_template_id_077aba7e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EventsPagination_vue_vue_type_template_id_077aba7e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EventsPagination.vue?vue&type=template&id=077aba7e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EventsPagination.vue?vue&type=template&id=077aba7e&");
 
 
 /***/ }),
@@ -25335,7 +25460,7 @@ var render = function() {
         [
           _c("events-reminders"),
           _vm._v(" "),
-          _c("event-form", { on: { "event-published": _vm.applyFilters } })
+          _c("event-form", { attrs: { "event-published": "applyFilters" } })
         ],
         1
       ),
@@ -25389,207 +25514,229 @@ var render = function() {
             ])
           }),
           _vm._v(" "),
-          _c("div", { staticClass: "flex mt-4 justify-center" }, [
-            _c("div", { staticClass: "btn-group flex-nowrap mx-auto" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-sm cursor rounded-lg",
-                  attrs: { disabled: _vm.isPreviousButtonDisabled },
-                  on: {
-                    click: function($event) {
-                      return _vm.jumpToPage(1)
-                    }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(this.$options.static.first_button) +
-                      "\n\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-sm cursor rounded-lg",
-                  attrs: { disabled: _vm.isPreviousButtonDisabled },
-                  on: { click: _vm.previousPage }
-                },
-                [
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(this.$options.static.prev_button) +
-                      "\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value:
-                        (_vm.paginator.last_page === 3 &&
-                          _vm.page_number === 3) ||
-                        (_vm.paginator.last_page > 3 &&
-                          _vm.page_number === _vm.paginator.last_page),
-                      expression:
-                        "paginator.last_page === 3 && page_number === 3 || paginator.last_page > 3 && page_number === paginator.last_page"
-                    }
-                  ],
-                  staticClass: "btn btn-sm cursor",
-                  on: {
-                    click: function($event) {
-                      return _vm.jumpToPage(_vm.page_number - 2)
-                    }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(_vm.page_number - 2) +
-                      "\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value:
-                        (_vm.paginator.last_page < 3 &&
-                          _vm.page_number === 2) ||
-                        (_vm.paginator.last_page >= 3 && _vm.page_number >= 2),
-                      expression:
-                        "paginator.last_page < 3 && page_number === 2 || (paginator.last_page >= 3 && page_number >= 2)"
-                    }
-                  ],
-                  staticClass: "btn btn-sm cursor",
-                  on: {
-                    click: function($event) {
-                      return _vm.jumpToPage(_vm.page_number - 1)
-                    }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(_vm.page_number - 1) +
-                      "\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                { staticClass: "btn btn-sm", attrs: { disabled: "" } },
-                [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(_vm.page_number) +
-                      "\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.page_number + 1 <= _vm.paginator.last_page,
-                      expression: "page_number + 1 <= paginator.last_page"
-                    }
-                  ],
-                  staticClass: "btn btn-sm cursor",
-                  on: {
-                    click: function($event) {
-                      return _vm.jumpToPage(_vm.page_number + 1)
-                    }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(_vm.page_number + 1) +
-                      "\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value:
-                        _vm.page_number === 1 &&
-                        _vm.page_number + 2 <= _vm.paginator.last_page,
-                      expression:
-                        "page_number === 1 && page_number + 2 <= paginator.last_page"
-                    }
-                  ],
-                  staticClass: "btn btn-sm cursor",
-                  on: {
-                    click: function($event) {
-                      return _vm.jumpToPage(_vm.page_number + 2)
-                    }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(_vm.page_number + 2) +
-                      "\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-sm cursor",
-                  attrs: { disabled: _vm.isNextButtonDisabled },
-                  on: { click: _vm.nextPage }
-                },
-                [_vm._v("\n                    >\n                ")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-sm cursor",
-                  attrs: { disabled: _vm.isNextButtonDisabled },
-                  on: {
-                    click: function($event) {
-                      return _vm.jumpToPage(_vm.paginator.last_page)
-                    }
-                  }
-                },
-                [_vm._v("\n                    >>\n                ")]
-              )
-            ])
-          ])
+          _c("events-pagination", {
+            attrs: { page_number: _vm.page_number, paginator: _vm.paginator },
+            on: { "change-page": _vm.changePageNumber }
+          })
         ],
         2
       )
     ],
     1
   )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EventsPagination.vue?vue&type=template&id=077aba7e&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EventsPagination.vue?vue&type=template&id=077aba7e& ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "flex mt-4 justify-center" }, [
+    _c("div", { staticClass: "btn-group flex-nowrap mx-auto" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-sm cursor rounded-lg",
+          attrs: { disabled: _vm.isPreviousButtonDisabled },
+          on: {
+            click: function($event) {
+              return _vm.jumpToPage(1)
+            }
+          }
+        },
+        [
+          _vm._v(
+            "\n            " +
+              _vm._s(this.$options.static.first_button) +
+              "\n\n        "
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-sm cursor rounded-lg",
+          attrs: { disabled: _vm.isPreviousButtonDisabled },
+          on: { click: _vm.previousPage }
+        },
+        [
+          _vm._v(
+            "\n            " +
+              _vm._s(this.$options.static.prev_button) +
+              "\n        "
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value:
+                (_vm.paginator.last_page === 3 && _vm.page_number === 3) ||
+                (_vm.paginator.last_page > 3 &&
+                  _vm.page_number === _vm.paginator.last_page),
+              expression:
+                "paginator.last_page === 3 && page_number === 3 || paginator.last_page > 3 && page_number === paginator.last_page"
+            }
+          ],
+          staticClass: "btn btn-sm cursor",
+          on: {
+            click: function($event) {
+              return _vm.jumpToPage(_vm.page_number - 2)
+            }
+          }
+        },
+        [
+          _vm._v(
+            "\n\n            " + _vm._s(_vm.page_number - 2) + "\n\n        "
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value:
+                (_vm.paginator.last_page < 3 && _vm.page_number === 2) ||
+                (_vm.paginator.last_page >= 3 && _vm.page_number >= 2),
+              expression:
+                "paginator.last_page < 3 && page_number === 2 || (paginator.last_page >= 3 && page_number >= 2)"
+            }
+          ],
+          staticClass: "btn btn-sm cursor",
+          on: {
+            click: function($event) {
+              return _vm.jumpToPage(_vm.page_number - 1)
+            }
+          }
+        },
+        [
+          _vm._v(
+            "\n\n            " + _vm._s(_vm.page_number - 1) + "\n\n        "
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c("button", { staticClass: "btn btn-sm", attrs: { disabled: "" } }, [
+        _vm._v("\n\n            " + _vm._s(_vm.page_number) + "\n\n        ")
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.page_number + 1 <= _vm.paginator.last_page,
+              expression: "page_number + 1 <= paginator.last_page"
+            }
+          ],
+          staticClass: "btn btn-sm cursor",
+          on: {
+            click: function($event) {
+              return _vm.jumpToPage(_vm.page_number + 1)
+            }
+          }
+        },
+        [
+          _vm._v(
+            "\n\n            " + _vm._s(_vm.page_number + 1) + "\n\n        "
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value:
+                _vm.page_number === 1 &&
+                _vm.page_number + 2 <= _vm.paginator.last_page,
+              expression:
+                "page_number === 1 && page_number + 2 <= paginator.last_page"
+            }
+          ],
+          staticClass: "btn btn-sm cursor",
+          on: {
+            click: function($event) {
+              return _vm.jumpToPage(_vm.page_number + 2)
+            }
+          }
+        },
+        [
+          _vm._v(
+            "\n\n            " + _vm._s(_vm.page_number + 2) + "\n\n        "
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-sm cursor",
+          attrs: { disabled: _vm.isNextButtonDisabled },
+          on: { click: _vm.nextPage }
+        },
+        [
+          _vm._v(
+            "\n                " +
+              _vm._s(this.$options.static.next_button) +
+              "\n        "
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-sm cursor",
+          attrs: { disabled: _vm.isNextButtonDisabled },
+          on: {
+            click: function($event) {
+              return _vm.jumpToPage(_vm.paginator.last_page)
+            }
+          }
+        },
+        [
+          _vm._v(
+            "\n                " +
+              _vm._s(this.$options.static.last_button) +
+              "\n        "
+          )
+        ]
+      )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

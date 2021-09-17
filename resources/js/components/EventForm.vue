@@ -78,7 +78,6 @@
                 },
         },
         mounted() {
-                console.log(sourceOfTruth);
                 this.datepicker= new Litepicker({
                 element: document.getElementById('date'),
                 format: 'YYYY-MM-DD',

@@ -28,6 +28,7 @@ window.sourceOfTruth = {"date": "test"};
 Vue.component('event-form', require('./components/EventForm.vue').default);
 Vue.component('events-filters', require('./components/EventsFilters.vue').default);
 Vue.component('events-list', require('./components/EventsList.vue').default);
+Vue.component('events-pagination', require('./components/EventsPagination.vue').default);
 Vue.component('events-reminders', require('./components/EventsReminders.vue').default);
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('flash-message', require('./components/FlashMessage.vue').default);

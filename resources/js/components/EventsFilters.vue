@@ -111,7 +111,6 @@
                 ],
                 selected: "date",
                 single_date_query: false
-
             }
         },
         props: ['filters'],
@@ -121,19 +120,13 @@
                     this.filters.selected = "date";
                     this.filters.search = "";
                     this.filters.ignore_year_from_query = false;
+                    this.filters.singleDate = "";
+                    this.filters.start_date = "";
+                    this.filters.end_date = "";
                     this.clearDatepickers();
                 },
                 clearDatepickers() {
-                    this.clearSingleDatepicker();
-                    this.clearRangeDatepicker();
-                },
-                clearSingleDatepicker() {
-                    this.filters.singleDate = "";
                     this.singledatepicker.clearSelection();
-                },
-                clearRangeDatepicker() {
-                    this.filters.start_date = "";
-                    this.filters.end_date = "";
                     this.rangepicker.clearSelection();
                 }
         },
@@ -146,6 +139,7 @@
                 allowRepick: true,
                 autoRefresh: true,
                 splitView: true,
+                dropdowns: {"minYear":null,"maxYear":null,"months":true,"years":true},
                 setup: (picker) => {
                     picker.on('selected', (date) => {
                         this.rangepicker.clearSelection();
@@ -169,6 +163,9 @@
                 allowRepick: true,
                 autoRefresh: true,
                 splitView: true,
+                numberOfMonths: 2,
+                numberOfColumns: 2,
+                dropdowns: {"minYear":null,"maxYear":null,"months":true,"years":true},
                 setup: (picker) => {
 
                     picker.on('selected', (startDate, endDate) => {
