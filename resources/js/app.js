@@ -26,12 +26,13 @@ window.sourceOfTruth = {"date": "test"};
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('event-form', require('./components/EventForm.vue').default);
+Vue.component('events-filters', require('./components/EventsFilters.vue').default);
 Vue.component('events-list', require('./components/EventsList.vue').default);
 Vue.component('events-reminders', require('./components/EventsReminders.vue').default);
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('flash-message', require('./components/FlashMessage.vue').default);
 Vue.component('main-component', require('./components/MainComponent.vue').default);
-Vue.component('vue-filters', require('./components/VueFilters.vue').default);
+
 
 
 

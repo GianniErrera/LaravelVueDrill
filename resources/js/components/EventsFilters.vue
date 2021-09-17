@@ -2,7 +2,7 @@
     <div class="lg:flex lg:justify-around pt-4">
 
         <div class="text-center mb-4 mt-8">
-            <select v-model="filters.selected" v-on:change="applyFilters" class="select select-bordered">
+            <select v-model="filters.selected" class="select select-bordered">
                 <option v-for="option in options" v-bind:key="option.value" v-bind:value="option.value" >
                     {{ option.text }}
                 </option>
@@ -10,10 +10,9 @@
         </div>
 
 
-        <div v-show="!filters.singleDateQuery" class="md:mb-3 block text-center">
+        <div v-show="!single_date_query" class="md:mb-3 block text-center">
             <label for="search" class="block text-center mb-3 font-size-14px font-semibold">Search over dates range:</label>
             <input
-                v-model="filters.searchRange"
                 id="searchRange"
                 name="searchRange"
                 type="text"
@@ -24,13 +23,12 @@
         </div>
 
 
-        <div v-show="filters.singleDateQuery" class="block md:mb-3 text-center">
-            <label for="searchDate" class="block text-center mb-3 font-size-14px font-semibold">Pick a date:</label>
+        <div v-show="single_date_query" class="block md:mb-3 text-center">
+            <label for="singleDate" class="block text-center mb-3 font-size-14px font-semibold">Pick a date:</label>
 
             <input
-                v-model="filters.singleFormattedDate"
-                id="searchDate"
-                name="searchDate"
+                id="singleDate"
+                name="singleDate"
                 type="text"
                 size="28"
                 class="text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800"
@@ -46,9 +44,8 @@
             <div>
                 <input
                     type="checkbox"
-                    v-model="filters.singleDateQuery"
+                    v-model="single_date_query"
                     class="flex-none checkbox"
-                    @change="clearDatepickers"
                 >
             </div>
 
@@ -61,7 +58,6 @@
             <input
                 type="text"
                 v-model="filters.search"
-                v-on:keyup="applyFilters"
                 id="search"
                 name="search"
                 placeholder=""
@@ -77,7 +73,7 @@
             <div class="block text-center">
                 <input
                 type="checkbox"
-                v-model="filters.ignoreYearFromQuery"
+                v-model="filters.ignore_year_from_query"
                 class="flex-none checkbox">
             </div>
 
@@ -88,7 +84,7 @@
                 <span class="ml-2 text-center font-semibold">Reset filters</span>
                 <div class="text-center m-4">
                     <button
-                        v-on:click="removeFilters"
+                        @click="clearFilters"
                         class="cursor-pointer align-center">
 
                             <img
@@ -109,64 +105,42 @@
     export default {
        data() {
             return {
-                filters: {
-                    "selected": "date",
-                    "search": "",
-                    "singleDateQuery": false,
-                    "singleDate": "",
-                    "singleFormattedDate": "",
-                    "searchRange": "",
-                    "startDate": "",
-                    "endDate": "",
-                    "ignoreYearFromQuery": false,
-
-                },
                 "options": [
                     { text: "Order by date", value: "date", id: 1 },
                     { text: "Order by creation date", value: "created_at", id: 2}
                 ],
-                paginator: [],
                 selected: "date",
-
+                single_date_query: false
 
             }
         },
-        watch: {
-            filters: {
-                handler: 'applyFilters',
-                deep: true
-            }
-        },
+        props: ['filters'],
         methods: {
-                removeFilters() {
+                clearFilters() {
+                    this.single_date_query = false;
                     this.filters.selected = "date";
-                    this.filters.singleDateQuery = false;
                     this.filters.search = "";
-                    this.filters.singleDate = "";
-                    this.filters.singleFormattedDate = "";
-                    this.filters.searchRange = "";
-                    this.filters.startDate = "";
-                    this.filters.endDate = "";
-                    this.filters.ignoreYearFromQuery = false;
+                    this.filters.ignore_year_from_query = false;
+                    this.clearDatepickers();
                 },
                 clearDatepickers() {
-                    this.filters.singleDate = "";
-                    this.filters.singleFormattedDate = "";
-                    this.filters.searchRange = "";
-                    this.filters.startDate = "";
-                    this.filters.endDate = "";
-                    this.filters.datepicker.clearSelection();
-                    this.filters.rangepicker.clearSelection();
+                    this.clearSingleDatepicker();
+                    this.clearRangeDatepicker();
                 },
-                applyFilters() {
-                    axios.post(`/events/filters`, {filters: this.filters})
-                    .then(response=>this.paginator = response.data);
+                clearSingleDatepicker() {
+                    this.filters.singleDate = "";
+                    this.singledatepicker.clearSelection();
+                },
+                clearRangeDatepicker() {
+                    this.filters.start_date = "";
+                    this.filters.end_date = "";
+                    this.rangepicker.clearSelection();
                 }
         },
         mounted() {
-            this.datepicker= new Litepicker({
-                element: document.getElementById('searchDate'),
-                format: 'DD-MM-YYYY',
+            this.singledatepicker= new Litepicker({
+                element: document.getElementById('singleDate'),
+                format: 'DD MMM YYYY',
                 resetButton: true,
                 singleMode: true,
                 allowRepick: true,
@@ -174,12 +148,11 @@
                 splitView: true,
                 setup: (picker) => {
                     picker.on('selected', (date) => {
-                        console.log(this);
+                        this.rangepicker.clearSelection();
                         this.filters.search = "";
-                        this.filters.singleFormattedDate = date.format('DD-MMM-YYYY');
-                        this.filters.singleDate = date.format('YYYY-MM-DD');
-                        this.filters.startDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
-                        this.filters.endDate = "";
+                        this.filters.single_date = date.format('YYYY-MM-DD');
+                        this.filters.start_date = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+                        this.filters.end_date = "";
                         this.filters.searchRange = "";
                         })
                     }
@@ -199,12 +172,9 @@
                 setup: (picker) => {
 
                     picker.on('selected', (startDate, endDate) => {
-                        this.filters.searchRange = startDate.format('DD-MMM-YYYY') + " - " + endDate.format('DD-MMM-YYYY');
-                        this.filters.startDate = startDate.format('YYYY-MM-DD');
-                        this.filters.endDate = endDate.format('YYYY-MM-DD');
-                        this.filters.singleDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
-                        this.filters.singleFormattedDate = "";
-
+                        this.singledatepicker.clearSelection();
+                        this.filters.start_date = startDate.format('YYYY-MM-DD');
+                        this.filters.end_date = endDate.format('YYYY-MM-DD');
                     })
                 }
 

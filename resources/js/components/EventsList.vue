@@ -11,106 +11,9 @@
         <!--End event creation form -->
         <!--Events filters div -->
         <div class="border border-red-800">
-            <div class="lg:flex lg:justify-around pt-4">
-
-                <div class="text-center mb-4 mt-8">
-                    <select v-model="filters.selected" class="select select-bordered">
-                        <option v-for="option in options" v-bind:key="option.value" v-bind:value="option.value" >
-                            {{ option.text }}
-                        </option>
-                    </select>
-                </div>
-
-
-                <div v-show="!filters.single_date_query" class="md:mb-3 block text-center">
-                    <label for="search_range" class="block text-center mb-3 font-size-14px font-semibold">Search over dates range:</label>
-                    <input
-                        v-model="filters.search_range"
-                        id="search_range"
-                        name="search_range"
-                        type="text"
-                        size="24"
-                        class="text-center mx-4 mb-4 p-2 input input-bordered border border-gray-800"
-                        readonly
-                    >
-                </div>
-
-
-                <div v-show="filters.single_date_query" class="block md:mb-3 text-center">
-                    <label for="searchDate" class="block text-center mb-3 font-size-14px font-semibold">Pick a date:</label>
-
-                    <input
-                        v-model="single_formatted_date"
-                        id="searchDate"
-                        name="searchDate"
-                        type="text"
-                        size="24"
-                        class="text-center mx-4 mb-4 p-2 input input-bordered border border-gray-800"
-                        readonly
-                    >
-
-                </div>
-
-                <div class="mb-3 text-center">
-                    <div class="block mb-5">
-                        <span class="text-center font-semibold">Sigle date query</span>
-                    </div>
-                    <div>
-                        <input
-                            type="checkbox"
-                            v-model="filters.single_date_query"
-                            class="flex-none checkbox"
-                        >
-                    </div>
-
-                </div>
-
-
-                <div class="mb-3 text-center ">
-                    <label for="search" class="block text-center mb-3 font-semibold">Search events:</label>
-
-                    <input
-                        type="text"
-                        v-model="filters.search"
-                        id="search"
-                        name="search"
-                        placeholder=""
-                        class="input input-bordered border border-gray-800 mb-4 p-2"
-                    />
-                </div>
-
-
-                <div class="mb-3 text-center">
-                    <div class="block mb-5">
-                        <span class="text-center font-semibold">Search interval over all years</span>
-                    </div>
-                    <div class="block text-center">
-                        <input
-                            type="checkbox"
-                            v-model="filters.ignore_year_from_query"
-                            class="flex-none checkbox">
-                    </div>
-
-                </div>
-
-                <div>
-                    <div class="block text-center">
-                        <span class="ml-2 text-center font-semibold">Reset filters</span>
-                        <div class="text-center m-4">
-                            <button
-                                v-on:click="removeFilters"
-                                class="cursor-pointer align-center">
-                                <img
-                                    src ="images/funnel.svg"
-                                    width="30"
-                                    class="transform hover:scale-110"
-                                    >
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+            <events-filters
+            :filters.sync="filters"
+            />
         </div>
         <!--End events filters div -->
 
@@ -121,7 +24,7 @@
 
                 <!-- Events history for screens larger than medium-->
                 <div class="less-than-lg:hidden">
-                    <event-high-res :event="event" />
+                    <event-high-res :event="event" :filters.sync="filters" />
                 </div>
                 <!-- End events history for screens larger than medium-->
 
@@ -230,11 +133,9 @@ import EventLowRes from './EventLowRes.vue';
                     "selected": "date",
                     "search": "",
                     "single_date": "",
-                    "search_range": "",
                     "start_date": "",
                     "end_date": "",
-                    "ignore_year_from_query": false,
-
+                    "ignore_year_from_query": false
                 },
                 "options": [
                     { text: "Order by date", value: "date", id: 1 },
@@ -245,10 +146,7 @@ import EventLowRes from './EventLowRes.vue';
                 number_of_events_per_page: 15,
                 paginator: [],
                 page_number: 1,
-                paginator_path_url: "",
-                selected: "date",
-                single_date_query: false,
-                single_formatted_date: ""
+                paginator_path_url: ""
             }
         },
         static: {
@@ -270,29 +168,6 @@ import EventLowRes from './EventLowRes.vue';
                 this.page_number = 1;
                 this.filters_string = JSON.stringify(this.filters);
                 axios.get(`/events/${this.filters_string}/${this.number_of_events_per_page}/${this.page_number}`).then(response=>this.paginator = response.data);
-            },
-            removeFilters() {
-                this.filters.selected = "date";
-                this.filters.single_date_query = false;
-                this.filters.search = "";
-                this.filters.single_date = "";
-                this.single_formatted_date = "";
-                this.filters.search_range = "";
-                this.filters.start_date = "";
-                this.filters.end_date = "";
-                this.filters.ignore_year_from_query = false;
-                this.page_number = 1;
-                this.clearDatepickers();
-            },
-            clearDatepickers() {
-                this.filters.single_date = "";
-                this.single_formatted_date = "";
-                this.filters.search_range = "";
-                this.filters.start_date = "";
-                this.filters.end_date = "";
-                this.page_number = 1;
-                this.datepicker.clearSelection();
-                this.rangepicker.clearSelection();
             },
             paginatorURL() {
                 var indexOfLastSlash = 0;
@@ -323,6 +198,9 @@ import EventLowRes from './EventLowRes.vue';
             jumpToPage($pageTarget) {
                 this.page_number = $pageTarget;
                 axios.get(`${this.paginator_path_url}/${this.page_number}`).then(response=>this.paginator = response.data);
+            },
+            test() {
+                alert("working");
             },
             eventToString($event) {
                 let $date = new Date($event.date);
@@ -358,54 +236,7 @@ import EventLowRes from './EventLowRes.vue';
             axios.get(`/events/${this.filters_string}/${this.number_of_events_per_page}/${this.page_number}`).then(response=>this.paginator = response.data);
 
 
-            this.datepicker= new Litepicker({
-                element: document.getElementById('searchDate'),
-                format: 'DD-MM-YYYY',
-                resetButton: true,
-                singleMode: true,
-                allowRepick: true,
-                autoRefresh: true,
-                splitView: true,
-                dropdowns: {"minYear":null,"maxYear":null,"months":true,"years":true},
-                setup: (picker) => {
-                    picker.on('selected', (date) => {
-                        console.log(this);
-                        this.filters.search = "";
-                        this.single_formatted_date = date.format('DD-MMM-YYYY');
-                        this.filters.single_date = date.format('YYYY-MM-DD');
-                        this.filters.start_date = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
-                        this.filters.end_date = "";
-                        this.filters.search_range = "";
-                        this.rangepicker.clearSelection();
-                        })
-                    }
 
-            })
-
-
-
-            this.rangepicker= new Litepicker({
-                element: document.getElementById('search_range'),
-                format: 'DD-MM-YYYY',
-                resetButton: true,
-                singleMode: false,
-                allowRepick: true,
-                autoRefresh: true,
-                splitView: true,
-                dropdowns: {"minYear":null,"maxYear":null,"months":true,"years":true},
-                setup: (picker) => {
-
-                    picker.on('selected', (start_date, end_date) => {
-                        this.filters.search_range = start_date.format('DD-MMM-YYYY') + " - " + end_date.format('DD-MMM-YYYY');
-                        this.filters.start_date = start_date.format('YYYY-MM-DD');
-                        this.filters.end_date = end_date.format('YYYY-MM-DD');
-                        this.filters.single_date = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
-                        this.single_formatted_date = "";
-                        this.datepicker.clearSelection();
-                    })
-                }
-
-            })
 
 
 

@@ -3997,6 +3997,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    hasDescription: function hasDescription($event) {
+      return $event.eventDescription != "";
+    }
+  },
   props: ['event']
 });
 
@@ -4046,7 +4051,211 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    hasDescription: function hasDescription($event) {
+      return $event.eventDescription != "";
+    }
+  },
   props: ['event']
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EventsFilters.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EventsFilters.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      "options": [{
+        text: "Order by date",
+        value: "date",
+        id: 1
+      }, {
+        text: "Order by creation date",
+        value: "created_at",
+        id: 2
+      }],
+      selected: "date",
+      single_date_query: false
+    };
+  },
+  props: ['filters'],
+  methods: {
+    clearFilters: function clearFilters() {
+      this.single_date_query = false;
+      this.filters.selected = "date";
+      this.filters.search = "";
+      this.filters.ignore_year_from_query = false;
+      this.clearDatepickers();
+    },
+    clearDatepickers: function clearDatepickers() {
+      this.clearSingleDatepicker();
+      this.clearRangeDatepicker();
+    },
+    clearSingleDatepicker: function clearSingleDatepicker() {
+      this.filters.singleDate = "";
+      this.singledatepicker.clearSelection();
+    },
+    clearRangeDatepicker: function clearRangeDatepicker() {
+      this.filters.start_date = "";
+      this.filters.end_date = "";
+      this.rangepicker.clearSelection();
+    }
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    this.singledatepicker = new Litepicker({
+      element: document.getElementById('singleDate'),
+      format: 'DD MMM YYYY',
+      resetButton: true,
+      singleMode: true,
+      allowRepick: true,
+      autoRefresh: true,
+      splitView: true,
+      setup: function setup(picker) {
+        picker.on('selected', function (date) {
+          _this.rangepicker.clearSelection();
+
+          _this.filters.search = "";
+          _this.filters.single_date = date.format('YYYY-MM-DD');
+          _this.filters.start_date = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
+
+          _this.filters.end_date = "";
+          _this.filters.searchRange = "";
+        });
+      }
+    });
+    this.rangepicker = new Litepicker({
+      element: document.getElementById('searchRange'),
+      format: 'DD-MM-YYYY',
+      resetButton: true,
+      singleMode: false,
+      allowRepick: true,
+      autoRefresh: true,
+      splitView: true,
+      setup: function setup(picker) {
+        picker.on('selected', function (startDate, endDate) {
+          _this.singledatepicker.clearSelection();
+
+          _this.filters.start_date = startDate.format('YYYY-MM-DD');
+          _this.filters.end_date = endDate.format('YYYY-MM-DD');
+        });
+      }
+    });
+  }
 });
 
 /***/ }),
@@ -4069,103 +4278,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _FlashMessage_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./FlashMessage.vue */ "./resources/js/components/FlashMessage.vue");
 /* harmony import */ var _EventHighRes_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./EventHighRes.vue */ "./resources/js/components/EventHighRes.vue");
 /* harmony import */ var _EventLowRes_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./EventLowRes.vue */ "./resources/js/components/EventLowRes.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -4303,7 +4415,6 @@ var buttonLabels = {
         "selected": "date",
         "search": "",
         "single_date": "",
-        "search_range": "",
         "start_date": "",
         "end_date": "",
         "ignore_year_from_query": false
@@ -4322,10 +4433,7 @@ var buttonLabels = {
       number_of_events_per_page: 15,
       paginator: [],
       page_number: 1,
-      paginator_path_url: "",
-      selected: "date",
-      single_date_query: false,
-      single_formatted_date: ""
+      paginator_path_url: ""
     };
   },
   "static": {
@@ -4352,29 +4460,6 @@ var buttonLabels = {
       axios.get("/events/".concat(this.filters_string, "/").concat(this.number_of_events_per_page, "/").concat(this.page_number)).then(function (response) {
         return _this.paginator = response.data;
       });
-    },
-    removeFilters: function removeFilters() {
-      this.filters.selected = "date";
-      this.filters.single_date_query = false;
-      this.filters.search = "";
-      this.filters.single_date = "";
-      this.single_formatted_date = "";
-      this.filters.search_range = "";
-      this.filters.start_date = "";
-      this.filters.end_date = "";
-      this.filters.ignore_year_from_query = false;
-      this.page_number = 1;
-      this.clearDatepickers();
-    },
-    clearDatepickers: function clearDatepickers() {
-      this.filters.single_date = "";
-      this.single_formatted_date = "";
-      this.filters.search_range = "";
-      this.filters.start_date = "";
-      this.filters.end_date = "";
-      this.page_number = 1;
-      this.datepicker.clearSelection();
-      this.rangepicker.clearSelection();
     },
     paginatorURL: function paginatorURL() {
       var indexOfLastSlash = 0;
@@ -4429,6 +4514,9 @@ var buttonLabels = {
         return _this6.paginator = response.data;
       });
     },
+    test: function test() {
+      alert("working");
+    },
     eventToString: function eventToString($event) {
       var $date = new Date($event.date);
       var options = {
@@ -4471,62 +4559,6 @@ var buttonLabels = {
     this.filters_string = JSON.stringify(this.filters);
     axios.get("/events/".concat(this.filters_string, "/").concat(this.number_of_events_per_page, "/").concat(this.page_number)).then(function (response) {
       return _this7.paginator = response.data;
-    });
-    this.datepicker = new Litepicker({
-      element: document.getElementById('searchDate'),
-      format: 'DD-MM-YYYY',
-      resetButton: true,
-      singleMode: true,
-      allowRepick: true,
-      autoRefresh: true,
-      splitView: true,
-      dropdowns: {
-        "minYear": null,
-        "maxYear": null,
-        "months": true,
-        "years": true
-      },
-      setup: function setup(picker) {
-        picker.on('selected', function (date) {
-          console.log(_this7);
-          _this7.filters.search = "";
-          _this7.single_formatted_date = date.format('DD-MMM-YYYY');
-          _this7.filters.single_date = date.format('YYYY-MM-DD');
-          _this7.filters.start_date = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
-
-          _this7.filters.end_date = "";
-          _this7.filters.search_range = "";
-
-          _this7.rangepicker.clearSelection();
-        });
-      }
-    });
-    this.rangepicker = new Litepicker({
-      element: document.getElementById('search_range'),
-      format: 'DD-MM-YYYY',
-      resetButton: true,
-      singleMode: false,
-      allowRepick: true,
-      autoRefresh: true,
-      splitView: true,
-      dropdowns: {
-        "minYear": null,
-        "maxYear": null,
-        "months": true,
-        "years": true
-      },
-      setup: function setup(picker) {
-        picker.on('selected', function (start_date, end_date) {
-          _this7.filters.search_range = start_date.format('DD-MMM-YYYY') + " - " + end_date.format('DD-MMM-YYYY');
-          _this7.filters.start_date = start_date.format('YYYY-MM-DD');
-          _this7.filters.end_date = end_date.format('YYYY-MM-DD');
-          _this7.filters.single_date = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
-
-          _this7.single_formatted_date = "";
-
-          _this7.datepicker.clearSelection();
-        });
-      }
     });
   }
 });
@@ -4778,236 +4810,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/VueFilters.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/VueFilters.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  data: function data() {
-    return {
-      filters: {
-        "selected": "date",
-        "search": "",
-        "singleDateQuery": false,
-        "singleDate": "",
-        "singleFormattedDate": "",
-        "searchRange": "",
-        "startDate": "",
-        "endDate": "",
-        "ignoreYearFromQuery": false
-      },
-      "options": [{
-        text: "Order by date",
-        value: "date",
-        id: 1
-      }, {
-        text: "Order by creation date",
-        value: "created_at",
-        id: 2
-      }],
-      paginator: [],
-      selected: "date"
-    };
-  },
-  watch: {
-    filters: {
-      handler: 'applyFilters',
-      deep: true
-    }
-  },
-  methods: {
-    removeFilters: function removeFilters() {
-      this.filters.selected = "date";
-      this.filters.singleDateQuery = false;
-      this.filters.search = "";
-      this.filters.singleDate = "";
-      this.filters.singleFormattedDate = "";
-      this.filters.searchRange = "";
-      this.filters.startDate = "";
-      this.filters.endDate = "";
-      this.filters.ignoreYearFromQuery = false;
-    },
-    clearDatepickers: function clearDatepickers() {
-      this.filters.singleDate = "";
-      this.filters.singleFormattedDate = "";
-      this.filters.searchRange = "";
-      this.filters.startDate = "";
-      this.filters.endDate = "";
-      this.filters.datepicker.clearSelection();
-      this.filters.rangepicker.clearSelection();
-    },
-    applyFilters: function applyFilters() {
-      var _this = this;
-
-      axios.post("/events/filters", {
-        filters: this.filters
-      }).then(function (response) {
-        return _this.paginator = response.data;
-      });
-    }
-  },
-  mounted: function mounted() {
-    var _this2 = this;
-
-    this.datepicker = new Litepicker({
-      element: document.getElementById('searchDate'),
-      format: 'DD-MM-YYYY',
-      resetButton: true,
-      singleMode: true,
-      allowRepick: true,
-      autoRefresh: true,
-      splitView: true,
-      setup: function setup(picker) {
-        picker.on('selected', function (date) {
-          console.log(_this2);
-          _this2.filters.search = "";
-          _this2.filters.singleFormattedDate = date.format('DD-MMM-YYYY');
-          _this2.filters.singleDate = date.format('YYYY-MM-DD');
-          _this2.filters.startDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
-
-          _this2.filters.endDate = "";
-          _this2.filters.searchRange = "";
-        });
-      }
-    });
-    this.rangepicker = new Litepicker({
-      element: document.getElementById('searchRange'),
-      format: 'DD-MM-YYYY',
-      resetButton: true,
-      singleMode: false,
-      allowRepick: true,
-      autoRefresh: true,
-      splitView: true,
-      setup: function setup(picker) {
-        picker.on('selected', function (startDate, endDate) {
-          _this2.filters.searchRange = startDate.format('DD-MMM-YYYY') + " - " + endDate.format('DD-MMM-YYYY');
-          _this2.filters.startDate = startDate.format('YYYY-MM-DD');
-          _this2.filters.endDate = endDate.format('YYYY-MM-DD');
-          _this2.filters.singleDate = ""; // each time the single date or range date picker is selected I nullify manually previously picked values
-
-          _this2.filters.singleFormattedDate = "";
-        });
-      }
-    });
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Input.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Input.vue?vue&type=script&lang=js& ***!
@@ -5069,12 +4871,12 @@ window.sourceOfTruth = {
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('event-form', __webpack_require__(/*! ./components/EventForm.vue */ "./resources/js/components/EventForm.vue").default);
+Vue.component('events-filters', __webpack_require__(/*! ./components/EventsFilters.vue */ "./resources/js/components/EventsFilters.vue").default);
 Vue.component('events-list', __webpack_require__(/*! ./components/EventsList.vue */ "./resources/js/components/EventsList.vue").default);
 Vue.component('events-reminders', __webpack_require__(/*! ./components/EventsReminders.vue */ "./resources/js/components/EventsReminders.vue").default);
 Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue").default);
 Vue.component('flash-message', __webpack_require__(/*! ./components/FlashMessage.vue */ "./resources/js/components/FlashMessage.vue").default);
 Vue.component('main-component', __webpack_require__(/*! ./components/MainComponent.vue */ "./resources/js/components/MainComponent.vue").default);
-Vue.component('vue-filters', __webpack_require__(/*! ./components/VueFilters.vue */ "./resources/js/components/VueFilters.vue").default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -24077,6 +23879,45 @@ component.options.__file = "resources/js/components/EventLowRes.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/EventsFilters.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/components/EventsFilters.vue ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _EventsFilters_vue_vue_type_template_id_1542d172___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EventsFilters.vue?vue&type=template&id=1542d172& */ "./resources/js/components/EventsFilters.vue?vue&type=template&id=1542d172&");
+/* harmony import */ var _EventsFilters_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EventsFilters.vue?vue&type=script&lang=js& */ "./resources/js/components/EventsFilters.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _EventsFilters_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _EventsFilters_vue_vue_type_template_id_1542d172___WEBPACK_IMPORTED_MODULE_0__.render,
+  _EventsFilters_vue_vue_type_template_id_1542d172___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/EventsFilters.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/EventsList.vue":
 /*!************************************************!*\
   !*** ./resources/js/components/EventsList.vue ***!
@@ -24313,45 +24154,6 @@ component.options.__file = "resources/js/components/Modal.vue"
 
 /***/ }),
 
-/***/ "./resources/js/components/VueFilters.vue":
-/*!************************************************!*\
-  !*** ./resources/js/components/VueFilters.vue ***!
-  \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _VueFilters_vue_vue_type_template_id_3b82ac80___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VueFilters.vue?vue&type=template&id=3b82ac80& */ "./resources/js/components/VueFilters.vue?vue&type=template&id=3b82ac80&");
-/* harmony import */ var _VueFilters_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VueFilters.vue?vue&type=script&lang=js& */ "./resources/js/components/VueFilters.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
-  _VueFilters_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
-  _VueFilters_vue_vue_type_template_id_3b82ac80___WEBPACK_IMPORTED_MODULE_0__.render,
-  _VueFilters_vue_vue_type_template_id_3b82ac80___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/VueFilters.vue"
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
-
-/***/ }),
-
 /***/ "./vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Input.vue":
 /*!***********************************************************************************!*\
   !*** ./vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Input.vue ***!
@@ -24436,6 +24238,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EventLowRes_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EventLowRes.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EventLowRes.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EventLowRes_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./resources/js/components/EventsFilters.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/EventsFilters.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EventsFilters_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EventsFilters.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EventsFilters.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EventsFilters_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -24535,22 +24353,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/VueFilters.vue?vue&type=script&lang=js&":
-/*!*************************************************************************!*\
-  !*** ./resources/js/components/VueFilters.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueFilters_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./VueFilters.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/VueFilters.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueFilters_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
-
-/***/ }),
-
 /***/ "./vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Input.vue?vue&type=script&lang=js&":
 /*!************************************************************************************************************!*\
   !*** ./vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Input.vue?vue&type=script&lang=js& ***!
@@ -24627,6 +24429,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EventLowRes_vue_vue_type_template_id_17c907cb___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EventLowRes_vue_vue_type_template_id_17c907cb___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EventLowRes.vue?vue&type=template&id=17c907cb& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EventLowRes.vue?vue&type=template&id=17c907cb&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/EventsFilters.vue?vue&type=template&id=1542d172&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/EventsFilters.vue?vue&type=template&id=1542d172& ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EventsFilters_vue_vue_type_template_id_1542d172___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EventsFilters_vue_vue_type_template_id_1542d172___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EventsFilters_vue_vue_type_template_id_1542d172___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EventsFilters.vue?vue&type=template&id=1542d172& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EventsFilters.vue?vue&type=template&id=1542d172&");
 
 
 /***/ }),
@@ -24729,23 +24548,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Modal_vue_vue_type_template_id_53ab54d2___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Modal_vue_vue_type_template_id_53ab54d2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Modal.vue?vue&type=template&id=53ab54d2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Modal.vue?vue&type=template&id=53ab54d2&");
-
-
-/***/ }),
-
-/***/ "./resources/js/components/VueFilters.vue?vue&type=template&id=3b82ac80&":
-/*!*******************************************************************************!*\
-  !*** ./resources/js/components/VueFilters.vue?vue&type=template&id=3b82ac80& ***!
-  \*******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VueFilters_vue_vue_type_template_id_3b82ac80___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VueFilters_vue_vue_type_template_id_3b82ac80___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
-/* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VueFilters_vue_vue_type_template_id_3b82ac80___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./VueFilters.vue?vue&type=template&id=3b82ac80& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/VueFilters.vue?vue&type=template&id=3b82ac80&");
 
 
 /***/ }),
@@ -25059,7 +24861,13 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "ml-4 mb-2 lg:col-span-3" }, [
         _vm._v(
-          "\n            " + _vm._s(_vm.event.eventDescription) + "\n        "
+          "\n            " +
+            _vm._s(
+              _vm.event.eventDescription
+                ? _vm.event.eventDescription
+                : "no description"
+            ) +
+            "\n        "
         )
       ])
     ]),
@@ -25141,7 +24949,13 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "text-center mb-2 lg:col-span-3" }, [
         _vm._v(
-          "\n            " + _vm._s(_vm.event.eventDescription) + "\n        "
+          "\n            " +
+            _vm._s(
+              _vm.event.eventDescription
+                ? _vm.event.eventDescription
+                : "no description"
+            ) +
+            "\n        "
         )
       ])
     ]),
@@ -25195,6 +25009,326 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EventsFilters.vue?vue&type=template&id=1542d172&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EventsFilters.vue?vue&type=template&id=1542d172& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "lg:flex lg:justify-around pt-4" }, [
+    _c("div", { staticClass: "text-center mb-4 mt-8" }, [
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.filters.selected,
+              expression: "filters.selected"
+            }
+          ],
+          staticClass: "select select-bordered",
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.$set(
+                _vm.filters,
+                "selected",
+                $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+              )
+            }
+          }
+        },
+        _vm._l(_vm.options, function(option) {
+          return _c(
+            "option",
+            { key: option.value, domProps: { value: option.value } },
+            [
+              _vm._v(
+                "\n                " + _vm._s(option.text) + "\n            "
+              )
+            ]
+          )
+        }),
+        0
+      )
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: !_vm.single_date_query,
+            expression: "!single_date_query"
+          }
+        ],
+        staticClass: "md:mb-3 block text-center"
+      },
+      [
+        _c(
+          "label",
+          {
+            staticClass: "block text-center mb-3 font-size-14px font-semibold",
+            attrs: { for: "search" }
+          },
+          [_vm._v("Search over dates range:")]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          staticClass:
+            "text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800",
+          attrs: {
+            id: "searchRange",
+            name: "searchRange",
+            type: "text",
+            size: "28",
+            readonly: ""
+          }
+        })
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.single_date_query,
+            expression: "single_date_query"
+          }
+        ],
+        staticClass: "block md:mb-3 text-center"
+      },
+      [
+        _c(
+          "label",
+          {
+            staticClass: "block text-center mb-3 font-size-14px font-semibold",
+            attrs: { for: "singleDate" }
+          },
+          [_vm._v("Pick a date:")]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          staticClass:
+            "text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800",
+          attrs: {
+            id: "singleDate",
+            name: "singleDate",
+            type: "text",
+            size: "28",
+            readonly: ""
+          }
+        })
+      ]
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "mb-3 text-center" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.single_date_query,
+              expression: "single_date_query"
+            }
+          ],
+          staticClass: "flex-none checkbox",
+          attrs: { type: "checkbox" },
+          domProps: {
+            checked: Array.isArray(_vm.single_date_query)
+              ? _vm._i(_vm.single_date_query, null) > -1
+              : _vm.single_date_query
+          },
+          on: {
+            change: function($event) {
+              var $$a = _vm.single_date_query,
+                $$el = $event.target,
+                $$c = $$el.checked ? true : false
+              if (Array.isArray($$a)) {
+                var $$v = null,
+                  $$i = _vm._i($$a, $$v)
+                if ($$el.checked) {
+                  $$i < 0 && (_vm.single_date_query = $$a.concat([$$v]))
+                } else {
+                  $$i > -1 &&
+                    (_vm.single_date_query = $$a
+                      .slice(0, $$i)
+                      .concat($$a.slice($$i + 1)))
+                }
+              } else {
+                _vm.single_date_query = $$c
+              }
+            }
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "mb-3 text-center " }, [
+      _c(
+        "label",
+        {
+          staticClass: "block text-center mb-3 font-semibold",
+          attrs: { for: "search" }
+        },
+        [_vm._v("Search events:")]
+      ),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.filters.search,
+            expression: "filters.search"
+          }
+        ],
+        staticClass: "input input-bordered border border-gray-800 mb-4 p-2",
+        attrs: { type: "text", id: "search", name: "search", placeholder: "" },
+        domProps: { value: _vm.filters.search },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.filters, "search", $event.target.value)
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "mb-3 text-center" }, [
+      _vm._m(1),
+      _vm._v(" "),
+      _c("div", { staticClass: "block text-center" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.filters.ignore_year_from_query,
+              expression: "filters.ignore_year_from_query"
+            }
+          ],
+          staticClass: "flex-none checkbox",
+          attrs: { type: "checkbox" },
+          domProps: {
+            checked: Array.isArray(_vm.filters.ignore_year_from_query)
+              ? _vm._i(_vm.filters.ignore_year_from_query, null) > -1
+              : _vm.filters.ignore_year_from_query
+          },
+          on: {
+            change: function($event) {
+              var $$a = _vm.filters.ignore_year_from_query,
+                $$el = $event.target,
+                $$c = $$el.checked ? true : false
+              if (Array.isArray($$a)) {
+                var $$v = null,
+                  $$i = _vm._i($$a, $$v)
+                if ($$el.checked) {
+                  $$i < 0 &&
+                    _vm.$set(
+                      _vm.filters,
+                      "ignore_year_from_query",
+                      $$a.concat([$$v])
+                    )
+                } else {
+                  $$i > -1 &&
+                    _vm.$set(
+                      _vm.filters,
+                      "ignore_year_from_query",
+                      $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                    )
+                }
+              } else {
+                _vm.$set(_vm.filters, "ignore_year_from_query", $$c)
+              }
+            }
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", [
+      _c("div", { staticClass: "block text-center mb-" }, [
+        _c("span", { staticClass: "ml-2 text-center font-semibold" }, [
+          _vm._v("Reset filters")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "text-center m-4" }, [
+          _c(
+            "button",
+            {
+              staticClass: "cursor-pointer align-center",
+              on: { click: _vm.clearFilters }
+            },
+            [
+              _c("img", {
+                staticClass: "transform hover:scale-110",
+                attrs: { src: "images/filter-remove.png", width: "30" }
+              })
+            ]
+          )
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "block mb-5" }, [
+      _c("span", { staticClass: "text-center font-semibold" }, [
+        _vm._v("Sigle date query")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "block mb-5" }, [
+      _c("span", { staticClass: "text-center font-semibold" }, [
+        _vm._v("Search interval over all years")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EventsList.vue?vue&type=template&id=3bf6fa82&":
 /*!**********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EventsList.vue?vue&type=template&id=3bf6fa82& ***!
@@ -25231,334 +25365,21 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "border border-red-800" }, [
-        _c("div", { staticClass: "lg:flex lg:justify-around pt-4" }, [
-          _c("div", { staticClass: "text-center mb-4 mt-8" }, [
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.filters.selected,
-                    expression: "filters.selected"
-                  }
-                ],
-                staticClass: "select select-bordered",
-                on: {
-                  change: function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.filters,
-                      "selected",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
-                  }
-                }
-              },
-              _vm._l(_vm.options, function(option) {
-                return _c(
-                  "option",
-                  { key: option.value, domProps: { value: option.value } },
-                  [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(option.text) +
-                        "\n                    "
-                    )
-                  ]
-                )
-              }),
-              0
-            )
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: !_vm.filters.single_date_query,
-                  expression: "!filters.single_date_query"
-                }
-              ],
-              staticClass: "md:mb-3 block text-center"
-            },
-            [
-              _c(
-                "label",
-                {
-                  staticClass:
-                    "block text-center mb-3 font-size-14px font-semibold",
-                  attrs: { for: "search_range" }
-                },
-                [_vm._v("Search over dates range:")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.filters.search_range,
-                    expression: "filters.search_range"
-                  }
-                ],
-                staticClass:
-                  "text-center mx-4 mb-4 p-2 input input-bordered border border-gray-800",
-                attrs: {
-                  id: "search_range",
-                  name: "search_range",
-                  type: "text",
-                  size: "24",
-                  readonly: ""
-                },
-                domProps: { value: _vm.filters.search_range },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.filters, "search_range", $event.target.value)
-                  }
-                }
-              })
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.filters.single_date_query,
-                  expression: "filters.single_date_query"
-                }
-              ],
-              staticClass: "block md:mb-3 text-center"
-            },
-            [
-              _c(
-                "label",
-                {
-                  staticClass:
-                    "block text-center mb-3 font-size-14px font-semibold",
-                  attrs: { for: "searchDate" }
-                },
-                [_vm._v("Pick a date:")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.single_formatted_date,
-                    expression: "single_formatted_date"
-                  }
-                ],
-                staticClass:
-                  "text-center mx-4 mb-4 p-2 input input-bordered border border-gray-800",
-                attrs: {
-                  id: "searchDate",
-                  name: "searchDate",
-                  type: "text",
-                  size: "24",
-                  readonly: ""
-                },
-                domProps: { value: _vm.single_formatted_date },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.single_formatted_date = $event.target.value
-                  }
-                }
-              })
-            ]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "mb-3 text-center" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            _c("div", [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.filters.single_date_query,
-                    expression: "filters.single_date_query"
-                  }
-                ],
-                staticClass: "flex-none checkbox",
-                attrs: { type: "checkbox" },
-                domProps: {
-                  checked: Array.isArray(_vm.filters.single_date_query)
-                    ? _vm._i(_vm.filters.single_date_query, null) > -1
-                    : _vm.filters.single_date_query
-                },
-                on: {
-                  change: function($event) {
-                    var $$a = _vm.filters.single_date_query,
-                      $$el = $event.target,
-                      $$c = $$el.checked ? true : false
-                    if (Array.isArray($$a)) {
-                      var $$v = null,
-                        $$i = _vm._i($$a, $$v)
-                      if ($$el.checked) {
-                        $$i < 0 &&
-                          _vm.$set(
-                            _vm.filters,
-                            "single_date_query",
-                            $$a.concat([$$v])
-                          )
-                      } else {
-                        $$i > -1 &&
-                          _vm.$set(
-                            _vm.filters,
-                            "single_date_query",
-                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                          )
-                      }
-                    } else {
-                      _vm.$set(_vm.filters, "single_date_query", $$c)
-                    }
-                  }
-                }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mb-3 text-center " }, [
-            _c(
-              "label",
-              {
-                staticClass: "block text-center mb-3 font-semibold",
-                attrs: { for: "search" }
-              },
-              [_vm._v("Search events:")]
-            ),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.filters.search,
-                  expression: "filters.search"
-                }
-              ],
-              staticClass:
-                "input input-bordered border border-gray-800 mb-4 p-2",
-              attrs: {
-                type: "text",
-                id: "search",
-                name: "search",
-                placeholder: ""
-              },
-              domProps: { value: _vm.filters.search },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.filters, "search", $event.target.value)
-                }
+      _c(
+        "div",
+        { staticClass: "border border-red-800" },
+        [
+          _c("events-filters", {
+            attrs: { filters: _vm.filters },
+            on: {
+              "update:filters": function($event) {
+                _vm.filters = $event
               }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mb-3 text-center" }, [
-            _vm._m(1),
-            _vm._v(" "),
-            _c("div", { staticClass: "block text-center" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.filters.ignore_year_from_query,
-                    expression: "filters.ignore_year_from_query"
-                  }
-                ],
-                staticClass: "flex-none checkbox",
-                attrs: { type: "checkbox" },
-                domProps: {
-                  checked: Array.isArray(_vm.filters.ignore_year_from_query)
-                    ? _vm._i(_vm.filters.ignore_year_from_query, null) > -1
-                    : _vm.filters.ignore_year_from_query
-                },
-                on: {
-                  change: function($event) {
-                    var $$a = _vm.filters.ignore_year_from_query,
-                      $$el = $event.target,
-                      $$c = $$el.checked ? true : false
-                    if (Array.isArray($$a)) {
-                      var $$v = null,
-                        $$i = _vm._i($$a, $$v)
-                      if ($$el.checked) {
-                        $$i < 0 &&
-                          _vm.$set(
-                            _vm.filters,
-                            "ignore_year_from_query",
-                            $$a.concat([$$v])
-                          )
-                      } else {
-                        $$i > -1 &&
-                          _vm.$set(
-                            _vm.filters,
-                            "ignore_year_from_query",
-                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                          )
-                      }
-                    } else {
-                      _vm.$set(_vm.filters, "ignore_year_from_query", $$c)
-                    }
-                  }
-                }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", [
-            _c("div", { staticClass: "block text-center" }, [
-              _c("span", { staticClass: "ml-2 text-center font-semibold" }, [
-                _vm._v("Reset filters")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "text-center m-4" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "cursor-pointer align-center",
-                    on: { click: _vm.removeFilters }
-                  },
-                  [
-                    _c("img", {
-                      staticClass: "transform hover:scale-110",
-                      attrs: { src: "images/funnel.svg", width: "30" }
-                    })
-                  ]
-                )
-              ])
-            ])
-          ])
-        ])
-      ]),
+            }
+          })
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "div",
@@ -25569,7 +25390,16 @@ var render = function() {
               _c(
                 "div",
                 { staticClass: "less-than-lg:hidden" },
-                [_c("event-high-res", { attrs: { event: event } })],
+                [
+                  _c("event-high-res", {
+                    attrs: { event: event, filters: _vm.filters },
+                    on: {
+                      "update:filters": function($event) {
+                        _vm.filters = $event
+                      }
+                    }
+                  })
+                ],
                 1
               ),
               _vm._v(" "),
@@ -25786,28 +25616,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "block mb-5" }, [
-      _c("span", { staticClass: "text-center font-semibold" }, [
-        _vm._v("Sigle date query")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "block mb-5" }, [
-      _c("span", { staticClass: "text-center font-semibold" }, [
-        _vm._v("Search interval over all years")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -26110,374 +25919,6 @@ var staticRenderFns = [
             )
           ])
         ])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/VueFilters.vue?vue&type=template&id=3b82ac80&":
-/*!**********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/VueFilters.vue?vue&type=template&id=3b82ac80& ***!
-  \**********************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "lg:flex lg:justify-around pt-4" }, [
-    _c("div", { staticClass: "text-center mb-4 mt-8" }, [
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.filters.selected,
-              expression: "filters.selected"
-            }
-          ],
-          staticClass: "select select-bordered",
-          on: {
-            change: [
-              function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.$set(
-                  _vm.filters,
-                  "selected",
-                  $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                )
-              },
-              _vm.applyFilters
-            ]
-          }
-        },
-        _vm._l(_vm.options, function(option) {
-          return _c(
-            "option",
-            { key: option.value, domProps: { value: option.value } },
-            [
-              _vm._v(
-                "\n                " + _vm._s(option.text) + "\n            "
-              )
-            ]
-          )
-        }),
-        0
-      )
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: !_vm.filters.singleDateQuery,
-            expression: "!filters.singleDateQuery"
-          }
-        ],
-        staticClass: "md:mb-3 block text-center"
-      },
-      [
-        _c(
-          "label",
-          {
-            staticClass: "block text-center mb-3 font-size-14px font-semibold",
-            attrs: { for: "search" }
-          },
-          [_vm._v("Search over dates range:")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.filters.searchRange,
-              expression: "filters.searchRange"
-            }
-          ],
-          staticClass:
-            "text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800",
-          attrs: {
-            id: "searchRange",
-            name: "searchRange",
-            type: "text",
-            size: "28",
-            readonly: ""
-          },
-          domProps: { value: _vm.filters.searchRange },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.filters, "searchRange", $event.target.value)
-            }
-          }
-        })
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        directives: [
-          {
-            name: "show",
-            rawName: "v-show",
-            value: _vm.filters.singleDateQuery,
-            expression: "filters.singleDateQuery"
-          }
-        ],
-        staticClass: "block md:mb-3 text-center"
-      },
-      [
-        _c(
-          "label",
-          {
-            staticClass: "block text-center mb-3 font-size-14px font-semibold",
-            attrs: { for: "searchDate" }
-          },
-          [_vm._v("Pick a date:")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.filters.singleFormattedDate,
-              expression: "filters.singleFormattedDate"
-            }
-          ],
-          staticClass:
-            "text-center ml-4 mb-4 p-2 input input-bordered border border-gray-800",
-          attrs: {
-            id: "searchDate",
-            name: "searchDate",
-            type: "text",
-            size: "28",
-            readonly: ""
-          },
-          domProps: { value: _vm.filters.singleFormattedDate },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.filters, "singleFormattedDate", $event.target.value)
-            }
-          }
-        })
-      ]
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-3 text-center" }, [
-      _vm._m(0),
-      _vm._v(" "),
-      _c("div", [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.filters.singleDateQuery,
-              expression: "filters.singleDateQuery"
-            }
-          ],
-          staticClass: "flex-none checkbox",
-          attrs: { type: "checkbox" },
-          domProps: {
-            checked: Array.isArray(_vm.filters.singleDateQuery)
-              ? _vm._i(_vm.filters.singleDateQuery, null) > -1
-              : _vm.filters.singleDateQuery
-          },
-          on: {
-            change: [
-              function($event) {
-                var $$a = _vm.filters.singleDateQuery,
-                  $$el = $event.target,
-                  $$c = $$el.checked ? true : false
-                if (Array.isArray($$a)) {
-                  var $$v = null,
-                    $$i = _vm._i($$a, $$v)
-                  if ($$el.checked) {
-                    $$i < 0 &&
-                      _vm.$set(
-                        _vm.filters,
-                        "singleDateQuery",
-                        $$a.concat([$$v])
-                      )
-                  } else {
-                    $$i > -1 &&
-                      _vm.$set(
-                        _vm.filters,
-                        "singleDateQuery",
-                        $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                      )
-                  }
-                } else {
-                  _vm.$set(_vm.filters, "singleDateQuery", $$c)
-                }
-              },
-              _vm.clearDatepickers
-            ]
-          }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-3 text-center " }, [
-      _c(
-        "label",
-        {
-          staticClass: "block text-center mb-3 font-semibold",
-          attrs: { for: "search" }
-        },
-        [_vm._v("Search events:")]
-      ),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.filters.search,
-            expression: "filters.search"
-          }
-        ],
-        staticClass: "input input-bordered border border-gray-800 mb-4 p-2",
-        attrs: { type: "text", id: "search", name: "search", placeholder: "" },
-        domProps: { value: _vm.filters.search },
-        on: {
-          keyup: _vm.applyFilters,
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.filters, "search", $event.target.value)
-          }
-        }
-      })
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-3 text-center" }, [
-      _vm._m(1),
-      _vm._v(" "),
-      _c("div", { staticClass: "block text-center" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.filters.ignoreYearFromQuery,
-              expression: "filters.ignoreYearFromQuery"
-            }
-          ],
-          staticClass: "flex-none checkbox",
-          attrs: { type: "checkbox" },
-          domProps: {
-            checked: Array.isArray(_vm.filters.ignoreYearFromQuery)
-              ? _vm._i(_vm.filters.ignoreYearFromQuery, null) > -1
-              : _vm.filters.ignoreYearFromQuery
-          },
-          on: {
-            change: function($event) {
-              var $$a = _vm.filters.ignoreYearFromQuery,
-                $$el = $event.target,
-                $$c = $$el.checked ? true : false
-              if (Array.isArray($$a)) {
-                var $$v = null,
-                  $$i = _vm._i($$a, $$v)
-                if ($$el.checked) {
-                  $$i < 0 &&
-                    _vm.$set(
-                      _vm.filters,
-                      "ignoreYearFromQuery",
-                      $$a.concat([$$v])
-                    )
-                } else {
-                  $$i > -1 &&
-                    _vm.$set(
-                      _vm.filters,
-                      "ignoreYearFromQuery",
-                      $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                    )
-                }
-              } else {
-                _vm.$set(_vm.filters, "ignoreYearFromQuery", $$c)
-              }
-            }
-          }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", [
-      _c("div", { staticClass: "block text-center mb-" }, [
-        _c("span", { staticClass: "ml-2 text-center font-semibold" }, [
-          _vm._v("Reset filters")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "text-center m-4" }, [
-          _c(
-            "button",
-            {
-              staticClass: "cursor-pointer align-center",
-              on: { click: _vm.removeFilters }
-            },
-            [
-              _c("img", {
-                staticClass: "transform hover:scale-110",
-                attrs: { src: "images/filter-remove.png", width: "30" }
-              })
-            ]
-          )
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "block mb-5" }, [
-      _c("span", { staticClass: "text-center font-semibold" }, [
-        _vm._v("Sigle date query")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "block mb-5" }, [
-      _c("span", { staticClass: "text-center font-semibold" }, [
-        _vm._v("Search interval over all years")
       ])
     ])
   }

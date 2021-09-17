@@ -10,7 +10,7 @@
                 {{ event.name }}
             </div>
             <div class="ml-4 mb-2 lg:col-span-3">
-                {{ event.eventDescription }}
+                {{ event.eventDescription ? event.eventDescription : "no description" }}
             </div>
 
         </div>
@@ -32,6 +32,11 @@
 
 <script>
     export default {
+        methods: {
+            hasDescription($event) {
+                return $event.eventDescription != "";
+            }
+        },
         props: ['event']
     }
 </script>
