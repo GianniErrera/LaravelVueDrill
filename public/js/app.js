@@ -4000,6 +4000,33 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     hasDescription: function hasDescription($event) {
       return $event.eventDescription != "";
+    },
+    eventToString: function eventToString($event) {
+      var $date = new Date($event.date);
+      var options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      };
+      var $eventDescription = "";
+
+      if ($event.eventDescription != null) {
+        $eventDescription = $event.eventDescription;
+      } else {
+        $eventDescription = "no description provided";
+      }
+
+      var $recurringOrNot = "";
+
+      if ($event.isItRecurringYearly) {
+        $recurringOrNot = "event recurring each year";
+      } else {
+        $recurringOrNot = "not recurring event";
+      }
+
+      var $event_to_string = $date.toLocaleString('en-GB', options) + " - " + $event.name + " - " + $eventDescription + " - " + $recurringOrNot;
+      return $event_to_string;
     }
   },
   props: ['event']
@@ -4054,6 +4081,33 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     hasDescription: function hasDescription($event) {
       return $event.eventDescription != "";
+    },
+    eventToString: function eventToString($event) {
+      var $date = new Date($event.date);
+      var options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      };
+      var $eventDescription = "";
+
+      if ($event.eventDescription != null) {
+        $eventDescription = $event.eventDescription;
+      } else {
+        $eventDescription = "no description provided";
+      }
+
+      var $recurringOrNot = "";
+
+      if ($event.isItRecurringYearly) {
+        $recurringOrNot = "event recurring each year";
+      } else {
+        $recurringOrNot = "not recurring event";
+      }
+
+      var $event_to_string = $date.toLocaleString('en-GB', options) + " - " + $event.name + " - " + $eventDescription + " - " + $recurringOrNot;
+      return $event_to_string;
     }
   },
   props: ['event']
@@ -4513,36 +4567,6 @@ var buttonLabels = {
       axios.get("".concat(this.paginator_path_url, "/").concat(this.page_number)).then(function (response) {
         return _this6.paginator = response.data;
       });
-    },
-    test: function test() {
-      alert("working");
-    },
-    eventToString: function eventToString($event) {
-      var $date = new Date($event.date);
-      var options = {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      };
-      var $eventDescription = "";
-
-      if ($event.eventDescription != null) {
-        $eventDescription = $event.eventDescription;
-      } else {
-        $eventDescription = "no description provided";
-      }
-
-      var $recurringOrNot = "";
-
-      if ($event.isItRecurringYearly) {
-        $recurringOrNot = "event recurring each year";
-      } else {
-        $recurringOrNot = "not recurring event";
-      }
-
-      var $event_to_string = $date.toLocaleString('en-GB', options) + " - " + $event.name + " - " + $eventDescription + " - " + $recurringOrNot;
-      return $event_to_string;
     }
   },
   computed: {

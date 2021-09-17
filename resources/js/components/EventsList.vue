@@ -198,29 +198,6 @@ import EventLowRes from './EventLowRes.vue';
             jumpToPage($pageTarget) {
                 this.page_number = $pageTarget;
                 axios.get(`${this.paginator_path_url}/${this.page_number}`).then(response=>this.paginator = response.data);
-            },
-            test() {
-                alert("working");
-            },
-            eventToString($event) {
-                let $date = new Date($event.date);
-                var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                let $eventDescription = "";
-                if($event.eventDescription != null) {
-                    $eventDescription = $event.eventDescription;
-                } else {
-                    $eventDescription = "no description provided";
-                }
-                let $recurringOrNot = "";
-                if($event.isItRecurringYearly) {
-                    $recurringOrNot = "event recurring each year";
-                } else {
-                     $recurringOrNot = "not recurring event";
-                }
-
-                let $event_to_string = $date.toLocaleString('en-GB', options) + " - " + $event.name + " - " + $eventDescription + " - " + $recurringOrNot;
-                return($event_to_string);
-
             }
         },
         computed: {
@@ -234,11 +211,6 @@ import EventLowRes from './EventLowRes.vue';
         mounted() {
             this.filters_string = JSON.stringify(this.filters);
             axios.get(`/events/${this.filters_string}/${this.number_of_events_per_page}/${this.page_number}`).then(response=>this.paginator = response.data);
-
-
-
-
-
 
         }
 
