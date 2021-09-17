@@ -150,7 +150,8 @@ import EventLowRes from './EventLowRes.vue';
             "filters": {
                 handler: 'applyFilters',
                 deep: true
-            }
+            },
+            page_number: 'changePageNumber'
         },
         methods: {
             applyFilters() {
@@ -163,23 +164,18 @@ import EventLowRes from './EventLowRes.vue';
             },
             nextPage() {
                 this.page_number += 1;
-                this.changePageNumber();
             },
             previousPage() {
                 this.page_number -= 1;
-                this.changePageNumber();
             },
             firstPage() {
                 this.page_number = 1;
-                this.changePageNumber();
             },
             lastPage() {
                 this.page_number = this.paginator.last_page;
-                this.changePageNumber();
             },
             jumpToPage($pageTarget) {
                 this.page_number = $pageTarget;
-                this.changePageNumber();
             }
         },
         computed: {
@@ -194,7 +190,6 @@ import EventLowRes from './EventLowRes.vue';
             this.filters_string = JSON.stringify(this.filters);
             axios.get(`/events/${this.filters_string}/${this.number_of_events_per_page}/${this.page_number}`).then(response=>this.paginator = response.data);
         }
-
     }
 
 </script>

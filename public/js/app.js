@@ -4487,7 +4487,8 @@ var buttonLabels = {
     "filters": {
       handler: 'applyFilters',
       deep: true
-    }
+    },
+    page_number: 'changePageNumber'
   },
   methods: {
     applyFilters: function applyFilters() {
@@ -4508,23 +4509,18 @@ var buttonLabels = {
     },
     nextPage: function nextPage() {
       this.page_number += 1;
-      this.changePageNumber();
     },
     previousPage: function previousPage() {
       this.page_number -= 1;
-      this.changePageNumber();
     },
     firstPage: function firstPage() {
       this.page_number = 1;
-      this.changePageNumber();
     },
     lastPage: function lastPage() {
       this.page_number = this.paginator.last_page;
-      this.changePageNumber();
     },
     jumpToPage: function jumpToPage($pageTarget) {
       this.page_number = $pageTarget;
-      this.changePageNumber();
     }
   },
   computed: {
