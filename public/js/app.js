@@ -4441,7 +4441,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 Vue.use((v_clipboard__WEBPACK_IMPORTED_MODULE_0___default()));
 
@@ -4473,21 +4472,10 @@ var buttonLabels = {
         "end_date": "",
         "ignore_year_from_query": false
       },
-      "options": [{
-        text: "Order by date",
-        value: "date",
-        id: 1
-      }, {
-        text: "Order by creation date",
-        value: "created_at",
-        id: 2
-      }],
-      events_array: {},
       filters_string: "",
       number_of_events_per_page: 15,
       paginator: [],
-      page_number: 1,
-      paginator_path_url: ""
+      page_number: 1
     };
   },
   "static": {
@@ -4498,10 +4486,6 @@ var buttonLabels = {
   watch: {
     "filters": {
       handler: 'applyFilters',
-      deep: true
-    },
-    "paginator.data": {
-      handler: 'paginatorURL',
       deep: true
     }
   },
@@ -4515,58 +4499,32 @@ var buttonLabels = {
         return _this.paginator = response.data;
       });
     },
-    paginatorURL: function paginatorURL() {
-      var indexOfLastSlash = 0;
-
-      for (var i = 0; i < this.paginator.path.length; i++) {
-        if (this.paginator.path[i] == "/") {
-          indexOfLastSlash = i;
-        }
-
-        ;
-      }
-
-      this.paginator_path_url = this.paginator.path.substring(0, indexOfLastSlash);
-    },
-    nextPage: function nextPage() {
+    changePageNumber: function changePageNumber() {
       var _this2 = this;
 
-      this.page_number += 1;
-      axios.get("".concat(this.paginator_path_url, "/").concat(this.page_number)).then(function (response) {
+      axios.get("/events/".concat(this.filters_string, "/").concat(this.number_of_events_per_page, "/").concat(this.page_number)).then(function (response) {
         return _this2.paginator = response.data;
       });
     },
+    nextPage: function nextPage() {
+      this.page_number += 1;
+      this.changePageNumber();
+    },
     previousPage: function previousPage() {
-      var _this3 = this;
-
       this.page_number -= 1;
-      axios.get("".concat(this.paginator_path_url, "/").concat(this.page_number)).then(function (response) {
-        return _this3.paginator = response.data;
-      });
+      this.changePageNumber();
     },
     firstPage: function firstPage() {
-      var _this4 = this;
-
       this.page_number = 1;
-      axios.get("".concat(this.paginator_path_url, "/1}")).then(function (response) {
-        return _this4.paginator = response.data;
-      });
+      this.changePageNumber();
     },
     lastPage: function lastPage() {
-      var _this5 = this;
-
       this.page_number = this.paginator.last_page;
-      axios.get("".concat(this.paginator_path_url, "/").concat(this.page_number)).then(function (response) {
-        return _this5.paginator = response.data;
-      });
+      this.changePageNumber();
     },
     jumpToPage: function jumpToPage($pageTarget) {
-      var _this6 = this;
-
       this.page_number = $pageTarget;
-      axios.get("".concat(this.paginator_path_url, "/").concat(this.page_number)).then(function (response) {
-        return _this6.paginator = response.data;
-      });
+      this.changePageNumber();
     }
   },
   computed: {
@@ -4578,11 +4536,11 @@ var buttonLabels = {
     }
   },
   mounted: function mounted() {
-    var _this7 = this;
+    var _this3 = this;
 
     this.filters_string = JSON.stringify(this.filters);
     axios.get("/events/".concat(this.filters_string, "/").concat(this.number_of_events_per_page, "/").concat(this.page_number)).then(function (response) {
-      return _this7.paginator = response.data;
+      return _this3.paginator = response.data;
     });
   }
 });
@@ -25381,10 +25339,7 @@ var render = function() {
         [
           _c("events-reminders"),
           _vm._v(" "),
-          _c("event-form", {
-            attrs: { fonte: _vm.fontediVerità, paginator: _vm.paginator },
-            on: { "event-published": _vm.applyFilters }
-          })
+          _c("event-form", { on: { "event-published": _vm.applyFilters } })
         ],
         1
       ),

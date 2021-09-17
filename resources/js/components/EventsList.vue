@@ -1,21 +1,20 @@
 <template>
     <div class="border border-red-800">
-        <flash-message></flash-message>
-
+         <flash-message />
+        <!--This displays flash messages after a new event is inserted into database -->
         <div class="border border-red-800">
             <!--Event reminders -->
-            <events-reminders></events-reminders>
+            <events-reminders />
             <!--Event creation form -->
-            <event-form v-bind:fonte="fontediVerità" v-bind:paginator="paginator" v-on:event-published="applyFilters"></event-form>
+            <event-form v-on:event-published="applyFilters" /> <!-- when a new event is published this event listener trigger a method that refreshes the page -->
         </div>
-        <!--End event creation form -->
+
         <!--Events filters div -->
         <div class="border border-red-800">
             <events-filters
             :filters.sync="filters"
             />
         </div>
-        <!--End events filters div -->
 
         <!-- Events list div -->
         <div class="p-4 border-b border-b-gray-400 rounded-xl">
@@ -137,16 +136,10 @@ import EventLowRes from './EventLowRes.vue';
                     "end_date": "",
                     "ignore_year_from_query": false
                 },
-                "options": [
-                    { text: "Order by date", value: "date", id: 1 },
-                    { text: "Order by creation date", value: "created_at", id: 2}
-                ],
-                events_array: {},
                 filters_string: "",
                 number_of_events_per_page: 15,
                 paginator: [],
-                page_number: 1,
-                paginator_path_url: ""
+                page_number: 1
             }
         },
         static: {
@@ -157,10 +150,6 @@ import EventLowRes from './EventLowRes.vue';
             "filters": {
                 handler: 'applyFilters',
                 deep: true
-            },
-            "paginator.data": {
-                handler: 'paginatorURL',
-                deep: true
             }
         },
         methods: {
@@ -169,35 +158,28 @@ import EventLowRes from './EventLowRes.vue';
                 this.filters_string = JSON.stringify(this.filters);
                 axios.get(`/events/${this.filters_string}/${this.number_of_events_per_page}/${this.page_number}`).then(response=>this.paginator = response.data);
             },
-            paginatorURL() {
-                var indexOfLastSlash = 0;
-                for(var i = 0; i < this.paginator.path.length; i++) {
-                    if(this.paginator.path.[i] == "/") {
-                        indexOfLastSlash = i;
-                    };
-                }
-                this.paginator_path_url = this.paginator.path.substring(0, indexOfLastSlash);
+            changePageNumber() {
+                axios.get(`/events/${this.filters_string}/${this.number_of_events_per_page}/${this.page_number}`).then(response=>this.paginator = response.data);
             },
             nextPage() {
                 this.page_number += 1;
-                axios.get(`${this.paginator_path_url}/${this.page_number}`)
-                .then(response=>this.paginator = response.data);
+                this.changePageNumber();
             },
             previousPage() {
                 this.page_number -= 1;
-                axios.get(`${this.paginator_path_url}/${this.page_number}`).then(response=>this.paginator = response.data);
+                this.changePageNumber();
             },
             firstPage() {
                 this.page_number = 1;
-                axios.get(`${this.paginator_path_url}/1}`).then(response=>this.paginator = response.data);
+                this.changePageNumber();
             },
             lastPage() {
                 this.page_number = this.paginator.last_page;
-                axios.get(`${this.paginator_path_url}/${this.page_number}`).then(response=>this.paginator = response.data);
+                this.changePageNumber();
             },
             jumpToPage($pageTarget) {
                 this.page_number = $pageTarget;
-                axios.get(`${this.paginator_path_url}/${this.page_number}`).then(response=>this.paginator = response.data);
+                this.changePageNumber();
             }
         },
         computed: {
@@ -211,7 +193,6 @@ import EventLowRes from './EventLowRes.vue';
         mounted() {
             this.filters_string = JSON.stringify(this.filters);
             axios.get(`/events/${this.filters_string}/${this.number_of_events_per_page}/${this.page_number}`).then(response=>this.paginator = response.data);
-
         }
 
     }
