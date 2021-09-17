@@ -86,19 +86,22 @@ import EventLowRes from './EventLowRes.vue';
             page_number: 'changePageNumber'
         },
         methods: {
+            paginateEvents() {
+                axios.get(`/events/${this.filters_string}/${this.number_of_events_per_page}/${this.page_number}`).then(response=>this.paginator = response.data);
+            },
             applyFilters() {
                 this.page_number = 1;
-                this.filters_string = JSON.stringify(this.filters);
-                axios.get(`/events/${this.filters_string}/${this.number_of_events_per_page}/${this.page_number}`).then(response=>this.paginator = response.data);
+                this.paginateEvents();
+
             },
             changePageNumber($pageTarget) {
                 this.page_number = $pageTarget;
-                axios.get(`/events/${this.filters_string}/${this.number_of_events_per_page}/${this.page_number}`).then(response=>this.paginator = response.data);
+                this.paginateEvents();
             },
         },
         mounted() {
             this.filters_string = JSON.stringify(this.filters);
-            axios.get(`/events/${this.filters_string}/${this.number_of_events_per_page}/${this.page_number}`).then(response=>this.paginator = response.data);
+            this.paginateEvents();
         }
     }
 

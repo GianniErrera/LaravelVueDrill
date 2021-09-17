@@ -27,7 +27,7 @@
     </head>
     <body class="antialiased">
         <div class="lg:hidden">Only small screens</div>
-        <div class="less-than-lg:hidden">Only big screens</div>
+        <div class="hidden lg:block">Only big screens</div>
     </body>
 
     <script>

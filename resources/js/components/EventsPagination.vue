@@ -2,7 +2,7 @@
     <div class="flex mt-4 justify-center">
         <div class="btn-group flex-nowrap mx-auto">
             <button
-                @click="jumpToPage(1)"
+                @click="firstPage"
                 class="btn btn-sm cursor rounded-lg"
                 :disabled="isPreviousButtonDisabled"
             >
@@ -100,15 +100,19 @@
             },
             previousPage() {
                 this.page_number -= 1;
+                this.changePage();
             },
             firstPage() {
                 this.page_number = 1;
+                this.changePage();
             },
             lastPage() {
                 this.page_number = this.paginator.last_page;
+                this.changePage();
             },
             jumpToPage($pageTarget) {
                 this.page_number = $pageTarget;
+                this.changePage();
             }
         },
         computed: {

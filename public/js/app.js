@@ -4430,31 +4430,25 @@ Vue.use((v_clipboard__WEBPACK_IMPORTED_MODULE_0___default()));
     page_number: 'changePageNumber'
   },
   methods: {
-    applyFilters: function applyFilters() {
+    paginateEvents: function paginateEvents() {
       var _this = this;
 
-      this.page_number = 1;
-      this.filters_string = JSON.stringify(this.filters);
       axios.get("/events/".concat(this.filters_string, "/").concat(this.number_of_events_per_page, "/").concat(this.page_number)).then(function (response) {
         return _this.paginator = response.data;
       });
     },
+    applyFilters: function applyFilters() {
+      this.page_number = 1;
+      this.paginateEvents();
+    },
     changePageNumber: function changePageNumber($pageTarget) {
-      var _this2 = this;
-
       this.page_number = $pageTarget;
-      axios.get("/events/".concat(this.filters_string, "/").concat(this.number_of_events_per_page, "/").concat(this.page_number)).then(function (response) {
-        return _this2.paginator = response.data;
-      });
+      this.paginateEvents();
     }
   },
   mounted: function mounted() {
-    var _this3 = this;
-
     this.filters_string = JSON.stringify(this.filters);
-    axios.get("/events/".concat(this.filters_string, "/").concat(this.number_of_events_per_page, "/").concat(this.page_number)).then(function (response) {
-      return _this3.paginator = response.data;
-    });
+    this.paginateEvents();
   }
 });
 
@@ -4572,15 +4566,19 @@ __webpack_require__.r(__webpack_exports__);
     },
     previousPage: function previousPage() {
       this.page_number -= 1;
+      this.changePage();
     },
     firstPage: function firstPage() {
       this.page_number = 1;
+      this.changePage();
     },
     lastPage: function lastPage() {
       this.page_number = this.paginator.last_page;
+      this.changePage();
     },
     jumpToPage: function jumpToPage($pageTarget) {
       this.page_number = $pageTarget;
+      this.changePage();
     }
   },
   computed: {
@@ -4775,13 +4773,8 @@ __webpack_require__.r(__webpack_exports__);
 /*!********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MainComponent.vue?vue&type=script&lang=js& ***!
   \********************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (() => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 //
 //
 //
@@ -4792,17 +4785,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  data: function data() {
-    return {
-      paginator: [],
-      fonteDiVerità: []
-    };
-  },
-  mounted: function mounted() {//  axios.get('/events').then(response=>this.events = response.data);
-  }
-});
 
 /***/ }),
 
@@ -24159,6 +24141,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _MainComponent_vue_vue_type_template_id_3ee370e9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MainComponent.vue?vue&type=template&id=3ee370e9& */ "./resources/js/components/MainComponent.vue?vue&type=template&id=3ee370e9&");
 /* harmony import */ var _MainComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MainComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/MainComponent.vue?vue&type=script&lang=js&");
+/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
+/* harmony reexport (unknown) */ for(const __WEBPACK_IMPORT_KEY__ in _MainComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = () => _MainComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[__WEBPACK_IMPORT_KEY__]
+/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -24419,7 +24404,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MainComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./MainComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MainComponent.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MainComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MainComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MainComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
+/* harmony reexport (unknown) */ for(const __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MainComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = () => _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MainComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[__WEBPACK_IMPORT_KEY__]
+/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MainComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default())); 
 
 /***/ }),
 
@@ -25555,11 +25544,7 @@ var render = function() {
         {
           staticClass: "btn btn-sm cursor rounded-lg",
           attrs: { disabled: _vm.isPreviousButtonDisabled },
-          on: {
-            click: function($event) {
-              return _vm.jumpToPage(1)
-            }
-          }
+          on: { click: _vm.firstPage }
         },
         [
           _vm._v(
@@ -25978,12 +25963,7 @@ var render = function() {
       _c(
         "div",
         { staticClass: "p-4 border-b border-b-gray-400 rounded-xl ml-2 mr-2'" },
-        [
-          _c(
-            "events-list",
-            _vm._b({}, "events-list", _vm.paginator, false, true)
-          )
-        ],
+        [_c("events-list")],
         1
       )
     ]
