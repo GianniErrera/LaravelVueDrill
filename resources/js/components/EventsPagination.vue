@@ -1,8 +1,9 @@
 <template>
     <div class="flex mt-4 justify-center">
         <div class="btn-group flex-nowrap mx-auto">
+
             <button
-                @click="firstPage"
+                @click="jumpToPage(1)"
                 class="btn btn-sm cursor rounded-lg"
                 :disabled="isPreviousButtonDisabled"
             >
@@ -10,7 +11,7 @@
 
             </button>
             <button
-                @click="previousPage"
+                @click="jumpToPage(page_number - 1)"
                 class="btn btn-sm cursor rounded-lg"
                 :disabled="isPreviousButtonDisabled"
             >
@@ -19,7 +20,7 @@
             <!--This is shown only when on last page -->
             <button
                 class="btn btn-sm cursor"
-                v-show="paginator.last_page === 3 && page_number === 3 || paginator.last_page > 3 && page_number === paginator.last_page"
+                v-if="paginator.last_page === 3 && page_number === 3 || paginator.last_page > 3 && page_number === paginator.last_page"
                 @click="jumpToPage(page_number - 2)"
             >
 
@@ -29,7 +30,7 @@
             <!--This is shown only when on last two pages -->
             <button
                 class="btn btn-sm cursor"
-                v-show="paginator.last_page < 3 && page_number === 2 || (paginator.last_page >= 3 && page_number >= 2)"
+                v-if="paginator.last_page < 3 && page_number === 2 || (paginator.last_page >= 3 && page_number >= 2)"
                 @click="jumpToPage(page_number - 1)"
             >
 
@@ -46,7 +47,7 @@
             </button>
             <button
                 class="btn btn-sm cursor"
-                v-show="page_number + 1 <= paginator.last_page"
+                v-if="page_number + 1 <= paginator.last_page"
                 @click="jumpToPage(page_number + 1)"
             >
 
@@ -55,7 +56,7 @@
             </button>
             <button
                 class="btn btn-sm cursor"
-                v-show="page_number === 1 && page_number + 2 <= paginator.last_page"
+                v-if="page_number === 1 && page_number + 2 <= paginator.last_page"
                 @click="jumpToPage(page_number + 2)"
             >
 
@@ -63,7 +64,7 @@
 
             </button>
             <button
-                @click="nextPage"
+                @click="jumpToPage(page_number + 1)"
                 class="btn btn-sm cursor"
                 :disabled="isNextButtonDisabled"
             >
@@ -81,8 +82,10 @@
 </template>
 
 <script>
+import PaginationButton from './PaginationButton.vue';
 
     export default {
+  components: { PaginationButton },
         props: ['paginator', 'page_number'],
         static: {
             first_button: "<<", // strings starting with "<" symbol may be interpreted as first character of HTML tag
@@ -91,28 +94,8 @@
             last_button: ">>"
         },
         methods: {
-            changePage() {
-                this.$emit('change-page', this.page_number);
-            },
-            nextPage() {
-                this.page_number += 1;
-                this.changePage();
-            },
-            previousPage() {
-                this.page_number -= 1;
-                this.changePage();
-            },
-            firstPage() {
-                this.page_number = 1;
-                this.changePage();
-            },
-            lastPage() {
-                this.page_number = this.paginator.last_page;
-                this.changePage();
-            },
             jumpToPage($pageTarget) {
                 this.page_number = $pageTarget;
-                this.changePage();
             }
         },
         computed: {

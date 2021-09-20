@@ -4468,6 +4468,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _PaginationButton_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PaginationButton.vue */ "./resources/js/components/PaginationButton.vue");
 //
 //
 //
@@ -4550,7 +4551,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    PaginationButton: _PaginationButton_vue__WEBPACK_IMPORTED_MODULE_0__.default
+  },
   props: ['paginator', 'page_number'],
   "static": {
     first_button: "<<",
@@ -4560,28 +4566,8 @@ __webpack_require__.r(__webpack_exports__);
     last_button: ">>"
   },
   methods: {
-    changePage: function changePage() {
-      this.$emit('change-page', this.page_number);
-    },
-    nextPage: function nextPage() {
-      this.page_number += 1;
-      this.changePage();
-    },
-    previousPage: function previousPage() {
-      this.page_number -= 1;
-      this.changePage();
-    },
-    firstPage: function firstPage() {
-      this.page_number = 1;
-      this.changePage();
-    },
-    lastPage: function lastPage() {
-      this.page_number = this.paginator.last_page;
-      this.changePage();
-    },
     jumpToPage: function jumpToPage($pageTarget) {
       this.page_number = $pageTarget;
-      this.changePage();
     }
   },
   computed: {
@@ -25654,7 +25640,11 @@ var render = function() {
         {
           staticClass: "btn btn-sm cursor rounded-lg",
           attrs: { disabled: _vm.isPreviousButtonDisabled },
-          on: { click: _vm.firstPage }
+          on: {
+            click: function($event) {
+              return _vm.jumpToPage(1)
+            }
+          }
         },
         [
           _vm._v(
@@ -25670,7 +25660,11 @@ var render = function() {
         {
           staticClass: "btn btn-sm cursor rounded-lg",
           attrs: { disabled: _vm.isPreviousButtonDisabled },
-          on: { click: _vm.previousPage }
+          on: {
+            click: function($event) {
+              return _vm.jumpToPage(_vm.page_number - 1)
+            }
+          }
         },
         [
           _vm._v(
@@ -25681,126 +25675,107 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      _c(
-        "button",
-        {
-          directives: [
+      (_vm.paginator.last_page === 3 && _vm.page_number === 3) ||
+      (_vm.paginator.last_page > 3 &&
+        _vm.page_number === _vm.paginator.last_page)
+        ? _c(
+            "button",
             {
-              name: "show",
-              rawName: "v-show",
-              value:
-                (_vm.paginator.last_page === 3 && _vm.page_number === 3) ||
-                (_vm.paginator.last_page > 3 &&
-                  _vm.page_number === _vm.paginator.last_page),
-              expression:
-                "paginator.last_page === 3 && page_number === 3 || paginator.last_page > 3 && page_number === paginator.last_page"
-            }
-          ],
-          staticClass: "btn btn-sm cursor",
-          on: {
-            click: function($event) {
-              return _vm.jumpToPage(_vm.page_number - 2)
-            }
-          }
-        },
-        [
-          _vm._v(
-            "\n\n            " + _vm._s(_vm.page_number - 2) + "\n\n        "
+              staticClass: "btn btn-sm cursor",
+              on: {
+                click: function($event) {
+                  return _vm.jumpToPage(_vm.page_number - 2)
+                }
+              }
+            },
+            [
+              _vm._v(
+                "\n\n            " +
+                  _vm._s(_vm.page_number - 2) +
+                  "\n\n        "
+              )
+            ]
           )
-        ]
-      ),
+        : _vm._e(),
       _vm._v(" "),
-      _c(
-        "button",
-        {
-          directives: [
+      (_vm.paginator.last_page < 3 && _vm.page_number === 2) ||
+      (_vm.paginator.last_page >= 3 && _vm.page_number >= 2)
+        ? _c(
+            "button",
             {
-              name: "show",
-              rawName: "v-show",
-              value:
-                (_vm.paginator.last_page < 3 && _vm.page_number === 2) ||
-                (_vm.paginator.last_page >= 3 && _vm.page_number >= 2),
-              expression:
-                "paginator.last_page < 3 && page_number === 2 || (paginator.last_page >= 3 && page_number >= 2)"
-            }
-          ],
-          staticClass: "btn btn-sm cursor",
-          on: {
-            click: function($event) {
-              return _vm.jumpToPage(_vm.page_number - 1)
-            }
-          }
-        },
-        [
-          _vm._v(
-            "\n\n            " + _vm._s(_vm.page_number - 1) + "\n\n        "
+              staticClass: "btn btn-sm cursor",
+              on: {
+                click: function($event) {
+                  return _vm.jumpToPage(_vm.page_number - 1)
+                }
+              }
+            },
+            [
+              _vm._v(
+                "\n\n            " +
+                  _vm._s(_vm.page_number - 1) +
+                  "\n\n        "
+              )
+            ]
           )
-        ]
-      ),
+        : _vm._e(),
       _vm._v(" "),
       _c("button", { staticClass: "btn btn-sm", attrs: { disabled: "" } }, [
         _vm._v("\n\n            " + _vm._s(_vm.page_number) + "\n\n        ")
       ]),
       _vm._v(" "),
-      _c(
-        "button",
-        {
-          directives: [
+      _vm.page_number + 1 <= _vm.paginator.last_page
+        ? _c(
+            "button",
             {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.page_number + 1 <= _vm.paginator.last_page,
-              expression: "page_number + 1 <= paginator.last_page"
-            }
-          ],
-          staticClass: "btn btn-sm cursor",
-          on: {
-            click: function($event) {
-              return _vm.jumpToPage(_vm.page_number + 1)
-            }
-          }
-        },
-        [
-          _vm._v(
-            "\n\n            " + _vm._s(_vm.page_number + 1) + "\n\n        "
+              staticClass: "btn btn-sm cursor",
+              on: {
+                click: function($event) {
+                  return _vm.jumpToPage(_vm.page_number + 1)
+                }
+              }
+            },
+            [
+              _vm._v(
+                "\n\n            " +
+                  _vm._s(_vm.page_number + 1) +
+                  "\n\n        "
+              )
+            ]
           )
-        ]
-      ),
+        : _vm._e(),
       _vm._v(" "),
-      _c(
-        "button",
-        {
-          directives: [
+      _vm.page_number === 1 && _vm.page_number + 2 <= _vm.paginator.last_page
+        ? _c(
+            "button",
             {
-              name: "show",
-              rawName: "v-show",
-              value:
-                _vm.page_number === 1 &&
-                _vm.page_number + 2 <= _vm.paginator.last_page,
-              expression:
-                "page_number === 1 && page_number + 2 <= paginator.last_page"
-            }
-          ],
-          staticClass: "btn btn-sm cursor",
-          on: {
-            click: function($event) {
-              return _vm.jumpToPage(_vm.page_number + 2)
-            }
-          }
-        },
-        [
-          _vm._v(
-            "\n\n            " + _vm._s(_vm.page_number + 2) + "\n\n        "
+              staticClass: "btn btn-sm cursor",
+              on: {
+                click: function($event) {
+                  return _vm.jumpToPage(_vm.page_number + 2)
+                }
+              }
+            },
+            [
+              _vm._v(
+                "\n\n            " +
+                  _vm._s(_vm.page_number + 2) +
+                  "\n\n        "
+              )
+            ]
           )
-        ]
-      ),
+        : _vm._e(),
       _vm._v(" "),
       _c(
         "button",
         {
           staticClass: "btn btn-sm cursor",
           attrs: { disabled: _vm.isNextButtonDisabled },
-          on: { click: _vm.nextPage }
+          on: {
+            click: function($event) {
+              return _vm.jumpToPage(_vm.page_number + 1)
+            }
+          }
         },
         [
           _vm._v(
