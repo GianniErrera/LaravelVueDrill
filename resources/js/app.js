@@ -33,6 +33,7 @@ Vue.component('events-reminders', require('./components/EventsReminders.vue').de
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('flash-message', require('./components/FlashMessage.vue').default);
 Vue.component('main-component', require('./components/MainComponent.vue').default);
+Vue.component('pagination-button', require('./components/PaginationButton.vue').default);
 
 
 

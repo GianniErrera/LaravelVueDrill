@@ -95,7 +95,6 @@ import EventLowRes from './EventLowRes.vue';
             applyFilters() {
                 this.page_number = 1;
                 this.paginateEvents();
-
             },
             changePageNumber($pageTarget) {
                 this.page_number = $pageTarget;

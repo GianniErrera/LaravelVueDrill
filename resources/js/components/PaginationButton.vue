@@ -1,18 +1,17 @@
 <template>
-    <div>
+
     <button
-                @click="firstPage"
-                class="btn btn-sm cursor rounded-lg"
-                :disabled="isPreviousButtonDisabled"
-            >
+        @click="$emit('change-page', this.page_target)"
+        class="btn btn-sm cursor"
+    >
+        {{this.button_label}}
 
+    </button>
 
-            </button>
-    </div>
 </template>
 
 <script>
     export default {
-        props: ['page_number']
+        props: ['page_target', 'button_label']
     }
 </script>
