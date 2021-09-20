@@ -35,7 +35,7 @@
             </div>
             <!-- Events paginator buttons -->
             <events-pagination
-                :page_number="page_number"
+                :page_number.sync="page_number"
                 :paginator="paginator"
                 @change-page="changePageNumber"
             />
@@ -75,7 +75,10 @@ import EventLowRes from './EventLowRes.vue';
                 filters_string: "",
                 number_of_events_per_page: 15,
                 paginator: [],
-                page_number: 1
+                page_number: 1,
+                pagination: {
+                    "number": 1
+                }
             }
         },
         watch: {

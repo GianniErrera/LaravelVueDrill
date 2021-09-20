@@ -4419,7 +4419,10 @@ Vue.use((v_clipboard__WEBPACK_IMPORTED_MODULE_0___default()));
       filters_string: "",
       number_of_events_per_page: 15,
       paginator: [],
-      page_number: 1
+      page_number: 1,
+      pagination: {
+        "number": 1
+      }
     };
   },
   watch: {
@@ -25505,7 +25508,12 @@ var render = function() {
           _vm._v(" "),
           _c("events-pagination", {
             attrs: { page_number: _vm.page_number, paginator: _vm.paginator },
-            on: { "change-page": _vm.changePageNumber }
+            on: {
+              "update:page_number": function($event) {
+                _vm.page_number = $event
+              },
+              "change-page": _vm.changePageNumber
+            }
           })
         ],
         2
