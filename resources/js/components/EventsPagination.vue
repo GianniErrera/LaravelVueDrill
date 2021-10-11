@@ -1,6 +1,7 @@
 <template>
     <div class="flex mt-4 justify-center">
-        <div class="btn-group flex-nowrap mx-auto">
+        <div class="btn-group flex-nowrap mx-auto"
+        >
 
             <button
                 @click="jumpToPage(1)"
@@ -57,19 +58,18 @@
             <button
                 class="btn btn-sm cursor"
                 v-if="page_number === 1 && page_number + 2 <= paginator.last_page"
-                @click="jumpToPage(page_number + 2)"
+                @change-page="test"
             >
 
                 {{ page_number + 2 }}
 
             </button>
-            <button
-                @click="jumpToPage(page_number + 1)"
-                class="btn btn-sm cursor"
+            <pagination-button
+                :page_target="page_number + 1"
+                :button_label="this.$options.static.next_button"
                 :disabled="isNextButtonDisabled"
-            >
-                    {{this.$options.static.next_button}}
-            </button>
+            />
+
             <button
                 @click="jumpToPage(paginator.last_page)"
                 class="btn btn-sm cursor"
@@ -85,7 +85,7 @@
 import PaginationButton from './PaginationButton.vue';
 
     export default {
-  components: { PaginationButton },
+        components: { PaginationButton },
         props: ['paginator', 'page_number'],
         static: {
             first_button: "<<", // strings starting with "<" symbol may be interpreted as first character of HTML tag
@@ -96,6 +96,9 @@ import PaginationButton from './PaginationButton.vue';
         methods: {
             jumpToPage($pageTarget) {
                 this.page_number = $pageTarget;
+            },
+            test($target_page) {
+                alert($target_page);
             }
         },
         computed: {

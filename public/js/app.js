@@ -4340,6 +4340,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _FlashMessage_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./FlashMessage.vue */ "./resources/js/components/FlashMessage.vue");
 /* harmony import */ var _EventHighRes_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./EventHighRes.vue */ "./resources/js/components/EventHighRes.vue");
 /* harmony import */ var _EventLowRes_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./EventLowRes.vue */ "./resources/js/components/EventLowRes.vue");
+/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./eventBus */ "./resources/js/components/eventBus.js");
 //
 //
 //
@@ -4391,6 +4392,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 Vue.use((v_clipboard__WEBPACK_IMPORTED_MODULE_0___default()));
+
 
 
 
@@ -4451,7 +4453,15 @@ Vue.use((v_clipboard__WEBPACK_IMPORTED_MODULE_0___default()));
   },
   mounted: function mounted() {
     this.filters_string = JSON.stringify(this.filters);
-    this.paginateEvents();
+    this.paginateEvents(); // adding eventBus listener
+
+    _eventBus__WEBPACK_IMPORTED_MODULE_7__.default.$on('change-page', function () {
+      console.log('Custom event triggered!');
+    });
+  },
+  beforeDestroy: function beforeDestroy() {
+    // removing eventBus listener
+    _eventBus__WEBPACK_IMPORTED_MODULE_7__.default.$off('change-page');
   }
 });
 
@@ -4568,6 +4578,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     jumpToPage: function jumpToPage($pageTarget) {
       this.page_number = $pageTarget;
+    },
+    test: function test($target_page) {
+      alert($target_page);
     }
   },
   computed: {
@@ -4822,6 +4835,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./eventBus */ "./resources/js/components/eventBus.js");
 //
 //
 //
@@ -4834,8 +4848,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['page_target', 'button_label']
+  props: ['page_target', 'button_label'],
+  methods: {
+    callGlobalCustomEvent: function callGlobalCustomEvent(page_target) {
+      _eventBus__WEBPACK_IMPORTED_MODULE_0__.default.$emit('custom-event'); // if ChildComponent is mounted, we will have a message in the console
+    }
+  }
 });
 
 /***/ }),
@@ -4973,6 +4993,22 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/eventBus.js":
+/*!*********************************************!*\
+  !*** ./resources/js/components/eventBus.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var eventBus = new Vue();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (eventBus);
 
 /***/ }),
 
@@ -25634,178 +25670,167 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "flex mt-4 justify-center" }, [
-    _c("div", { staticClass: "btn-group flex-nowrap mx-auto" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-sm cursor rounded-lg",
-          attrs: { disabled: _vm.isPreviousButtonDisabled },
-          on: {
-            click: function($event) {
-              return _vm.jumpToPage(1)
-            }
-          }
-        },
-        [
-          _vm._v(
-            "\n            " +
-              _vm._s(this.$options.static.first_button) +
-              "\n\n        "
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-sm cursor rounded-lg",
-          attrs: { disabled: _vm.isPreviousButtonDisabled },
-          on: {
-            click: function($event) {
-              return _vm.jumpToPage(_vm.page_number - 1)
-            }
-          }
-        },
-        [
-          _vm._v(
-            "\n            " +
-              _vm._s(this.$options.static.prev_button) +
-              "\n        "
-          )
-        ]
-      ),
-      _vm._v(" "),
-      (_vm.paginator.last_page === 3 && _vm.page_number === 3) ||
-      (_vm.paginator.last_page > 3 &&
-        _vm.page_number === _vm.paginator.last_page)
-        ? _c(
-            "button",
-            {
-              staticClass: "btn btn-sm cursor",
-              on: {
-                click: function($event) {
-                  return _vm.jumpToPage(_vm.page_number - 2)
-                }
+    _c(
+      "div",
+      { staticClass: "btn-group flex-nowrap mx-auto" },
+      [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-sm cursor rounded-lg",
+            attrs: { disabled: _vm.isPreviousButtonDisabled },
+            on: {
+              click: function($event) {
+                return _vm.jumpToPage(1)
               }
-            },
-            [
-              _vm._v(
-                "\n\n            " +
-                  _vm._s(_vm.page_number - 2) +
-                  "\n\n        "
-              )
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      (_vm.paginator.last_page < 3 && _vm.page_number === 2) ||
-      (_vm.paginator.last_page >= 3 && _vm.page_number >= 2)
-        ? _c(
-            "button",
-            {
-              staticClass: "btn btn-sm cursor",
-              on: {
-                click: function($event) {
-                  return _vm.jumpToPage(_vm.page_number - 1)
-                }
-              }
-            },
-            [
-              _vm._v(
-                "\n\n            " +
-                  _vm._s(_vm.page_number - 1) +
-                  "\n\n        "
-              )
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c("button", { staticClass: "btn btn-sm", attrs: { disabled: "" } }, [
-        _vm._v("\n\n            " + _vm._s(_vm.page_number) + "\n\n        ")
-      ]),
-      _vm._v(" "),
-      _vm.page_number + 1 <= _vm.paginator.last_page
-        ? _c(
-            "button",
-            {
-              staticClass: "btn btn-sm cursor",
-              on: {
-                click: function($event) {
-                  return _vm.jumpToPage(_vm.page_number + 1)
-                }
-              }
-            },
-            [
-              _vm._v(
-                "\n\n            " +
-                  _vm._s(_vm.page_number + 1) +
-                  "\n\n        "
-              )
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.page_number === 1 && _vm.page_number + 2 <= _vm.paginator.last_page
-        ? _c(
-            "button",
-            {
-              staticClass: "btn btn-sm cursor",
-              on: {
-                click: function($event) {
-                  return _vm.jumpToPage(_vm.page_number + 2)
-                }
-              }
-            },
-            [
-              _vm._v(
-                "\n\n            " +
-                  _vm._s(_vm.page_number + 2) +
-                  "\n\n        "
-              )
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-sm cursor",
-          attrs: { disabled: _vm.isNextButtonDisabled },
-          on: {
-            click: function($event) {
-              return _vm.jumpToPage(_vm.page_number + 1)
             }
-          }
-        },
-        [
-          _vm._v(
-            "\n                " +
-              _vm._s(this.$options.static.next_button) +
-              "\n        "
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-sm cursor",
-          attrs: { disabled: _vm.isNextButtonDisabled },
-          on: {
-            click: function($event) {
-              return _vm.jumpToPage(_vm.paginator.last_page)
+          },
+          [
+            _vm._v(
+              "\n            " +
+                _vm._s(this.$options.static.first_button) +
+                "\n\n        "
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-sm cursor rounded-lg",
+            attrs: { disabled: _vm.isPreviousButtonDisabled },
+            on: {
+              click: function($event) {
+                return _vm.jumpToPage(_vm.page_number - 1)
+              }
             }
+          },
+          [
+            _vm._v(
+              "\n            " +
+                _vm._s(this.$options.static.prev_button) +
+                "\n        "
+            )
+          ]
+        ),
+        _vm._v(" "),
+        (_vm.paginator.last_page === 3 && _vm.page_number === 3) ||
+        (_vm.paginator.last_page > 3 &&
+          _vm.page_number === _vm.paginator.last_page)
+          ? _c(
+              "button",
+              {
+                staticClass: "btn btn-sm cursor",
+                on: {
+                  click: function($event) {
+                    return _vm.jumpToPage(_vm.page_number - 2)
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  "\n\n            " +
+                    _vm._s(_vm.page_number - 2) +
+                    "\n\n        "
+                )
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        (_vm.paginator.last_page < 3 && _vm.page_number === 2) ||
+        (_vm.paginator.last_page >= 3 && _vm.page_number >= 2)
+          ? _c(
+              "button",
+              {
+                staticClass: "btn btn-sm cursor",
+                on: {
+                  click: function($event) {
+                    return _vm.jumpToPage(_vm.page_number - 1)
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  "\n\n            " +
+                    _vm._s(_vm.page_number - 1) +
+                    "\n\n        "
+                )
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _c("button", { staticClass: "btn btn-sm", attrs: { disabled: "" } }, [
+          _vm._v("\n\n            " + _vm._s(_vm.page_number) + "\n\n        ")
+        ]),
+        _vm._v(" "),
+        _vm.page_number + 1 <= _vm.paginator.last_page
+          ? _c(
+              "button",
+              {
+                staticClass: "btn btn-sm cursor",
+                on: {
+                  click: function($event) {
+                    return _vm.jumpToPage(_vm.page_number + 1)
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  "\n\n            " +
+                    _vm._s(_vm.page_number + 1) +
+                    "\n\n        "
+                )
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.page_number === 1 && _vm.page_number + 2 <= _vm.paginator.last_page
+          ? _c(
+              "button",
+              {
+                staticClass: "btn btn-sm cursor",
+                on: { "change-page": _vm.test }
+              },
+              [
+                _vm._v(
+                  "\n\n            " +
+                    _vm._s(_vm.page_number + 2) +
+                    "\n\n        "
+                )
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _c("pagination-button", {
+          attrs: {
+            page_target: _vm.page_number + 1,
+            button_label: this.$options.static.next_button,
+            disabled: _vm.isNextButtonDisabled
           }
-        },
-        [
-          _vm._v(
-            "\n                " +
-              _vm._s(this.$options.static.last_button) +
-              "\n        "
-          )
-        ]
-      )
-    ])
+        }),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-sm cursor",
+            attrs: { disabled: _vm.isNextButtonDisabled },
+            on: {
+              click: function($event) {
+                return _vm.jumpToPage(_vm.paginator.last_page)
+              }
+            }
+          },
+          [
+            _vm._v(
+              "\n                " +
+                _vm._s(this.$options.static.last_button) +
+                "\n        "
+            )
+          ]
+        )
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = []
@@ -26138,11 +26163,11 @@ var render = function() {
       staticClass: "btn btn-sm cursor",
       on: {
         click: function($event) {
-          return _vm.$emit("change-page", this.page_target)
+          return _vm.$emit("callGlobalCustomEvent", _vm.page_target)
         }
       }
     },
-    [_vm._v("\n    " + _vm._s(this.button_label) + "\n\n")]
+    [_vm._v("\n    " + _vm._s(_vm.button_label) + "\n\n")]
   )
 }
 var staticRenderFns = []

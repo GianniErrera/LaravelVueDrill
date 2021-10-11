@@ -58,6 +58,7 @@ import EventsReminders from './EventsReminders.vue';
 import FlashMessage from './FlashMessage.vue';
 import EventHighRes from './EventHighRes.vue';
 import EventLowRes from './EventLowRes.vue';
+import eventBus from './eventBus';
 
 
     export default {
@@ -104,7 +105,17 @@ import EventLowRes from './EventLowRes.vue';
         mounted() {
             this.filters_string = JSON.stringify(this.filters);
             this.paginateEvents();
-        }
+
+             // adding eventBus listener
+            eventBus.$on('change-page', () => {
+                console.log('Custom event triggered!')
+                })
+            },
+            beforeDestroy() {
+                // removing eventBus listener
+                eventBus.$off('change-page')
+            }
+
     }
 
 </script>
